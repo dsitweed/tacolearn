@@ -1,12 +1,12 @@
-import { Building2 } from 'lucide-react';
+import { BookOpenCheck } from 'lucide-react';
 import Link from 'next/link';
 
 import { cn } from '@/utils';
 
 function BrandLogoIcon() {
   return (
-    <div className="bg-primary rounded-lg p-3">
-      <Building2 className="size-5 text-white" />
+    <div className="bg-primary text-primary-foreground rounded-lg p-2.5 shadow-xs">
+      <BookOpenCheck className="size-5 text-white" />
     </div>
   );
 }
@@ -14,25 +14,31 @@ function BrandLogoIcon() {
 function BrandLogoText() {
   return (
     <div className="flex flex-col">
-      <span className="text-primary text-xl font-bold tracking-tight">
-        TacoHouse
+      <span className="text-primary font-heading text-xl font-bold tracking-tight">
+        Taco<span className="text-secondary font-bold">Learn</span>
       </span>
-      <span className="-mt-1 text-[10px] font-medium tracking-wider text-indigo-600 uppercase">
-        PREMIUM ASSETS
+      <span className="-mt-0.5 text-[9px] font-semibold tracking-widest text-slate-500 uppercase">
+        EDTECH PLATFORM
       </span>
     </div>
   );
 }
 
 function BrandLogoCombined({
-  link = '/',
+  link = '/dashboard',
   className,
 }: {
   link?: string;
   className?: string;
 }) {
   return (
-    <Link href={link} className={cn('flex items-center gap-3', className)}>
+    <Link
+      href={link}
+      className={cn(
+        'group flex items-center gap-2.5 transition-opacity hover:opacity-90',
+        className,
+      )}
+    >
       <BrandLogoIcon />
       <BrandLogoText />
     </Link>

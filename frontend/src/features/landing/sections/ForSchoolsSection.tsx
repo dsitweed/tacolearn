@@ -27,10 +27,10 @@ export function ForSchoolsSection() {
   return (
     <section
       id="for-schools"
-      className="relative overflow-hidden bg-slate-900 py-16 text-white lg:py-24"
+      className="relative overflow-hidden bg-[#081534] py-16 text-white lg:py-24"
     >
       {/* Background glow */}
-      <div className="pointer-events-none absolute top-1/2 left-0 size-96 -translate-y-1/2 rounded-full bg-indigo-600/10 blur-3xl" />
+      <div className="pointer-events-none absolute top-1/2 left-0 size-96 -translate-y-1/2 rounded-full bg-[#006C4A]/20 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
@@ -38,7 +38,7 @@ export function ForSchoolsSection() {
           <div className="space-y-6 lg:col-span-6">
             <Badge
               variant="outline"
-              className="rounded-full border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-300"
+              className="rounded-full border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-[#88F8C4]"
             >
               DÀNH CHO TRƯỜNG HỌC & TRUNG TÂM
             </Badge>
@@ -47,7 +47,7 @@ export function ForSchoolsSection() {
               Số hóa công tác đào tạo cho Trường Nhật ngữ & Trung tâm Du học
             </h2>
 
-            <p className="text-base leading-relaxed text-slate-300">
+            <p className="text-base leading-relaxed text-[#DAE2FF]">
               Giải phóng giáo viên khỏi những giờ làm bảng điểm thủ công và chấm
               flashcard rời rạc. Giúp ban quản lý giám sát chất lượng học tập
               của từng lớp học theo thời gian thực.
@@ -59,14 +59,14 @@ export function ForSchoolsSection() {
                 const Icon = item.icon;
                 return (
                   <div key={item.title} className="flex items-start gap-3.5">
-                    <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg border border-indigo-500/30 bg-indigo-600/20 text-indigo-400">
+                    <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-600/20 text-[#88F8C4]">
                       <Icon className="size-4" />
                     </div>
                     <div>
                       <h4 className="text-sm font-semibold text-white">
                         {item.title}
                       </h4>
-                      <p className="mt-0.5 text-xs leading-relaxed text-slate-400">
+                      <p className="mt-0.5 text-xs leading-relaxed text-[#BAC5EE]">
                         {item.desc}
                       </p>
                     </div>
@@ -78,11 +78,11 @@ export function ForSchoolsSection() {
             <div className="pt-4">
               <Button
                 size="lg"
-                className="h-12 rounded-xl bg-indigo-600 px-6 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-700"
+                className="h-12 rounded-xl bg-[#006C4A] px-6 text-sm font-semibold text-white shadow-lg hover:bg-[#005137]"
                 asChild
               >
                 <Link href="#contact">
-                  Liên hệ hợp tác trường học
+                  <span>Liên hệ hợp tác trường học</span>
                   <ArrowRight className="ml-2 size-4" />
                 </Link>
               </Button>

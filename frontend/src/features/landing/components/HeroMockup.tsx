@@ -86,7 +86,7 @@ export function HeroMockup() {
                 className="group relative cursor-pointer"
                 onClick={() => setShowAnswer(!showAnswer)}
               >
-                <h2 className="text-5xl font-extrabold tracking-wider text-white transition-colors hover:text-indigo-300">
+                <h2 className="font-japanese text-5xl font-medium tracking-wider text-white transition-colors hover:text-emerald-300">
                   判断
                 </h2>
                 <span className="absolute -top-1 -right-6 flex size-5 items-center justify-center rounded-full bg-slate-800 text-slate-400 hover:text-white">

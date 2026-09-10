@@ -13,25 +13,25 @@ export function DashboardWelcomeBanner() {
         {/* Left Welcome Text */}
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 lg:text-3xl dark:text-white">
+            <h1 className="font-heading text-2xl font-bold tracking-tight text-[#081534] lg:text-3xl dark:text-white">
               Chào buổi sáng, Minh! 👋
             </h1>
             <Badge
               variant="secondary"
-              className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold text-slate-700 dark:bg-indigo-950/60 dark:text-indigo-300"
+              className="rounded-full bg-[#DEE8FF] px-2.5 py-0.5 text-xs font-semibold text-[#45464E] dark:bg-slate-800 dark:text-slate-300"
             >
-              <span className="mr-1.5 size-1.5 rounded-full bg-emerald-600" />
+              <span className="mr-1.5 size-1.5 rounded-full bg-[#006C4A]" />
               Lớp N3 - Khóa K24
             </Badge>
           </div>
 
-          <p className="max-w-2xl text-sm text-slate-600 dark:text-slate-300">
+          <p className="max-w-2xl text-sm text-[#45464E] dark:text-slate-300">
             Hôm nay bạn có{' '}
-            <strong className="text-slate-900 dark:text-white">
+            <strong className="text-[#081534] dark:text-white">
               24 thẻ SRS cần ôn
             </strong>{' '}
             và{' '}
-            <strong className="text-slate-900 dark:text-white">
+            <strong className="text-[#081534] dark:text-white">
               1 buổi học trực tiếp
             </strong>{' '}
             lúc 09:30 cùng Tanaka Sensei (
@@ -43,22 +43,22 @@ export function DashboardWelcomeBanner() {
         </div>
 
         {/* Right Session Status Pill */}
-        <div className="flex shrink-0 flex-col justify-center rounded-xl border border-indigo-100 bg-indigo-50/70 p-3.5 shadow-2xs sm:min-w-[340px] dark:border-slate-800 dark:bg-slate-800/60">
-          <div className="flex items-center gap-2 text-xs font-semibold text-slate-800 dark:text-slate-200">
-            <span className="size-2 rounded-full bg-emerald-600" />
+        <div className="flex shrink-0 flex-col justify-center rounded-xl border border-slate-200/60 bg-[#F0F3FF] p-3.5 shadow-2xs sm:min-w-[340px] dark:border-slate-800 dark:bg-slate-800/60">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[#111C2D] dark:text-slate-200">
+            <span className="size-2 rounded-full bg-[#006C4A]" />
             <span>Tiết học tiếp theo</span>
             <span className="text-slate-400">•</span>
-            <span className="flex items-center gap-1 font-normal text-slate-500 dark:text-slate-400">
-              <Clock className="size-3 text-slate-500" />
+            <span className="flex items-center gap-1 font-normal text-[#45464E] dark:text-slate-400">
+              <Clock className="size-3 text-[#45464E]" />
               09:30 - 11:30 (Hôm nay)
             </span>
           </div>
 
           <div className="mt-2 flex items-center justify-between">
-            <Badge className="bg-indigo-100 px-2 py-0.5 text-[11px] font-bold text-indigo-900 hover:bg-indigo-100 dark:bg-indigo-900/40 dark:text-indigo-200">
+            <Badge className="bg-[#D8E3FB] px-2 py-0.5 text-[11px] font-bold text-[#081534] hover:bg-[#D8E3FB] dark:bg-indigo-950 dark:text-indigo-200">
               PHÒNG N3-A
             </Badge>
-            <span className="flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+            <span className="flex items-center gap-1 text-xs font-medium text-[#006C4A] dark:text-emerald-400">
               <CheckCircle2 className="size-3.5" />
               Đã điểm danh trước
             </span>

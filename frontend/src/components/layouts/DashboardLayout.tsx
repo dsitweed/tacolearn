@@ -5,13 +5,13 @@ import Sidebar from './Sidebar';
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen bg-slate-50/60">
+    <div className="flex h-screen bg-[#F9F9FF] text-[#111C2D] dark:bg-slate-950 dark:text-slate-100">
       <div className="hidden lg:flex">
         <Sidebar />
       </div>
-      <div className="flex min-w-0 flex-1 flex-col lg:ml-[260px]">
+      <div className="flex min-w-0 flex-1 flex-col lg:ml-64">
         <Header />
-        <main className="flex-1 overflow-y-auto p-6 [scrollbar-gutter:stable] lg:py-4">
+        <main className="flex-1 overflow-y-auto p-6 [scrollbar-gutter:stable] lg:py-6">
           {children}
         </main>
       </div>

@@ -80,14 +80,14 @@ export function JlptPathsSection() {
           <div className="max-w-2xl space-y-4">
             <Badge
               variant="outline"
-              className="rounded-full border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 dark:border-indigo-800 dark:bg-indigo-950/60 dark:text-indigo-300"
+              className="rounded-full border-slate-300 bg-[#F0F3FF] px-3 py-1 text-xs font-semibold text-[#081534] dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
             >
               LỘ TRÌNH CHUẨN HÓA
             </Badge>
-            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl dark:text-white">
+            <h2 className="text-3xl font-extrabold tracking-tight text-[#081534] sm:text-4xl dark:text-white">
               Lộ trình luyện thi JLPT toàn diện từ N5 đến N1
             </h2>
-            <p className="text-base text-slate-600 dark:text-slate-400">
+            <p className="text-base text-[#45464E] dark:text-slate-400">
               Bộ thẻ SRS và kho bài tập chuẩn hóa bám sát cấu trúc đề thi mới
               nhất.
             </p>
@@ -95,7 +95,7 @@ export function JlptPathsSection() {
 
           <Badge
             variant="secondary"
-            className="bg-indigo-100 px-3 py-1.5 text-xs font-medium text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300"
+            className="bg-[#DEE8FF] px-3 py-1.5 text-xs font-semibold text-[#081534] dark:bg-slate-800 dark:text-slate-200"
           >
             Cập nhật đề thi năm {new Date().getFullYear()}
           </Badge>
@@ -108,12 +108,12 @@ export function JlptPathsSection() {
               key={item.level}
               className={`relative flex flex-col justify-between transition-all duration-200 ${
                 item.highlighted
-                  ? 'scale-105 border-2 border-indigo-600 bg-gradient-to-b from-indigo-50/80 to-white shadow-xl shadow-indigo-600/15 dark:border-indigo-500 dark:from-slate-900 dark:to-slate-950'
+                  ? 'scale-105 border-2 border-[#006C4A] bg-gradient-to-b from-[#85F5C1]/15 to-white shadow-xl shadow-emerald-950/10 dark:border-emerald-500 dark:from-slate-900 dark:to-slate-950'
                   : 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
               }`}
             >
               {item.highlighted && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 px-3 py-0.5 text-[11px] font-bold text-white shadow-md">
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-[#006C4A] px-3 py-0.5 text-[11px] font-bold text-white shadow-md">
                   HOTTEST COHORT
                 </div>
               )}
@@ -121,21 +121,21 @@ export function JlptPathsSection() {
               <div>
                 <CardHeader className="pb-3">
                   <div className="mb-1 flex items-center justify-between">
-                    <span className="text-2xl font-extrabold text-slate-900 dark:text-white">
+                    <span className="text-2xl font-extrabold text-[#081534] dark:text-white">
                       {item.level}
                     </span>
                     <Badge
                       variant={item.highlighted ? 'default' : 'secondary'}
                       className={`text-[10px] ${
                         item.highlighted
-                          ? 'bg-indigo-600 text-white'
+                          ? 'bg-[#006C4A] text-white hover:bg-[#006C4A]'
                           : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
                       }`}
                     >
                       {item.badge}
                     </Badge>
                   </div>
-                  <CardTitle className="text-sm font-semibold text-slate-600 dark:text-slate-400">
+                  <CardTitle className="text-sm font-semibold text-[#45464E] dark:text-slate-400">
                     JLPT {item.level}
                   </CardTitle>
                 </CardHeader>
@@ -178,7 +178,7 @@ export function JlptPathsSection() {
                 <Button
                   className={`w-full text-xs font-semibold ${
                     item.highlighted
-                      ? 'bg-indigo-600 text-white shadow-md hover:bg-indigo-700'
+                      ? 'bg-[#006C4A] text-white shadow-md hover:bg-[#005137]'
                       : 'bg-slate-100 text-slate-800 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'
                   }`}
                   asChild

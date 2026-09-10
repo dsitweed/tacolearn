@@ -27,21 +27,21 @@ export function HeroSection() {
           </Badge>
 
           {/* Main Headline */}
-          <h1 className="text-4xl leading-[1.15] font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl dark:text-white">
+          <h1 className="text-4xl leading-[1.15] font-extrabold tracking-tight text-[#081534] sm:text-5xl lg:text-6xl dark:text-white">
             Đồng bộ bài giảng trên lớp với{' '}
-            <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#081534] via-[#1E2A4A] to-[#006C4A] bg-clip-text text-transparent dark:from-indigo-300 dark:via-white dark:to-emerald-400">
               trí nhớ dài hạn
             </span>
           </h1>
 
           {/* Sub-headline */}
-          <p className="text-xs font-semibold tracking-tight text-indigo-600 sm:text-base dark:text-indigo-400">
+          <p className="text-xs font-semibold tracking-tight text-[#006C4A] sm:text-base dark:text-emerald-400">
             Learn Japanese. Remember it. Improve every day.
             （学ぶ。覚える。伸ばす。）
           </p>
 
           {/* Explanatory Subtext */}
-          <p className="max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-300">
+          <p className="max-w-2xl text-base leading-relaxed text-[#45464E] sm:text-lg dark:text-slate-300">
             Nền tảng SaaS đầu tiên đồng bộ nội dung bài giảng tại trường học với
             hệ thống Lặp lại Ngắt quãng (Spaced Repetition) và Phân tích điểm
             yếu thời gian thực.
@@ -51,7 +51,7 @@ export function HeroSection() {
           <div className="flex flex-col items-center gap-4 pt-2 sm:flex-row">
             <Button
               size="lg"
-              className="h-13 w-full rounded-xl bg-indigo-600 px-8 text-base font-semibold text-white shadow-lg shadow-indigo-600/25 hover:bg-indigo-700 sm:w-auto"
+              className="h-13 w-full rounded-xl bg-[#081534] px-8 text-base font-semibold text-white shadow-md hover:bg-[#162038] sm:w-auto dark:bg-emerald-600 dark:hover:bg-emerald-700"
               asChild
             >
               <Link href="/register">

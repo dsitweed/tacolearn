@@ -20,25 +20,26 @@ export function ClassroomSyncAlertBanner() {
 
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2 text-xs">
-              <Badge className="bg-emerald-400/25 text-[10px] font-bold tracking-wider text-emerald-300 uppercase hover:bg-emerald-400/25">
+              <Badge className="bg-[#85F5C1]/30 text-[10px] font-bold tracking-wider text-[#88F8C4] uppercase hover:bg-[#85F5C1]/30">
                 ĐỒNG BỘ MỚI TỪ LỚP HỌC
               </Badge>
-              <span className="flex items-center gap-1 text-slate-300">
-                <Clock className="size-3 text-slate-400" />
+              <span className="flex items-center gap-1 text-[#BAC5EE]">
+                <Clock className="size-3 text-[#BAC5EE]" />
                 Vừa cập nhật 15 phút trước
               </span>
             </div>
 
-            <h3 className="text-lg leading-snug font-bold text-white sm:text-xl">
+            <h3 className="font-heading text-lg leading-snug font-bold text-white sm:text-xl">
               Tanaka Sensei vừa hoàn tất: Lesson 18 - Diễn đạt Phủ định một phần
               (〜わけではない)
             </h3>
 
-            <p className="text-sm leading-relaxed text-indigo-100/90">
+            <p className="text-sm leading-relaxed text-[#DAE2FF]">
               Hệ thống đã tự động trích xuất{' '}
-              <strong>12 thẻ ngữ pháp tương quan</strong> và{' '}
-              <strong>1 bài tập chẩn đoán 5 phút</strong> để củng cố ngay sau
-              giờ học.
+              <strong className="text-white">12 thẻ ngữ pháp tương quan</strong>{' '}
+              và{' '}
+              <strong className="text-white">1 bài tập chẩn đoán 5 phút</strong>{' '}
+              để củng cố ngay sau giờ học.
             </p>
           </div>
         </div>
@@ -48,7 +49,7 @@ export function ClassroomSyncAlertBanner() {
           <Button
             variant="ghost"
             size="sm"
-            className="h-9 rounded-lg bg-white/10 px-4 text-xs font-semibold text-white hover:bg-white/20"
+            className="h-9 rounded-lg bg-white/15 px-4 text-xs font-semibold text-white hover:bg-white/25"
             asChild
           >
             <Link href="/dashboard">Xem slide bài học</Link>
@@ -56,7 +57,7 @@ export function ClassroomSyncAlertBanner() {
 
           <Button
             size="sm"
-            className="h-9 rounded-lg bg-emerald-600 px-4 text-xs font-bold text-white shadow-sm hover:bg-emerald-700"
+            className="h-9 rounded-lg bg-[#006C4A] px-4 text-xs font-bold text-white shadow-xs hover:bg-[#005137]"
             asChild
           >
             <Link href="/dashboard" className="flex items-center gap-1.5">

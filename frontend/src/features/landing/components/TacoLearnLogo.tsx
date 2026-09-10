@@ -42,7 +42,7 @@ export function TacoLearnLogo({
     >
       <div
         className={cn(
-          'bg-gradient-to-br from-indigo-600 to-violet-700 text-white shadow-md shadow-indigo-500/20 transition-transform group-hover:scale-105',
+          'bg-[#081534] text-white shadow-xs transition-transform group-hover:scale-105 dark:bg-indigo-600',
           containerSizes[size],
         )}
       >
@@ -51,12 +51,12 @@ export function TacoLearnLogo({
       <div className="flex flex-col">
         <span
           className={cn(
-            'leading-none font-bold tracking-tight text-slate-900 dark:text-white',
+            'font-heading leading-none font-bold tracking-tight text-slate-900 dark:text-white',
             textSizes[size],
           )}
         >
           Taco
-          <span className="text-indigo-600 dark:text-indigo-400">Learn</span>
+          <span className="text-[#006C4A] dark:text-emerald-400">Learn</span>
         </span>
         <span className="text-muted-foreground mt-0.5 text-[10px] leading-tight font-medium tracking-wider uppercase">
           学ぶ、覚える、伸ばす
