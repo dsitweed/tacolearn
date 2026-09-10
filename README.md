@@ -1,0 +1,412 @@
+# Tacohouse - Hệ Thống Quản Lý Nhà Trọ
+
+## 📚 Mục Lục
+
+- [Tacohouse - Hệ Thống Quản Lý Nhà Trọ](#tacohouse---hệ-thống-quản-lý-nhà-trọ)
+  - [📚 Mục Lục](#-mục-lục)
+  - [1. Tổng Quan Dự Án](#1-tổng-quan-dự-án)
+  - [2. Tính Năng Chính](#2-tính-năng-chính)
+    - [2.1. Quản Lý Người Dùng](#21-quản-lý-người-dùng)
+    - [2.2. Quản Lý Tòa Nhà \& Phòng](#22-quản-lý-tòa-nhà--phòng)
+    - [2.3. Hệ Thống Thanh Toán Phức Tạp](#23-hệ-thống-thanh-toán-phức-tạp)
+    - [2.4. Tính Năng Giao Tiếp](#24-tính-năng-giao-tiếp)
+    - [2.5. Báo Cáo \& Lịch Sử](#25-báo-cáo--lịch-sử)
+    - [2.6. Feature Prioritization by ROI](#26-feature-prioritization-by-roi)
+  - [3. Tech Stack](#3-tech-stack)
+    - [3.1. Frontend (NextJS 14)](#31-frontend-nextjs-14)
+    - [3.2. Backend (NestJS 10)](#32-backend-nestjs-10)
+    - [3.3. Database \& Infrastructure](#33-database--infrastructure)
+    - [3.4. Development Tools](#34-development-tools)
+  - [4. Cấu Trúc Dự Án](#4-cấu-trúc-dự-án)
+  - [5. Cài Đặt \& Phát Triển](#5-cài-đặt--phát-triển)
+    - [5.1. Prerequisites](#51-prerequisites)
+    - [5.2. Quick Start](#52-quick-start)
+    - [5.3. Available Scripts](#53-available-scripts)
+  - [6. Database Schema](#6-database-schema)
+    - [6.1. Core Entities](#61-core-entities)
+    - [6.2. Key Relationships](#62-key-relationships)
+  - [7. Authentication \& Authorization](#7-authentication--authorization)
+    - [7.1. JWT Strategy](#71-jwt-strategy)
+    - [7.2. Role Permissions](#72-role-permissions)
+  - [8. System design documentations](#8-system-design-documentations)
+    - [8.0. App desciption](#80-app-desciption)
+    - [8.1. Business Requirement Document (BRD)](#81-business-requirement-document-brd)
+    - [8.2. Use case Diagram](#82-use-case-diagram)
+    - [8.3. Screen Transition Diagram](#83-screen-transition-diagram)
+    - [8.4. System Architecture Document](#84-system-architecture-document)
+    - [8.5. Database Design Document](#85-database-design-document)
+    - [8.6. API Specification Document](#86-api-specification-document)
+    - [8.7. Security Design Document](#87-security-design-document)
+    - [8.8. Shared Types Guide](#88-shared-types-guide)
+    - [8.9. Deployment Guide](#89-deployment-guide)
+  - [9. Deployment](#9-deployment)
+    - [9.1. Quick Deploy với Docker](#91-quick-deploy-với-docker)
+    - [9.2. Production Environment](#92-production-environment)
+    - [9.3. Cloud Deployment](#93-cloud-deployment)
+    - [9.4. Environment Variables](#94-environment-variables)
+  - [10. Contributing](#10-contributing)
+  - [11. License](#11-license)
+  - [12. Support](#12-support)
+---
+
+## 1. Tổng Quan Dự Án
+
+Tacohouse là hệ thống quản lý nhà trọ cho thuê full-stack hiện đại, được xây dựng với NextJS frontend và NestJS backend. Hệ thống quản lý nhiều tòa nhà, phòng, người thuê, chủ nhà và hóa đơn thanh toán phức tạp hàng tháng.
+
+## 2. Tính Năng Chính
+
+### 2.1. Quản Lý Người Dùng
+- **3 Role chính**: Admin, Người thuê phòng, Chủ nhà
+- **Authentication**: JWT + Passport
+- **Authorization**: Role-based access control
+- **Profile Management**: Ảnh căn cước, thông tin cá nhân
+
+### 2.2. Quản Lý Tòa Nhà & Phòng
+- **Multi-building management**: Nhiều tòa nhà, mỗi tòa có nhiều phòng
+- **Room status tracking**: Trống, đang thuê, tuyển người mới
+- **Equipment management**: Quản lý thiết bị trong phòng
+- **Advance notice system**: Báo trước 1 tháng khi trả phòng
+
+### 2.3. Hệ Thống Thanh Toán Phức Tạp
+- **2 loại phòng**: Toàn quyền (chỉ tiền phòng) và Bán quyền (nhiều loại phí)
+- **Utility bills**: Điện, nước, gas với giá đơn vị theo tòa nhà
+- **Monthly billing**: Tự động tạo hóa đơn hàng tháng
+- **Payment confirmation**: Xác nhận 2 chiều (người thuê + chủ nhà)
+- **Deposit management**: Quản lý tiền cọc
+- **Payment integration**: Stripe, chuyển khoản, tiền mặt
+
+### 2.4. Tính Năng Giao Tiếp
+- **Real-time chat**: 1vs1 và group chat theo tòa nhà
+- **Notifications**: Email + in-app notifications
+- **Maintenance requests**: Yêu cầu sửa chữa từ người thuê
+- **Announcements**: Thông báo từ chủ nhà
+
+### 2.5. Báo Cáo & Lịch Sử
+- **Payment history**: Lịch sử thanh toán chi tiết
+- **Utility consumption**: Theo dõi tiêu thụ điện, nước, gas
+- **Billing reports**: Báo cáo thu chi theo tháng/năm
+
+### 2.6. Feature Prioritization by ROI (Return on Investment)
+
+| Feature | Giá trị | Khả năng bán | Khái quát nội dung cần implement | Priority | Rationale |
+| --- | --- | --- | --- | --- | --- |
+| 💰 Tự động tính tiền | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Tự động tính tiền phòng + điện + nước + phí dịch vụ → tạo hóa đơn | **P0 (Critical)** | Core pain point - saves 20+ hours/month per landlord |
+| 🔔 Nhắc tiền thuê | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Tự động nhắc trước hạn, đến hạn và quá hạn thanh toán | **P0 (Critical)** | High value & revenue impact - improves payment rate by 30% |
+| 📱 QR thanh toán | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Hiển thị QR → tenant thanh toán → tự động/cập nhật trạng thái đã thanh toán | **P0 (Critical)** | Essential for digital payments - 85% of users prefer QR |
+| 📊 Dashboard | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Tổng quan phòng thuê/trống, tiền chưa thu, doanh thu, việc cần xử lý | **P1 (High)** | Key feature for landlord decision-making & tenant transparency |
+| 📷 OCR đồng hồ  | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Chụp công tơ điện/nước → OCR đọc chỉ số → tự động nhập vào hệ thống | **P0 (Critical)** | Eliminates manual input errors - 10% of data entry errors removed |
+| 📥 Import Excel | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Import hàng loạt tòa nhà/phòng/tenant/chỉ số điện nước từ Excel để chuyển đổi nhanh | **P1 (High)** | Bulk operations - saves time on initial data migration |
+| 🏠 Vacancy management | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Theo dõi phòng trống, thời gian trống và doanh thu bị mất do vacancy | **P2 (Medium)** | Important for room turnover optimization |
+| 👤 Tenant management | ⭐⭐⭐ | ⭐⭐⭐ | Hồ sơ tenant, hợp đồng, tiền cọc, lịch sử thanh toán, giấy tờ | **P2 (Medium)** | Standard CRM functionality |
+| 🔧 Maintenance | ⭐⭐⭐⭐ | ⭐⭐⭐ | Tenant báo sự cố → chủ nhà xử lý → theo dõi trạng thái và lịch sử sửa chữa | **P2 (Medium)** | Improves service quality but not revenue-driving |
+| 📈 Financial reports | ⭐⭐⭐⭐ | ⭐⭐⭐ | Báo cáo doanh thu, chi phí, tiền đã thu/chưa thu và lợi nhuận theo tháng | **P2 (Medium)** | Compliance & insights - secondary to core billing |
+| 🤖 AI chatbot | ⭐⭐ | ⭐ | Trợ lý AI trả lời câu hỏi/quản lý dữ liệu; chưa ưu tiên trong MVP | **P3 (Low)** | Nice-to-have - low immediate ROI, consider post-MVP |
+
+**Priority Legend:**
+- **P0 (Critical)**: Must-have for MVP, directly impacts revenue & user retention
+- **P1 (High)**: Important for product success, improves user experience significantly
+- **P2 (Medium)**: Valuable additions, lower immediate ROI, can be phased in
+- **P3 (Low)**: Nice-to-have features, consider for future versions
+
+## 3. Tech Stack
+
+### 3.1. Frontend (NextJS 16)
+```json
+{
+  "framework": "NextJS 16 với App Router",
+  "language": "TypeScript",
+  "styling": "Tailwind CSS",
+  "components": "Shadcn/ui",
+  "forms": "React Hook Form + Zod validation",
+  "state": "Zustand (client) + Tanstack Query (server)",
+  "realtime": "Socket.io Client",
+  "notifications": "React Hot Toast",
+  "payments": "Stripe React components",
+  "http": "Axios"
+}
+```
+
+### 3.2. Backend (NestJS 11)
+```json
+{
+  "framework": "NestJS 11 với TypeScript",
+  "database": "PostgreSQL với Prisma ORM",
+  "authentication": "JWT + Passport (Local & JWT strategies)",
+  "realtime": "Socket.io",
+  "queue": "Bull Queue với Redis",
+  "email": "Nodemailer",
+  "upload": "Cloudflare R2",
+  "payments": "Stripe",
+  "validation": "Class Validator + Class Transformer"
+}
+```
+
+### 3.3. Database & Infrastructure
+```json
+{
+  "database": "PostgreSQL (main database)",
+  "cache": "Redis (sessions, queue, cache)",
+  "storage": "Cloudflare R2 (images, documents)",
+  "containerization": "Docker & Docker Compose",
+  "monitoring": "Prisma Studio (development)"
+}
+```
+
+### 3.4. Development Tools
+```json
+{
+  "formatting": "ESLint + Prettier",
+  "git": "Lefthook (pre-commit hooks)",
+  "testing": "Jest (unit) + Playwright (e2e)",
+  "development": "Concurrently (run both servers)",
+  "components": "Storybook (UI documentation)",
+  "shared": "Orval (generate API types from OpenAPI spec)"
+}
+```
+
+## 4. Cấu Trúc Dự Án
+
+```
+tacohouse/
+├── frontend/                 # NextJS App
+│   ├── src/
+│   │   ├── app/             # App Router pages
+│   │   ├── components/      # Reusable components
+│   │   ├── lib/            # Utilities, API client
+│   │   ├── stores/         # Zustand stores
+│   │   ├── types/          # TypeScript types
+│   │   └── hooks/          # Custom React hooks
+│   ├── public/             # Static assets
+│   └── package.json
+├── backend/                 # NestJS API
+│   ├── src/
+│   │   ├── modules/        # Feature modules
+│   │   ├── common/         # Shared utilities
+│   │   ├── database/       # Prisma schema & migrations
+│   │   └── config/         # Configuration
+│   ├── prisma/             # Database schema
+│   └── package.json
+├── docker-compose.yml       # Local development services
+├── pnpm-workspace.yaml     # pnpm workspace config
+└── README.md
+```
+
+## 5. Cài Đặt & Phát Triển
+
+### 5.1. Prerequisites
+- Node.js 18+
+- PostgreSQL 14+
+- Redis 6+
+- pnpm
+
+### 5.2. Quick Start
+```bash
+# Clone repository
+git clone <repo-url>
+cd tacohouse
+
+# Install dependencies
+npm install
+
+# Setup environment variables
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env.local
+
+# Start PostgreSQL và Redis (with Docker)
+docker-compose up -d
+
+# Setup database
+cd backend
+npx prisma migrate dev
+npx prisma db seed
+
+# Start development servers
+cd ..
+npm run dev
+```
+
+### 5.3. Available Scripts
+<!-- TODO: Update latest scripts if needed -->
+```bash
+npm run dev              # Start both frontend & backend in development
+npm run build            # Build all packages (shared, backend, frontend)
+npm run start            # Start both applications in production
+npm run lint             # Lint both applications
+npm run test             # Run tests for both applications
+
+# Prisma commands
+npm run prisma:generate  # Generate Prisma client into shared package
+npm run prisma:migrate   # Run Prisma migrations
+
+# Shared package
+npm run shared:build     # Build shared types package
+npm run shared:watch     # Watch mode for shared package
+```
+
+## 6. Database Schema
+
+### 6.1. Core Entities
+- **Users**: Admin, Tenants, Landlords
+- **Buildings**: Owned by landlords
+- **Rooms**: Belong to buildings
+- **Rentals**: Tenant-Room relationships
+- **Bills**: Monthly billing with complex calculations
+- **Payments**: Payment history and confirmations
+- **Messages**: Chat system
+- **Notifications**: System notifications
+
+### 6.2. Key Relationships
+- One Landlord → Many Buildings
+- One Building → Many Rooms  
+- One Room → Many Tenants (room sharing)
+- Complex billing system with utilities tracking
+
+## 7. Authentication & Authorization
+
+### 7.1. JWT Strategy
+- Access tokens (15 minutes)
+- Refresh tokens (7 days)
+- Role-based permissions
+
+### 7.2. Role Permissions
+- **Admin**: Full system access
+- **Landlord**: Manage owned buildings, tenants, billing
+- **Tenant**: View personal data, payments, communicate
+
+## 8. System design documentations
+
+
+### 8.0. App desciption
+- [Miêu tả dự án](documents/0.App_description.md)
+
+### 8.1. Business Requirement Document (BRD)
+- Miêu tả yêu cầu nghiệp vụ của hệ thống
+- [Tài liệu bản tiếng Việt](documents/1.businessRequirementDocumentVi.md)
+- [Tài liệu bản tiếng Anh](documents/1.businessRequirementDocumentEn.md)
+
+### 8.2. Use case Diagram
+
+- BIểu đồ và mô tả các ca sử dụng
+- [Tài liệu tiếng Việt](documents/2.useCaseDiagramVi.md)
+- [Tài liệu tiếng Anh](documents/2.useCaseDiagramEn.md)
+
+### 8.3. Screen Transition Diagram
+
+- [Tài liệu tiếng Việt](documents/2.useCaseDiagramVi.md)
+- [Tài liệu tiếng Anh](documents/2.useCaseDiagramEn.md)
+
+### 8.4. System Architecture Document
+
+- [Tài liệu tiếng Việt](documents/4.systemArchitectureDocument.md)
+
+### 8.5. Database Design Document
+
+- [Tài liệu tiếng Việt](documents/5.dataTableDesignDocument.md)
+- Trong tương lai sẽ gộp 2 cái vào thành 1. Và có thể trong tương lai sẽ tham chiếu tới file prisma thiết kế và ER diagram luôn 
+
+### 8.6. API Specification Document
+
+- [Tài liệu tiếng Việt](documents/6.tacohouse-api-spec.yaml)
+- [Tài liệu tổng quát các API](documents/6.api-enhancement-summary.md)
+- API documentation is available at:
+  - Development: `http://localhost:3001/api/docs`
+  - Swagger UI with interactive endpoints
+  - Authentication examples included
+
+### 8.7. Security Design Document
+- [Tài liệu tiếng Việt](documents/7.securityDesignDocument.md)
+- Thiết kế bảo mật hệ thống. Gồm:
+  - Xác thực / phân quyền (JWT, OAuth2, RBAC/Pundit)
+  - CSRF, XSS, SQL Injection, v.v.
+  - Encryption / Hash / TLS
+  - Log & audit
+
+### 8.8. Shared Types Guide
+- [Tài liệu tiếng Việt](documents/8.shared-types-guide.md)
+- Hướng dẫn sử dụng shared types từ Prisma cho cả BE và FE
+- Setup và workflow phát triển
+- Best practices và examples
+
+### 8.9. Deployment Guide
+- [Deployment Documentation](documents/9.deployment-guide.md)
+- Docker production setup
+- Cloud deployment strategies (Vercel, Railway, AWS, DigitalOcean)
+- CI/CD pipeline với GitHub Actions
+- Health checks và monitoring
+
+## 9. Deployment
+
+### 9.1. Quick Deploy với Docker
+
+```bash
+# 1. Copy environment variables
+cp .env.production.example .env.production
+# Edit .env.production with your values
+
+# 2. Deploy all services
+./scripts/deploy.sh all
+
+# 3. Check health
+./scripts/health-check.sh
+```
+
+### 9.2. Production Environment
+
+**Docker Compose (Recommended):**
+```bash
+# Build and start all services
+docker-compose -f docker-compose.prod.yml up -d
+
+# View logs
+docker-compose -f docker-compose.prod.yml logs -f
+
+# Stop services
+docker-compose -f docker-compose.prod.yml down
+```
+
+**Individual Services:**
+```bash
+# Deploy backend only
+./scripts/deploy.sh backend
+
+# Deploy frontend only
+./scripts/deploy.sh frontend
+```
+
+### 9.3. Cloud Deployment
+
+**Vercel (Frontend):**
+- Root Directory: `frontend`
+- Build Command: `cd .. && pnpm install && pnpm shared:build && cd frontend && pnpm build`
+- Install Command: `cd .. && pnpm install`
+
+**Railway/Render (Backend):**
+- Build Command: `pnpm install && cd shared && pnpm build && cd ../backend && pnpm prisma generate && pnpm build`
+- Start Command: `cd backend && pnpm prisma migrate deploy && node dist/main.js`
+
+**Full Guide:** See [Deployment Guide](documents/9.deployment-guide.md)
+
+### 9.4. Environment Variables
+- Development: `.env` files trong mỗi package
+- Production: `.env.production` (copy from `.env.production.example`)
+- Required variables: `DATABASE_URL`, `JWT_SECRET`, `NEXT_PUBLIC_API_ORIGIN`
+
+## 10. Contributing
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
+
+## 11. License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 12. Support
+
+For support, email support@tacohouse.com or join our Slack channel.
+
+---
+
+**Tacohouse** - Modernizing rental property management with cutting-edge technology! 🚀

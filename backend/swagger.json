@@ -1,0 +1,5110 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/v1": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "App"
+        ]
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginAuthDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful"
+          },
+          "401": {
+            "description": "Invalid credentials"
+          }
+        },
+        "summary": "User login",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "operationId": "AuthController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterAuthDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Registration successful"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        },
+        "summary": "User registration",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/refresh": {
+      "post": {
+        "operationId": "AuthController_refresh",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Token refreshed successfully"
+          },
+          "401": {
+            "description": "Invalid refresh token"
+          }
+        },
+        "summary": "Refresh access token",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "operationId": "AuthController_logout",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Logout successful"
+          }
+        },
+        "summary": "User logout",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/users/me": {
+      "get": {
+        "operationId": "UsersController_getCurrentUser",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "User profile retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get current user profile",
+        "tags": [
+          "Users"
+        ]
+      },
+      "patch": {
+        "operationId": "UsersController_update",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserProfileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Update current user profile",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/v1/users/{id}": {
+      "get": {
+        "operationId": "UsersController_getUserById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get user profile by ID",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/v1/users/me/change-password": {
+      "post": {
+        "operationId": "UsersController_changePassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password changed successfully"
+          },
+          "400": {
+            "description": "Invalid current password"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Change user password",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/v1/buildings": {
+      "post": {
+        "operationId": "BuildingsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBuildingDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Building created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Building"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a new building",
+        "tags": [
+          "Buildings"
+        ]
+      },
+      "get": {
+        "operationId": "BuildingsController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "landlordId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of buildings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Building"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all buildings",
+        "tags": [
+          "Buildings"
+        ]
+      }
+    },
+    "/api/v1/buildings/{id}": {
+      "get": {
+        "operationId": "BuildingsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Building ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Building found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Building"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Building not found"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get a building by ID",
+        "tags": [
+          "Buildings"
+        ]
+      },
+      "patch": {
+        "operationId": "BuildingsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Building ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBuildingDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Building updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Building"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Building not found"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Update a building",
+        "tags": [
+          "Buildings"
+        ]
+      },
+      "delete": {
+        "operationId": "BuildingsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Building ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Building deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Building"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Building not found"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Delete a building",
+        "tags": [
+          "Buildings"
+        ]
+      }
+    },
+    "/api/v1/rooms/available": {
+      "get": {
+        "operationId": "RoomsController_getAvailableRooms",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of available rooms",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Room"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get available rooms (Public)",
+        "tags": [
+          "Rooms"
+        ]
+      }
+    },
+    "/api/v1/rooms": {
+      "post": {
+        "operationId": "RoomsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRoomDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Room"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Rooms"
+        ]
+      },
+      "get": {
+        "operationId": "RoomsController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "landlordId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "buildingId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Room"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Rooms"
+        ]
+      }
+    },
+    "/api/v1/rooms/{id}": {
+      "get": {
+        "operationId": "RoomsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Room"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Rooms"
+        ]
+      },
+      "patch": {
+        "operationId": "RoomsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRoomDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Room"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Rooms"
+        ]
+      },
+      "delete": {
+        "operationId": "RoomsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Room"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Rooms"
+        ]
+      }
+    },
+    "/api/v1/rentals": {
+      "post": {
+        "operationId": "RentalsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRentalDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rental"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Rentals"
+        ]
+      },
+      "get": {
+        "operationId": "RentalsController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "roomId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "NOTICE_GIVEN",
+                "TERMINATED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Rental"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Rentals"
+        ]
+      }
+    },
+    "/api/v1/rentals/{id}": {
+      "get": {
+        "operationId": "RentalsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rental"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Rentals"
+        ]
+      },
+      "patch": {
+        "operationId": "RentalsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRentalDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rental"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Rentals"
+        ]
+      },
+      "delete": {
+        "operationId": "RentalsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rental"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Rentals"
+        ]
+      }
+    },
+    "/api/v1/bills": {
+      "post": {
+        "operationId": "BillsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBillDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Bill created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bill"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a new bill",
+        "tags": [
+          "Bills"
+        ]
+      },
+      "get": {
+        "operationId": "BillsController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "roomId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rentalId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PENDING",
+                "PAID",
+                "TENANT_CONFIRMED",
+                "LANDLORD_CONFIRMED",
+                "OVERDUE"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of bills",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Bill"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all bills",
+        "tags": [
+          "Bills"
+        ]
+      }
+    },
+    "/api/v1/bills/{id}": {
+      "get": {
+        "operationId": "BillsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Bill ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bill found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bill"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Bill not found"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get a bill by ID",
+        "tags": [
+          "Bills"
+        ]
+      },
+      "patch": {
+        "operationId": "BillsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Bill ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBillDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Bill updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bill"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Bill not found"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Update a bill",
+        "tags": [
+          "Bills"
+        ]
+      },
+      "delete": {
+        "operationId": "BillsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Bill ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bill deleted successfully"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Bill not found"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Delete a bill",
+        "tags": [
+          "Bills"
+        ]
+      }
+    },
+    "/api/v1/bills/{id}/confirm": {
+      "post": {
+        "operationId": "BillsController_confirmPayment",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Bill ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmPaymentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment confirmed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bill"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Bill not found"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Confirm payment for a bill",
+        "tags": [
+          "Bills"
+        ]
+      }
+    },
+    "/api/v1/payments": {
+      "post": {
+        "operationId": "PaymentsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePaymentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Payments"
+        ]
+      },
+      "get": {
+        "operationId": "PaymentsController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "billId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PENDING",
+                "COMPLETED",
+                "FAILED",
+                "REFUNDED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Payment"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/api/v1/payments/{id}": {
+      "get": {
+        "operationId": "PaymentsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/api/v1/maintenance": {
+      "post": {
+        "operationId": "MaintenanceController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMaintenanceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaintenanceRequest"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Maintenance"
+        ]
+      },
+      "get": {
+        "operationId": "MaintenanceController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "roomId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "buildingId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PENDING",
+                "IN_PROGRESS",
+                "COMPLETED",
+                "CANCELLED"
+              ]
+            }
+          },
+          {
+            "name": "priority",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "LOW",
+                "MEDIUM",
+                "HIGH",
+                "URGENT"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MaintenanceRequest"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Maintenance"
+        ]
+      }
+    },
+    "/api/v1/maintenance/{id}": {
+      "get": {
+        "operationId": "MaintenanceController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaintenanceRequest"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Maintenance"
+        ]
+      },
+      "patch": {
+        "operationId": "MaintenanceController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMaintenanceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaintenanceRequest"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Maintenance"
+        ]
+      }
+    },
+    "/api/v1/maintenance/{id}/respond": {
+      "post": {
+        "operationId": "MaintenanceController_respond",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RespondMaintenanceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaintenanceRequest"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Maintenance"
+        ]
+      }
+    },
+    "/api/v1/chat/groups": {
+      "get": {
+        "operationId": "ChatController_getGroups",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChatGroup"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Chat"
+        ]
+      }
+    },
+    "/api/v1/chat/groups/{id}": {
+      "get": {
+        "operationId": "ChatController_getGroup",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatGroup"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Chat"
+        ]
+      }
+    },
+    "/api/v1/chat/groups/{id}/messages": {
+      "get": {
+        "operationId": "ChatController_getMessages",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 50,
+              "type": "number"
+            }
+          },
+          {
+            "name": "before",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Chat"
+        ]
+      },
+      "post": {
+        "operationId": "ChatController_sendMessage",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendMessageDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Chat"
+        ]
+      }
+    },
+    "/api/v1/chat/direct/{userId}": {
+      "get": {
+        "operationId": "ChatController_getDirectMessages",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 50,
+              "type": "number"
+            }
+          },
+          {
+            "name": "before",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Chat"
+        ]
+      },
+      "post": {
+        "operationId": "ChatController_sendDirectMessage",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendMessageDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Chat"
+        ]
+      }
+    },
+    "/api/v1/notifications": {
+      "post": {
+        "operationId": "NotificationsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNotificationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notification"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Notifications"
+        ]
+      },
+      "get": {
+        "operationId": "NotificationsController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "isRead",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "type",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "BILL_GENERATED",
+                "PAYMENT_REMINDER",
+                "MAINTENANCE_UPDATE",
+                "CHAT_MESSAGE",
+                "ANNOUNCEMENT",
+                "SYSTEM"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Notification"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/v1/notifications/unread/count": {
+      "get": {
+        "operationId": "NotificationsController_getUnreadCount",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/v1/notifications/{id}": {
+      "get": {
+        "operationId": "NotificationsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notification"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/v1/notifications/{id}/read": {
+      "patch": {
+        "operationId": "NotificationsController_markAsRead",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notification"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/v1/notifications/read/all": {
+      "patch": {
+        "operationId": "NotificationsController_markAllAsRead",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/api/v1/dashboard/revenue-trend": {
+      "get": {
+        "operationId": "DashboardController_getRevenueTrend",
+        "parameters": [
+          {
+            "name": "months",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 6,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Revenue trend data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RevenueTrendResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Dashboard"
+        ]
+      }
+    },
+    "/api/v1/dashboard": {
+      "post": {
+        "operationId": "DashboardController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDashboardDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Dashboard"
+        ]
+      },
+      "get": {
+        "operationId": "DashboardController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Dashboard"
+        ]
+      }
+    },
+    "/api/v1/dashboard/{id}": {
+      "get": {
+        "operationId": "DashboardController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Dashboard"
+        ]
+      },
+      "patch": {
+        "operationId": "DashboardController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDashboardDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Dashboard"
+        ]
+      },
+      "delete": {
+        "operationId": "DashboardController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Dashboard"
+        ]
+      }
+    },
+    "/api/v1/dashboard/tenants/{tenantId}": {
+      "get": {
+        "description": "Get comprehensive tenant information including rentals, bills, payments, and maintenance requests",
+        "operationId": "DashboardController_getTenantDashboard",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "path",
+            "description": "Tenant user ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "billsLimit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 12,
+              "type": "number"
+            }
+          },
+          {
+            "name": "billsPage",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "paymentsLimit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "paymentsPage",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "maintenanceLimit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "maintenancePage",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "startDate",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "billStatus",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "paymentStatus",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "maintenanceStatus",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tenant dashboard details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantDashboardResponseDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access forbidden"
+          },
+          "404": {
+            "description": "Tenant not found"
+          }
+        },
+        "summary": "Get tenant dashboard details. Accessible to landlords (for their own buildings) and admins",
+        "tags": [
+          "Dashboard"
+        ]
+      }
+    },
+    "/api/v1/uploads/presigned-urls": {
+      "post": {
+        "operationId": "UploadsController_presignedUrls",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePresignedUrlsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tạo presigned URL thành công.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PresignedUrl"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dữ liệu không hợp lệ hoặc `contentType` không được phép với `purpose` đã chọn."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Tạo presigned URL để upload file trực tiếp lên storage",
+        "tags": [
+          "Uploads"
+        ]
+      }
+    },
+    "/api/v1/uploads/object": {
+      "delete": {
+        "operationId": "UploadsController_deleteObject",
+        "parameters": [
+          {
+            "name": "key",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "purpose",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "BUILDING_IMAGE",
+                "ROOM_IMAGE",
+                "USER_AVATAR",
+                "USER_ID_CARD_FRONT_PHOTO",
+                "USER_ID_CARD_BACK_PHOTO",
+                "USER_PORTRAIT_PHOTO",
+                "PAYMENT_RECEIPT_IMAGE"
+              ]
+            }
+          },
+          {
+            "name": "resourceId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Xóa một file từ storage dựa trên key",
+        "tags": [
+          "Uploads"
+        ]
+      }
+    },
+    "/api/v1/uploads/prefix": {
+      "delete": {
+        "operationId": "UploadsController_deleteObjectsByPrefix",
+        "parameters": [
+          {
+            "name": "prefix",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "purpose",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "BUILDING_IMAGE",
+                "ROOM_IMAGE",
+                "USER_AVATAR",
+                "USER_ID_CARD_FRONT_PHOTO",
+                "USER_ID_CARD_BACK_PHOTO",
+                "USER_PORTRAIT_PHOTO",
+                "PAYMENT_RECEIPT_IMAGE"
+              ]
+            }
+          },
+          {
+            "name": "resourceId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Xóa file thành công."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Xóa các file từ storage dựa trên prefix",
+        "tags": [
+          "Uploads"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "TacoHouse API",
+    "description": "A comprehensive rental room management system API for managing buildings, rooms, tenants, billing, and payments.\n\n## Response Format\nAll responses follow a standardized format:\n- **status**: HTTP status code\n- **message**: Human-readable message\n- **data**: Response data (object or array)\n- **pagination**: (Optional) Pagination metadata for list endpoints",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authentication endpoints"
+    },
+    {
+      "name": "Users",
+      "description": "User management endpoints"
+    },
+    {
+      "name": "Buildings",
+      "description": "Building management endpoints"
+    },
+    {
+      "name": "Rooms",
+      "description": "Room management endpoints"
+    },
+    {
+      "name": "Rentals",
+      "description": "Rental management endpoints"
+    },
+    {
+      "name": "Bills",
+      "description": "Bill management endpoints"
+    },
+    {
+      "name": "Payments",
+      "description": "Payment management endpoints"
+    },
+    {
+      "name": "Maintenance",
+      "description": "Maintenance request endpoints"
+    },
+    {
+      "name": "Chat",
+      "description": "Chat and messaging endpoints"
+    },
+    {
+      "name": "Notifications",
+      "description": "Notification endpoints"
+    },
+    {
+      "name": "Uploads",
+      "description": "File upload endpoints"
+    }
+  ],
+  "servers": [
+    {
+      "url": "http://localhost:3005",
+      "description": "Development server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "JWT-auth": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http",
+        "description": "Enter JWT token"
+      }
+    },
+    "schemas": {
+      "LoginAuthDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 50
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "RegisterAuthDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 50,
+            "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "LANDLORD",
+              "TENANT"
+            ]
+          },
+          "firstName": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "lastName": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 10
+          },
+          "avatar": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "dateOfBirth": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "occupation": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "workplace": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "idCardFrontPhoto": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "idCardBackPhoto": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "portraitPhoto": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "email",
+          "password",
+          "role",
+          "firstName",
+          "lastName",
+          "phone",
+          "dateOfBirth",
+          "occupation",
+          "workplace"
+        ]
+      },
+      "UserRole": {
+        "type": "string",
+        "enum": [
+          "ADMIN",
+          "LANDLORD",
+          "TENANT"
+        ]
+      },
+      "Session": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "token": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ipAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "userAgent": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "userId",
+          "token",
+          "expiresAt",
+          "ipAddress",
+          "userAgent",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Account": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "providerId": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "accessToken": {
+            "type": "string",
+            "nullable": true
+          },
+          "refreshToken": {
+            "type": "string",
+            "nullable": true
+          },
+          "idToken": {
+            "type": "string",
+            "nullable": true
+          },
+          "accessTokenExpiresAt": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "refreshTokenExpiresAt": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "scope": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "userId",
+          "providerId",
+          "accountId",
+          "password",
+          "accessToken",
+          "refreshToken",
+          "idToken",
+          "accessTokenExpiresAt",
+          "refreshTokenExpiresAt",
+          "scope",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "RoomType": {
+        "type": "string",
+        "enum": [
+          "FULL_RIGHTS",
+          "PARTIAL_RIGHTS"
+        ]
+      },
+      "RoomStatus": {
+        "type": "string",
+        "enum": [
+          "AVAILABLE",
+          "OCCUPIED",
+          "PENDING_CHECKOUT",
+          "MAINTENANCE"
+        ]
+      },
+      "RentalStatus": {
+        "type": "string",
+        "enum": [
+          "ACTIVE",
+          "NOTICE_GIVEN",
+          "TERMINATED"
+        ]
+      },
+      "Rental": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "tenantRole": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserRole"
+              }
+            ]
+          },
+          "tenant": {
+            "$ref": "#/components/schemas/User"
+          },
+          "roomId": {
+            "type": "string"
+          },
+          "room": {
+            "$ref": "#/components/schemas/Room"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "noticeDate": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "monthlyRent": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "depositPaid": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RentalStatus"
+              }
+            ]
+          },
+          "contractImages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "tenantId",
+          "tenantRole",
+          "roomId",
+          "startDate",
+          "endDate",
+          "noticeDate",
+          "monthlyRent",
+          "depositPaid",
+          "status",
+          "contractImages",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "EquipmentCondition": {
+        "type": "string",
+        "enum": [
+          "EXCELLENT",
+          "GOOD",
+          "FAIR",
+          "POOR",
+          "BROKEN"
+        ]
+      },
+      "RoomEquipment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "roomId": {
+            "type": "string"
+          },
+          "room": {
+            "$ref": "#/components/schemas/Room"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "brand": {
+            "type": "string",
+            "nullable": true
+          },
+          "model": {
+            "type": "string",
+            "nullable": true
+          },
+          "installedDate": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "warrantyExpiryDate": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "condition": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EquipmentCondition"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "roomId",
+          "name",
+          "description",
+          "brand",
+          "model",
+          "installedDate",
+          "warrantyExpiryDate",
+          "condition",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UtilityType": {
+        "type": "string",
+        "enum": [
+          "ELECTRICITY",
+          "WATER",
+          "GAS"
+        ]
+      },
+      "UtilityRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "roomId": {
+            "type": "string"
+          },
+          "room": {
+            "$ref": "#/components/schemas/Room"
+          },
+          "recordDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "utilityType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UtilityType"
+              }
+            ]
+          },
+          "previousReading": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "currentReading": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "consumption": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "unitRate": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "roomId",
+          "recordDate",
+          "utilityType",
+          "previousReading",
+          "currentReading",
+          "consumption",
+          "unitRate",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "BillStatus": {
+        "type": "string",
+        "enum": [
+          "PENDING",
+          "PAID",
+          "TENANT_CONFIRMED",
+          "LANDLORD_CONFIRMED",
+          "OVERDUE"
+        ]
+      },
+      "PaymentMethod": {
+        "type": "string",
+        "enum": [
+          "CASH",
+          "BANK_TRANSFER",
+          "STRIPE"
+        ]
+      },
+      "PaymentStatus": {
+        "type": "string",
+        "enum": [
+          "PENDING",
+          "COMPLETED",
+          "FAILED",
+          "REFUNDED"
+        ]
+      },
+      "PaymentConfirmation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "paymentId": {
+            "type": "string"
+          },
+          "payment": {
+            "$ref": "#/components/schemas/Payment"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "tenantRole": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserRole"
+              }
+            ]
+          },
+          "tenant": {
+            "$ref": "#/components/schemas/User"
+          },
+          "tenantConfirmed": {
+            "type": "boolean"
+          },
+          "tenantConfirmedAt": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "landlordConfirmed": {
+            "type": "boolean"
+          },
+          "landlordConfirmedAt": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "proofImages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "paymentId",
+          "tenantId",
+          "tenantRole",
+          "tenantConfirmed",
+          "tenantConfirmedAt",
+          "landlordConfirmed",
+          "landlordConfirmedAt",
+          "proofImages",
+          "notes",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Payment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "billId": {
+            "type": "string"
+          },
+          "bill": {
+            "$ref": "#/components/schemas/Bill"
+          },
+          "amount": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "paymentMethod": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaymentMethod"
+              }
+            ]
+          },
+          "paymentDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "stripePaymentId": {
+            "type": "string",
+            "nullable": true
+          },
+          "bankTransferRef": {
+            "type": "string",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "receiptImage": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaymentStatus"
+              }
+            ]
+          },
+          "confirmation": {
+            "nullable": true,
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaymentConfirmation"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "billId",
+          "amount",
+          "paymentMethod",
+          "paymentDate",
+          "stripePaymentId",
+          "bankTransferRef",
+          "notes",
+          "receiptImage",
+          "status",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Bill": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "roomId": {
+            "type": "string"
+          },
+          "room": {
+            "$ref": "#/components/schemas/Room"
+          },
+          "billingPeriod": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "monthlyRent": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "electricityUsage": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "electricityAmount": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "waterUsage": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "waterAmount": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "gasUsage": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "gasAmount": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "managementFee": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "cleaningFee": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "lightingFee": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "previousDebt": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "totalAmount": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BillStatus"
+              }
+            ]
+          },
+          "payment": {
+            "nullable": true,
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Payment"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "roomId",
+          "billingPeriod",
+          "dueDate",
+          "monthlyRent",
+          "electricityUsage",
+          "electricityAmount",
+          "waterUsage",
+          "waterAmount",
+          "gasUsage",
+          "gasAmount",
+          "managementFee",
+          "cleaningFee",
+          "lightingFee",
+          "previousDebt",
+          "totalAmount",
+          "status",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "PriorityType": {
+        "type": "string",
+        "enum": [
+          "LOW",
+          "MEDIUM",
+          "HIGH",
+          "URGENT"
+        ]
+      },
+      "MaintenanceCategory": {
+        "type": "string",
+        "enum": [
+          "PLUMBING",
+          "ELECTRICAL",
+          "APPLIANCE",
+          "FURNITURE",
+          "CLEANING",
+          "OTHER"
+        ]
+      },
+      "MaintenanceStatus": {
+        "type": "string",
+        "enum": [
+          "PENDING",
+          "IN_PROGRESS",
+          "COMPLETED",
+          "CANCELLED"
+        ]
+      },
+      "MaintenanceRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "tenantRole": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserRole"
+              }
+            ]
+          },
+          "tenant": {
+            "$ref": "#/components/schemas/User"
+          },
+          "roomId": {
+            "type": "string"
+          },
+          "room": {
+            "$ref": "#/components/schemas/Room"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "priority": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PriorityType"
+              }
+            ]
+          },
+          "category": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MaintenanceCategory"
+              }
+            ]
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MaintenanceStatus"
+              }
+            ]
+          },
+          "completedAt": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "completionNote": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "tenantId",
+          "tenantRole",
+          "roomId",
+          "title",
+          "description",
+          "priority",
+          "category",
+          "images",
+          "status",
+          "completedAt",
+          "completionNote",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Room": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "buildingId": {
+            "type": "string"
+          },
+          "building": {
+            "$ref": "#/components/schemas/Building"
+          },
+          "number": {
+            "type": "string"
+          },
+          "area": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "monthlyRent": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "deposit": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "maxTenants": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "roomType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RoomType"
+              }
+            ]
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RoomStatus"
+              }
+            ]
+          },
+          "availableFrom": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "rentals": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Rental"
+            }
+          },
+          "equipment": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoomEquipment"
+            }
+          },
+          "utilityRecords": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UtilityRecord"
+            }
+          },
+          "bills": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Bill"
+            }
+          },
+          "maintenanceRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MaintenanceRequest"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "buildingId",
+          "number",
+          "area",
+          "monthlyRent",
+          "deposit",
+          "maxTenants",
+          "roomType",
+          "description",
+          "images",
+          "status",
+          "availableFrom",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "MessageType": {
+        "type": "string",
+        "enum": [
+          "TEXT",
+          "IMAGE",
+          "FILE"
+        ]
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "senderId": {
+            "type": "string"
+          },
+          "senderUser": {
+            "$ref": "#/components/schemas/User"
+          },
+          "content": {
+            "type": "string"
+          },
+          "messageType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MessageType"
+              }
+            ]
+          },
+          "attachmentUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "attachmentName": {
+            "type": "string",
+            "nullable": true
+          },
+          "attachmentSize": {
+            "type": "integer",
+            "nullable": true,
+            "format": "int32"
+          },
+          "chatGroupId": {
+            "type": "string",
+            "nullable": true
+          },
+          "chatGroup": {
+            "nullable": true,
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ChatGroup"
+              }
+            ]
+          },
+          "recipientId": {
+            "type": "string",
+            "nullable": true
+          },
+          "recipientUser": {
+            "nullable": true,
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
+          },
+          "readAt": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "senderId",
+          "content",
+          "messageType",
+          "attachmentUrl",
+          "attachmentName",
+          "attachmentSize",
+          "chatGroupId",
+          "recipientId",
+          "readAt",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "ChatGroupMember": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "chatGroupId": {
+            "type": "string"
+          },
+          "chatGroup": {
+            "$ref": "#/components/schemas/ChatGroup"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "joinedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "chatGroupId",
+          "userId",
+          "joinedAt"
+        ]
+      },
+      "ChatGroup": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "buildingId": {
+            "type": "string"
+          },
+          "building": {
+            "$ref": "#/components/schemas/Building"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            }
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatGroupMember"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "buildingId",
+          "name",
+          "description",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Building": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "landlordId": {
+            "type": "string"
+          },
+          "landlordRole": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserRole"
+              }
+            ]
+          },
+          "landlord": {
+            "$ref": "#/components/schemas/User"
+          },
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "billingDate": {
+            "type": "integer",
+            "nullable": true,
+            "format": "int32"
+          },
+          "electricityRate": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "waterRate": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "gasRate": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "managementFee": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "cleaningFeePerPerson": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "lightingFee": {
+            "type": "string",
+            "format": "Decimal.js"
+          },
+          "rooms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Room"
+            }
+          },
+          "chatGroup": {
+            "nullable": true,
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ChatGroup"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "landlordId",
+          "landlordRole",
+          "name",
+          "address",
+          "description",
+          "billingDate",
+          "electricityRate",
+          "waterRate",
+          "gasRate",
+          "managementFee",
+          "cleaningFeePerPerson",
+          "lightingFee",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "NotificationType": {
+        "type": "string",
+        "enum": [
+          "BILL_GENERATED",
+          "PAYMENT_REMINDER",
+          "MAINTENANCE_UPDATE",
+          "CHAT_MESSAGE",
+          "ANNOUNCEMENT",
+          "SYSTEM"
+        ]
+      },
+      "RelatedEntityType": {
+        "type": "string",
+        "enum": [
+          "BILL",
+          "PAYMENT",
+          "RENTAL",
+          "MAINTENANCE_REQUEST",
+          "MESSAGE",
+          "ROOM",
+          "BUILDING"
+        ]
+      },
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "title": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NotificationType"
+              }
+            ]
+          },
+          "isRead": {
+            "type": "boolean"
+          },
+          "readAt": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "relatedId": {
+            "type": "string",
+            "nullable": true
+          },
+          "relatedType": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelatedEntityType"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "userId",
+          "title",
+          "message",
+          "type",
+          "isRead",
+          "readAt",
+          "relatedId",
+          "relatedType",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "role": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserRole"
+              }
+            ]
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "profile": {
+            "nullable": true,
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserProfile"
+              }
+            ]
+          },
+          "sessions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Session"
+            }
+          },
+          "accounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Account"
+            }
+          },
+          "buildings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Building"
+            }
+          },
+          "rentals": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Rental"
+            }
+          },
+          "maintenanceRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MaintenanceRequest"
+            }
+          },
+          "paymentConfirmations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentConfirmation"
+            }
+          },
+          "sentMessages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            }
+          },
+          "receivedMessages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            }
+          },
+          "notifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Notification"
+            }
+          },
+          "chatGroupMember": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatGroupMember"
+            }
+          },
+          "deletedAt": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "role",
+          "isActive",
+          "deletedAt",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UserProfile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "occupation": {
+            "type": "string"
+          },
+          "workplace": {
+            "type": "string"
+          },
+          "idCardFrontPhoto": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCardBackPhoto": {
+            "type": "string",
+            "nullable": true
+          },
+          "portraitPhoto": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "userId",
+          "firstName",
+          "lastName",
+          "phone",
+          "avatar",
+          "dateOfBirth",
+          "occupation",
+          "workplace",
+          "idCardFrontPhoto",
+          "idCardBackPhoto",
+          "portraitPhoto",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateUserProfileDto": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "lastName": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 10
+          },
+          "avatar": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "dateOfBirth": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "occupation": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "workplace": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "idCardFrontPhoto": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "idCardBackPhoto": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "portraitPhoto": {
+            "type": "string",
+            "maxLength": 500
+          }
+        }
+      },
+      "UpdatePasswordDto": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 50,
+            "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)"
+          },
+          "currentPassword": {
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 50
+          },
+          "confirmPassword": {
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 50
+          }
+        },
+        "required": [
+          "password",
+          "currentPassword",
+          "confirmPassword"
+        ]
+      },
+      "CreateBuildingDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "billingDate": {
+            "type": "number"
+          },
+          "landlordId": {
+            "type": "string"
+          },
+          "electricityRate": {
+            "type": "number"
+          },
+          "waterRate": {
+            "type": "number"
+          },
+          "gasRate": {
+            "type": "number"
+          },
+          "managementFee": {
+            "type": "number"
+          },
+          "cleaningFeePerPerson": {
+            "type": "number"
+          },
+          "lightingFee": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "address",
+          "description",
+          "landlordId"
+        ]
+      },
+      "UpdateBuildingDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "billingDate": {
+            "type": "number"
+          },
+          "landlordId": {
+            "type": "string"
+          },
+          "electricityRate": {
+            "type": "number"
+          },
+          "waterRate": {
+            "type": "number"
+          },
+          "gasRate": {
+            "type": "number"
+          },
+          "managementFee": {
+            "type": "number"
+          },
+          "cleaningFeePerPerson": {
+            "type": "number"
+          },
+          "lightingFee": {
+            "type": "number"
+          }
+        }
+      },
+      "CreateRoomDto": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string"
+          },
+          "buildingId": {
+            "type": "string"
+          },
+          "area": {
+            "type": "number",
+            "minimum": 1
+          },
+          "monthlyRent": {
+            "type": "number",
+            "minimum": 1
+          },
+          "deposit": {
+            "type": "number",
+            "minimum": 0
+          },
+          "maxTenants": {
+            "type": "number",
+            "minimum": 1
+          },
+          "roomType": {
+            "type": "string",
+            "enum": [
+              "FULL_RIGHTS",
+              "PARTIAL_RIGHTS"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "AVAILABLE",
+              "OCCUPIED",
+              "PENDING_CHECKOUT",
+              "MAINTENANCE"
+            ]
+          },
+          "availableFrom": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "number",
+          "buildingId",
+          "area",
+          "monthlyRent",
+          "roomType",
+          "status"
+        ]
+      },
+      "UpdateRoomDto": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string"
+          },
+          "buildingId": {
+            "type": "string"
+          },
+          "area": {
+            "type": "number",
+            "minimum": 1
+          },
+          "monthlyRent": {
+            "type": "number",
+            "minimum": 1
+          },
+          "deposit": {
+            "type": "number",
+            "minimum": 0
+          },
+          "maxTenants": {
+            "type": "number",
+            "minimum": 1
+          },
+          "roomType": {
+            "enum": [
+              "FULL_RIGHTS",
+              "PARTIAL_RIGHTS"
+            ],
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "enum": [
+              "AVAILABLE",
+              "OCCUPIED",
+              "PENDING_CHECKOUT",
+              "MAINTENANCE"
+            ],
+            "type": "string"
+          },
+          "availableFrom": {
+            "format": "date-time",
+            "type": "string"
+          }
+        }
+      },
+      "CreateRentalDto": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string"
+          },
+          "endDate": {
+            "type": "string"
+          },
+          "monthlyRent": {
+            "type": "number",
+            "minimum": 0
+          },
+          "depositPaid": {
+            "type": "number",
+            "minimum": 0
+          },
+          "contractImages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "roomId",
+          "tenantId",
+          "startDate",
+          "monthlyRent"
+        ]
+      },
+      "UpdateRentalDto": {
+        "type": "object",
+        "properties": {
+          "endDate": {
+            "type": "string"
+          },
+          "noticeDate": {
+            "type": "string"
+          },
+          "monthlyRent": {
+            "type": "number",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "NOTICE_GIVEN",
+              "TERMINATED"
+            ]
+          }
+        }
+      },
+      "CreateBillDto": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "string"
+          },
+          "billingPeriod": {
+            "type": "string"
+          },
+          "dueDate": {
+            "type": "string"
+          },
+          "monthlyRent": {
+            "type": "number",
+            "minimum": 0
+          },
+          "electricityUsage": {
+            "type": "number",
+            "minimum": 0
+          },
+          "electricityAmount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "waterUsage": {
+            "type": "number",
+            "minimum": 0
+          },
+          "waterAmount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "gasUsage": {
+            "type": "number",
+            "minimum": 0
+          },
+          "gasAmount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "managementFee": {
+            "type": "number",
+            "minimum": 0
+          },
+          "cleaningFee": {
+            "type": "number",
+            "minimum": 0
+          },
+          "lightingFee": {
+            "type": "number",
+            "minimum": 0
+          },
+          "previousDebt": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "roomId",
+          "billingPeriod",
+          "dueDate",
+          "monthlyRent"
+        ]
+      },
+      "UpdateBillDto": {
+        "type": "object",
+        "properties": {
+          "dueDate": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "PAID",
+              "TENANT_CONFIRMED",
+              "LANDLORD_CONFIRMED",
+              "OVERDUE"
+            ]
+          }
+        }
+      },
+      "ConfirmPaymentDto": {
+        "type": "object",
+        "properties": {
+          "tenantConfirmed": {
+            "type": "boolean"
+          },
+          "landlordConfirmed": {
+            "type": "boolean"
+          },
+          "proofImages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      },
+      "CreatePaymentDto": {
+        "type": "object",
+        "properties": {
+          "billId": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "paymentMethod": {
+            "type": "string",
+            "enum": [
+              "CASH",
+              "BANK_TRANSFER",
+              "STRIPE"
+            ]
+          },
+          "transactionId": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "receiptImage": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "billId",
+          "amount",
+          "paymentMethod"
+        ]
+      },
+      "CreateMaintenanceDto": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "LOW",
+              "MEDIUM",
+              "HIGH",
+              "URGENT"
+            ]
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "PLUMBING",
+              "ELECTRICAL",
+              "APPLIANCE",
+              "FURNITURE",
+              "CLEANING",
+              "OTHER"
+            ]
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "roomId",
+          "title",
+          "description",
+          "priority",
+          "category"
+        ]
+      },
+      "UpdateMaintenanceDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "LOW",
+              "MEDIUM",
+              "HIGH",
+              "URGENT"
+            ]
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "PLUMBING",
+              "ELECTRICAL",
+              "APPLIANCE",
+              "FURNITURE",
+              "CLEANING",
+              "OTHER"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "IN_PROGRESS",
+              "COMPLETED",
+              "CANCELLED"
+            ]
+          },
+          "completionNote": {
+            "type": "string"
+          }
+        }
+      },
+      "RespondMaintenanceDto": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "response"
+        ]
+      },
+      "SendMessageDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "messageType": {
+            "enum": [
+              "TEXT",
+              "IMAGE",
+              "FILE"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "content"
+        ]
+      },
+      "CreateNotificationDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "BILL_GENERATED",
+              "PAYMENT_REMINDER",
+              "MAINTENANCE_UPDATE",
+              "CHAT_MESSAGE",
+              "ANNOUNCEMENT",
+              "SYSTEM"
+            ]
+          },
+          "relatedId": {
+            "type": "string"
+          },
+          "relatedType": {
+            "type": "string",
+            "enum": [
+              "BILL",
+              "PAYMENT",
+              "RENTAL",
+              "MAINTENANCE_REQUEST",
+              "MESSAGE",
+              "ROOM",
+              "BUILDING"
+            ]
+          }
+        },
+        "required": [
+          "userId",
+          "title",
+          "message",
+          "type"
+        ]
+      },
+      "RevenueTrendResponseDto": {
+        "type": "object",
+        "properties": {
+          "month": {
+            "type": "string"
+          },
+          "total": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "month",
+          "total"
+        ]
+      },
+      "CreateDashboardDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateDashboardDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "PaymentMetricsDto": {
+        "type": "object",
+        "properties": {
+          "paymentScore": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "totalPaid": {
+            "type": "number",
+            "minimum": 0
+          },
+          "totalOutstanding": {
+            "type": "number",
+            "minimum": 0
+          },
+          "consecutiveOnTimePayments": {
+            "type": "number",
+            "minimum": 0
+          },
+          "latePaymentCount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "lastPaymentDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "paymentTrend": {
+            "type": "string",
+            "enum": [
+              "EXCELLENT",
+              "GOOD",
+              "FAIR",
+              "POOR"
+            ]
+          }
+        },
+        "required": [
+          "paymentScore",
+          "totalPaid",
+          "totalOutstanding",
+          "consecutiveOnTimePayments",
+          "latePaymentCount",
+          "paymentTrend"
+        ]
+      },
+      "DocumentsDto": {
+        "type": "object",
+        "properties": {
+          "idCardFront": {
+            "type": "string"
+          },
+          "idCardBack": {
+            "type": "string"
+          },
+          "portrait": {
+            "type": "string"
+          },
+          "contractImages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "contractImages"
+        ]
+      },
+      "TenantDashboardResponseDto": {
+        "type": "object",
+        "properties": {
+          "tenant": {
+            "$ref": "#/components/schemas/User"
+          },
+          "currentRental": {
+            "$ref": "#/components/schemas/Rental"
+          },
+          "rentalHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Rental"
+            }
+          },
+          "bills": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Bill"
+            }
+          },
+          "payments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Payment"
+            }
+          },
+          "maintenanceRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MaintenanceRequest"
+            }
+          },
+          "paymentMetrics": {
+            "$ref": "#/components/schemas/PaymentMetricsDto"
+          },
+          "documents": {
+            "$ref": "#/components/schemas/DocumentsDto"
+          }
+        },
+        "required": [
+          "tenant",
+          "rentalHistory",
+          "bills",
+          "payments",
+          "maintenanceRequests",
+          "paymentMetrics",
+          "documents"
+        ]
+      },
+      "FileInfoDto": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string",
+            "description": "Tên file gốc, dùng để lấy phần mở rộng cho object key.",
+            "example": "phong-101.jpg"
+          },
+          "contentType": {
+            "type": "string",
+            "description": "MIME type của file. Phải nằm trong danh sách cho phép của purpose tương ứng.",
+            "example": "image/jpeg"
+          },
+          "fileId": {
+            "type": "string",
+            "description": "ID của file trong frontend, dùng để map với presigned URL trả về. Không dùng để xác định quyền hay lưu trữ.",
+            "example": "file-1234 hoặc uuid"
+          }
+        },
+        "required": [
+          "fileName",
+          "contentType",
+          "fileId"
+        ]
+      },
+      "UploadPurpose": {
+        "type": "string",
+        "enum": [
+          "BUILDING_IMAGE",
+          "ROOM_IMAGE",
+          "USER_AVATAR",
+          "USER_ID_CARD_FRONT_PHOTO",
+          "USER_ID_CARD_BACK_PHOTO",
+          "USER_PORTRAIT_PHOTO",
+          "PAYMENT_RECEIPT_IMAGE"
+        ],
+        "description": "Mục đích upload. Quyết định thư mục lưu trữ, quyền truy cập, giới hạn dung lượng và định dạng file cho phép."
+      },
+      "CreatePresignedUrlsDto": {
+        "type": "object",
+        "properties": {
+          "files": {
+            "minItems": 1,
+            "maxItems": 10,
+            "description": "Danh sách file cần upload. Tối đa 10 file mỗi request.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileInfoDto"
+            }
+          },
+          "resourceId": {
+            "type": "string",
+            "description": "ID của resource mà file thuộc về (roomId, buildingId, userId, paymentId...). Dùng để kiểm tra quyền và tạo đường dẫn lưu trữ.",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "purpose": {
+            "description": "Mục đích upload. Quyết định thư mục lưu trữ, quyền truy cập, giới hạn dung lượng và định dạng file cho phép.",
+            "example": "ROOM_IMAGE",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UploadPurpose"
+              }
+            ]
+          }
+        },
+        "required": [
+          "files",
+          "resourceId",
+          "purpose"
+        ]
+      },
+      "PresignedUrl": {
+        "type": "object",
+        "properties": {
+          "uploadUrl": {
+            "type": "string",
+            "description": "URL để client PUT trực tiếp file lên storage. Hết hạn sau 300 giây.",
+            "example": "https://<account>.r2.cloudflarestorage.com/uploads/images/rooms/abc/1a2b.jpg?X-Amz-Signature=..."
+          },
+          "fileUrl": {
+            "type": "string",
+            "description": "URL công khai của file sau khi upload xong. Chỉ truy cập được với các purpose có visibility là public.",
+            "example": "https://cdn.tacohouse.com/uploads/images/rooms/abc/1a2b.jpg"
+          },
+          "key": {
+            "type": "string",
+            "description": "Object key trong bucket. Lưu lại giá trị này vào DB để gắn vào resource sau khi upload thành công.",
+            "example": "uploads/images/rooms/abc/1a2b.jpg"
+          },
+          "fileId": {
+            "type": "string",
+            "description": "ID của file trong frontend, dùng để map với presigned URL trả về. Không dùng để xác định quyền hay lưu trữ.",
+            "example": "file-1234 hoặc uuid"
+          }
+        },
+        "required": [
+          "uploadUrl",
+          "fileUrl",
+          "key",
+          "fileId"
+        ]
+      }
+    }
+  }
+}
