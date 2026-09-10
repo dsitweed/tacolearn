@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -11,6 +12,7 @@ import {
 } from '@/features/practice';
 
 export default function PracticeHubPage() {
+  const router = useRouter();
   const [level, setLevel] = useState('N2');
   const [section, setSection] = useState('dokkai');
   const [mode, setMode] = useState('weakness');
@@ -53,7 +55,10 @@ export default function PracticeHubPage() {
       setSelectedOption(null);
       setShowExplanation(false);
     } else {
-      toast.info('Bạn đã hoàn thành phiên luyện tập! Đang tạo bảng phân tích.');
+      toast.info(
+        'Bạn đã hoàn thành phiên luyện tập! Đang chuyển đến bảng phân tích...',
+      );
+      router.push('/dashboard/practice-result');
     }
   };
 
