@@ -66,6 +66,12 @@ const navigationSections: NavSection[] = [
     label: 'QUẢN LÝ TRƯỜNG HỌC',
     items: [
       {
+        title: 'Điểm danh & Học bù',
+        href: '/dashboard/catch-up',
+        icon: CalendarDays,
+        badge: '1',
+      },
+      {
         title: 'Lớp học của tôi',
         href: '/dashboard',
         icon: GraduationCap,
