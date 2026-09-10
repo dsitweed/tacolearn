@@ -1,9 +1,10 @@
 
 import {ApiProperty} from '@nestjs/swagger'
 import {User} from './user.entity'
+import {Class} from './class.entity'
 
 
-export class Session {
+export class TeacherProfile {
   @ApiProperty({
   type: 'string',
 })
@@ -19,23 +20,26 @@ userId: string ;
 user?: User ;
 @ApiProperty({
   type: 'string',
+  nullable: true,
 })
-token: string ;
-@ApiProperty({
-  type: 'string',
-  format: 'date-time',
-})
-expiresAt: Date ;
+specialization: string  | null;
 @ApiProperty({
   type: 'string',
   nullable: true,
 })
-ipAddress: string  | null;
+bio: string  | null;
 @ApiProperty({
-  type: 'string',
+  type: 'integer',
+  format: 'int32',
   nullable: true,
 })
-userAgent: string  | null;
+yearsOfExperience: number  | null;
+@ApiProperty({
+  type: () => Class,
+  isArray: true,
+  required: false,
+})
+classes?: Class[] ;
 @ApiProperty({
   type: 'string',
   format: 'date-time',

@@ -1,6 +1,11 @@
 import { faker } from '@faker-js/faker';
 import * as argon from 'argon2';
-import { PrismaClient, User, UserRole } from 'generated/prisma/client';
+import {
+  JlptLevel,
+  PrismaClient,
+  User,
+  UserRole,
+} from 'generated/prisma/client';
 
 type UserData = {
   email: string;
@@ -13,18 +18,33 @@ type UserData = {
 
 const hashPassword = async () => argon.hash('password');
 
+const JLPT_LEVELS: JlptLevel[] = [
+  JlptLevel.N1,
+  JlptLevel.N2,
+  JlptLevel.N3,
+  JlptLevel.N4,
+  JlptLevel.N5,
+];
+
 export async function seedUsers(prisma: PrismaClient): Promise<{
   adminUsers: User[];
-  regularUsers: User[];
+  teacherUsers: User[];
+  studentUsers: User[];
 }> {
   console.log('👤 Seeding users...');
 
-  const adminUsers = await seedByRole(prisma, UserRole.ADMIN, 'admin', 3);
-  const regularUsers = await seedByRole(prisma, UserRole.USER, 'user', 10);
+  const adminUsers = await seedByRole(prisma, UserRole.ADMIN, 'admin', 2);
+  const teacherUsers = await seedByRole(prisma, UserRole.TEACHER, 'teacher', 5);
+  const studentUsers = await seedByRole(
+    prisma,
+    UserRole.STUDENT,
+    'student',
+    15,
+  );
 
   console.log('✅ All user groups seeded successfully!');
 
-  return { adminUsers, regularUsers };
+  return { adminUsers, teacherUsers, studentUsers };
 }
 
 async function seedByRole(
@@ -47,7 +67,7 @@ async function seedByRole(
       lastName: faker.person.lastName(),
       avatar: `https://i.pravatar.cc/150?u=${email}`,
       phone: faker.phone.number(),
-      dateOfBirth: faker.date.birthdate({ min: 22, max: 55, mode: 'age' }),
+      dateOfBirth: faker.date.birthdate({ min: 18, max: 50, mode: 'age' }),
     });
   }
 
@@ -79,6 +99,27 @@ async function seedByRole(
               password: hashedPassword,
             },
           },
+          ...(role === UserRole.STUDENT && {
+            studentProfile: {
+              create: {
+                jlptGoalLevel: faker.helpers.arrayElement(JLPT_LEVELS),
+                jlptGoalDate: faker.date.future({ years: 1 }),
+              },
+            },
+          }),
+          ...(role === UserRole.TEACHER && {
+            teacherProfile: {
+              create: {
+                specialization: faker.helpers.arrayElement([
+                  'Grammar',
+                  'Reading',
+                  'Listening',
+                  'Vocabulary',
+                ]),
+                yearsOfExperience: faker.number.int({ min: 1, max: 20 }),
+              },
+            },
+          }),
         },
       });
     }),

@@ -1,67 +1,65 @@
 
 import {ApiProperty} from '@nestjs/swagger'
+import {School} from './school.entity'
+import {Class} from './class.entity'
 import {User} from './user.entity'
 
 
-export class Account {
+export class Announcement {
   @ApiProperty({
   type: 'string',
 })
 id: string ;
 @ApiProperty({
   type: 'string',
+  nullable: true,
 })
-userId: string ;
+schoolId: string  | null;
+@ApiProperty({
+  type: () => School,
+  required: false,
+  nullable: true,
+})
+school?: School  | null;
+@ApiProperty({
+  type: 'string',
+  nullable: true,
+})
+classId: string  | null;
+@ApiProperty({
+  type: () => Class,
+  required: false,
+  nullable: true,
+})
+class?: Class  | null;
+@ApiProperty({
+  type: 'string',
+})
+createdById: string ;
 @ApiProperty({
   type: () => User,
   required: false,
 })
-user?: User ;
+createdBy?: User ;
 @ApiProperty({
   type: 'string',
 })
-providerId: string ;
+title: string ;
 @ApiProperty({
   type: 'string',
 })
-accountId: string ;
+content: string ;
 @ApiProperty({
   type: 'string',
-  nullable: true,
+  format: 'date-time',
 })
-password: string  | null;
-@ApiProperty({
-  type: 'string',
-  nullable: true,
-})
-accessToken: string  | null;
-@ApiProperty({
-  type: 'string',
-  nullable: true,
-})
-refreshToken: string  | null;
-@ApiProperty({
-  type: 'string',
-  nullable: true,
-})
-idToken: string  | null;
+postedAt: Date ;
 @ApiProperty({
   type: 'string',
   format: 'date-time',
   nullable: true,
 })
-accessTokenExpiresAt: Date  | null;
-@ApiProperty({
-  type: 'string',
-  format: 'date-time',
-  nullable: true,
-})
-refreshTokenExpiresAt: Date  | null;
-@ApiProperty({
-  type: 'string',
-  nullable: true,
-})
-scope: string  | null;
+expiresAt: Date  | null;
 @ApiProperty({
   type: 'string',
   format: 'date-time',

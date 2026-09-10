@@ -1,9 +1,11 @@
 
+import {LessonProgressStatus,Prisma} from '../prisma/client'
 import {ApiProperty} from '@nestjs/swagger'
-import {User} from './user.entity'
+import {StudentProfile} from './studentProfile.entity'
+import {Lesson} from './lesson.entity'
 
 
-export class Account {
+export class LessonProgress {
   @ApiProperty({
   type: 'string',
 })
@@ -11,57 +13,56 @@ id: string ;
 @ApiProperty({
   type: 'string',
 })
-userId: string ;
+studentId: string ;
 @ApiProperty({
-  type: () => User,
+  type: () => StudentProfile,
   required: false,
 })
-user?: User ;
+student?: StudentProfile ;
 @ApiProperty({
   type: 'string',
 })
-providerId: string ;
+lessonId: string ;
 @ApiProperty({
-  type: 'string',
+  type: () => Lesson,
+  required: false,
 })
-accountId: string ;
+lesson?: Lesson ;
+@ApiProperty({
+  enum: LessonProgressStatus,
+  enumName: 'LessonProgressStatus',
+})
+status: LessonProgressStatus ;
 @ApiProperty({
   type: 'string',
+  format: 'Decimal.js',
   nullable: true,
 })
-password: string  | null;
-@ApiProperty({
-  type: 'string',
-  nullable: true,
-})
-accessToken: string  | null;
-@ApiProperty({
-  type: 'string',
-  nullable: true,
-})
-refreshToken: string  | null;
-@ApiProperty({
-  type: 'string',
-  nullable: true,
-})
-idToken: string  | null;
+quizScore: Prisma.Decimal  | null;
 @ApiProperty({
   type: 'string',
   format: 'date-time',
   nullable: true,
 })
-accessTokenExpiresAt: Date  | null;
+startedAt: Date  | null;
 @ApiProperty({
   type: 'string',
   format: 'date-time',
   nullable: true,
 })
-refreshTokenExpiresAt: Date  | null;
+videoWatchedAt: Date  | null;
 @ApiProperty({
   type: 'string',
+  format: 'date-time',
   nullable: true,
 })
-scope: string  | null;
+quizCompletedAt: Date  | null;
+@ApiProperty({
+  type: 'string',
+  format: 'date-time',
+  nullable: true,
+})
+completedAt: Date  | null;
 @ApiProperty({
   type: 'string',
   format: 'date-time',

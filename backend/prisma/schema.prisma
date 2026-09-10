@@ -20,27 +20,38 @@ datasource db {
   provider = "postgresql"
 }
 
+// =============================================================
+// Auth & Identity
+// =============================================================
+
 model User {
   id       String   @id @default(uuid())
   email    String   @unique
-  role     UserRole @default(USER)
+  role     UserRole @default(STUDENT)
   isActive Boolean  @default(true)
 
-  // Profile information
-  profile UserProfile?
+  // Common profile + role-specific extensions
+  profile        UserProfile?
+  studentProfile StudentProfile?
+  teacherProfile TeacherProfile?
 
-  // Auth: server-side sessions & linked providers (credential / Google OAuth)
+  // Auth: server-side sessions & linked providers (credential / OAuth)
   sessions Session[]
   accounts Account[]
 
-  // Notifications
   notifications Notification[]
 
-  deletedAt DateTime? // softDelete
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  // Ownership / authoring (admin & teacher)
+  schoolsOwned         School[]       @relation("SchoolOwner")
+  questionsCreated     Question[]     @relation("QuestionAuthor")
+  lessonsCreated       Lesson[]       @relation("LessonAuthor")
+  announcementsCreated Announcement[] @relation("AnnouncementAuthor")
 
-  @@unique([id, role])
+  lastLoginAt DateTime?
+  deletedAt   DateTime? // soft delete
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
   @@index([role])
   @@map("users")
 }
@@ -62,6 +73,50 @@ model UserProfile {
   @@map("user_profiles")
 }
 
+// Student-specific attributes + owner of all learning data
+model StudentProfile {
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  jlptGoalLevel          JlptLevel?
+  jlptGoalDate           DateTime?
+  currentReadinessScore  Decimal    @default(0) @db.Decimal(5, 2)
+  totalPracticeTimeHours Decimal    @default(0) @db.Decimal(10, 2)
+  bio                    String?
+
+  attempts         QuestionAttempt[]
+  skillMastery     SkillMastery[]
+  srsItems         SrsItem[]
+  dailyPlans       DailyLearningPlan[]
+  practiceSessions PracticeSession[]
+  enrollments      ClassEnrollment[]
+  attendances      Attendance[]
+  lessonProgress   LessonProgress[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("student_profiles")
+}
+
+model TeacherProfile {
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  specialization    String?
+  bio               String?
+  yearsOfExperience Int?
+
+  classes Class[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("teacher_profiles")
+}
+
 // Auth: server-side session store (refresh tokens, device/IP tracking, revocation)
 model Session {
   id     String @id @default(uuid())
@@ -80,7 +135,7 @@ model Session {
   @@map("sessions")
 }
 
-// Auth: linked authentication providers per user (credential + OAuth like Google)
+// Auth: linked authentication providers per user (credential + OAuth)
 model Account {
   id     String @id @default(uuid())
   userId String
@@ -119,7 +174,402 @@ model Verification {
   @@map("verifications")
 }
 
-// Generic notification system
+// =============================================================
+// Learning Content (Question Bank, Vocabulary, Grammar, Lessons)
+// =============================================================
+
+model Question {
+  id String @id @default(uuid())
+
+  jlptLevel    JlptLevel
+  section      QuestionSection
+  skill        String // granular sub-skill (e.g. "Inference", "Author's Opinion")
+  questionType QuestionType    @default(MULTIPLE_CHOICE)
+  difficulty   Difficulty
+
+  content  String
+  imageUrl String?
+
+  choices           Json // [{ code, text }, ...]
+  correctAnswerCode String
+  explanation       String
+
+  tags String[]
+
+  // Item statistics (computed from attempts)
+  difficultyIndex Decimal? @db.Decimal(5, 2)
+  attemptCount    Int      @default(0)
+  correctCount    Int      @default(0)
+
+  source      QuestionSource @default(OFFICIAL)
+  createdById String?
+  createdBy   User?          @relation("QuestionAuthor", fields: [createdById], references: [id], onDelete: SetNull)
+
+  attempts      QuestionAttempt[]
+  vocabulary    Vocabulary[]      @relation("QuestionVocabulary")
+  grammarPoints GrammarPoint[]    @relation("QuestionGrammar")
+  lessons       Lesson[]          @relation("LessonQuestions")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([jlptLevel, section, skill])
+  @@index([difficulty])
+  @@map("questions")
+}
+
+model Vocabulary {
+  id String @id @default(uuid())
+
+  word             String
+  hiragana         String?
+  englishMeaning   String
+  jlptLevel        JlptLevel?
+  partOfSpeech     String?
+  exampleSentences String[]
+
+  questions Question[] @relation("QuestionVocabulary")
+  lessons   Lesson[]   @relation("LessonVocabulary")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([jlptLevel])
+  @@map("vocabulary")
+}
+
+model GrammarPoint {
+  id String @id @default(uuid())
+
+  pattern             String
+  englishMeaning      String
+  japaneseExplanation String?
+  jlptLevel           JlptLevel?
+  exampleSentences    String[]
+
+  questions Question[] @relation("QuestionGrammar")
+  lessons   Lesson[]   @relation("LessonGrammar")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([jlptLevel])
+  @@map("grammar_points")
+}
+
+model Lesson {
+  id String @id @default(uuid())
+
+  title       String
+  description String?
+  jlptLevel   JlptLevel
+  section     QuestionSection?
+
+  videoUrl             String?
+  videoDurationMinutes Int?
+  transcript           String?
+
+  estimatedDurationMinutes Int?
+  difficulty               LessonDifficulty @default(BEGINNER)
+
+  createdById String?
+  createdBy   User?   @relation("LessonAuthor", fields: [createdById], references: [id], onDelete: SetNull)
+
+  questions     Question[]       @relation("LessonQuestions")
+  vocabulary    Vocabulary[]     @relation("LessonVocabulary")
+  grammarPoints GrammarPoint[]   @relation("LessonGrammar")
+  progress      LessonProgress[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([jlptLevel])
+  @@map("lessons")
+}
+
+model LessonProgress {
+  id String @id @default(uuid())
+
+  studentId String
+  student   StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  lessonId  String
+  lesson    Lesson         @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  status    LessonProgressStatus @default(NOT_STARTED)
+  quizScore Decimal?             @db.Decimal(5, 2)
+
+  startedAt       DateTime?
+  videoWatchedAt  DateTime?
+  quizCompletedAt DateTime?
+  completedAt     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, lessonId])
+  @@map("lesson_progress")
+}
+
+// =============================================================
+// Learning Engine (Sessions, Attempts, Mastery, SRS, Plans)
+// =============================================================
+
+// Mock tests are modeled as a PracticeSession with sessionType = MOCK_TEST
+model PracticeSession {
+  id String @id @default(uuid())
+
+  studentId String
+  student   StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  sessionType SessionType
+  jlptLevel   JlptLevel?
+  skill       String?
+
+  totalQuestions     Int  @default(0)
+  questionsCompleted Int  @default(0)
+  correctAnswers     Int  @default(0)
+  totalTimeSeconds   Int?
+
+  status      SessionStatus @default(IN_PROGRESS)
+  startedAt   DateTime      @default(now())
+  completedAt DateTime?
+
+  attempts QuestionAttempt[]
+
+  createdAt DateTime @default(now())
+
+  @@index([studentId, startedAt])
+  @@map("practice_sessions")
+}
+
+model QuestionAttempt {
+  id String @id @default(uuid())
+
+  studentId  String
+  student    StudentProfile   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  questionId String
+  question   Question         @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  sessionId  String?
+  session    PracticeSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+
+  studentAnswerCode String
+  isCorrect         Boolean
+  timeSpentSeconds  Int?
+
+  confidenceLevel ConfidenceLevel?
+  hintUsed        Boolean          @default(false)
+  markedForReview Boolean          @default(false)
+  mistakeType     MistakeType?
+
+  attemptedAt DateTime @default(now())
+
+  @@index([studentId, attemptedAt])
+  @@index([questionId])
+  @@index([sessionId])
+  @@map("question_attempts")
+}
+
+model SkillMastery {
+  id String @id @default(uuid())
+
+  studentId String
+  student   StudentProfile   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  jlptLevel JlptLevel
+  section   QuestionSection?
+  skill     String
+
+  correctAnswers    Int     @default(0)
+  totalAttempts     Int     @default(0)
+  masteryPercentage Decimal @default(0) @db.Decimal(5, 2)
+
+  firstAttemptedAt DateTime?
+  lastAttemptedAt  DateTime?
+
+  weeklyProgress Decimal?        @db.Decimal(5, 2)
+  trendDirection TrendDirection?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, jlptLevel, skill])
+  @@index([studentId, jlptLevel])
+  @@map("skill_mastery")
+}
+
+// Spaced Repetition (SM-2). contentId/contentType is a polymorphic reference.
+model SrsItem {
+  id String @id @default(uuid())
+
+  studentId   String
+  student     StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  contentId   String
+  contentType SrsContentType
+
+  stage        Int     @default(0) // 0-5, graduation = no more review
+  easeFactor   Decimal @default(2.5) @db.Decimal(4, 2)
+  intervalDays Int     @default(1)
+
+  reviewCount    Int       @default(0)
+  lastReviewedAt DateTime?
+  nextReviewAt   DateTime?
+
+  lastConfidenceRating ConfidenceLevel?
+  averageConfidence    Decimal?         @db.Decimal(3, 2)
+
+  status SrsStatus @default(NEW)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, contentType, contentId])
+  @@index([studentId, nextReviewAt])
+  @@map("srs_items")
+}
+
+model DailyLearningPlan {
+  id String @id @default(uuid())
+
+  studentId String
+  student   StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  planDate   DateTime @db.Date
+  activities Json // [{ type, skill, count, timeMinutes, priority }, ...]
+
+  totalTimeMinutes Int?
+  status           PlanStatus @default(PENDING)
+  startedAt        DateTime?
+  completedAt      DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, planDate])
+  @@map("daily_learning_plans")
+}
+
+// =============================================================
+// School & Class Management
+// =============================================================
+
+model School {
+  id      String @id @default(uuid())
+  name    String
+  ownerId String
+  owner   User   @relation("SchoolOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  description String?
+  logo        String?
+  address     String?
+  city        String?
+  country     String?
+
+  subscriptionPlan   SubscriptionPlan   @default(BASIC)
+  subscriptionStatus SubscriptionStatus @default(TRIAL)
+  maxStudents        Int?
+  isActive           Boolean            @default(true)
+
+  classes       Class[]
+  announcements Announcement[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ownerId])
+  @@map("schools")
+}
+
+model Class {
+  id String @id @default(uuid())
+
+  schoolId  String
+  school    School         @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  teacherId String
+  teacher   TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+
+  name      String
+  jlptLevel JlptLevel
+  schedule  Json? // [{ day, time, durationMinutes }, ...]
+
+  maxStudents Int         @default(30)
+  status      ClassStatus @default(ACTIVE)
+
+  enrollments   ClassEnrollment[]
+  attendances   Attendance[]
+  announcements Announcement[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([schoolId])
+  @@index([teacherId])
+  @@map("classes")
+}
+
+model ClassEnrollment {
+  id String @id @default(uuid())
+
+  classId   String
+  class     Class          @relation(fields: [classId], references: [id], onDelete: Cascade)
+  studentId String
+  student   StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  status     EnrollmentStatus @default(ACTIVE)
+  enrolledAt DateTime         @default(now())
+  droppedAt  DateTime?
+
+  @@unique([classId, studentId])
+  @@index([studentId])
+  @@map("class_enrollments")
+}
+
+model Attendance {
+  id String @id @default(uuid())
+
+  classId   String
+  class     Class          @relation(fields: [classId], references: [id], onDelete: Cascade)
+  studentId String
+  student   StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  date   DateTime         @db.Date
+  status AttendanceStatus
+  notes  String?
+
+  createdAt DateTime @default(now())
+
+  @@unique([classId, studentId, date])
+  @@index([studentId])
+  @@map("attendance")
+}
+
+// =============================================================
+// Communication (Announcements & Notifications)
+// =============================================================
+
+model Announcement {
+  id String @id @default(uuid())
+
+  schoolId String?
+  school   School? @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  classId  String?
+  class    Class?  @relation(fields: [classId], references: [id], onDelete: Cascade)
+
+  createdById String
+  createdBy   User   @relation("AnnouncementAuthor", fields: [createdById], references: [id], onDelete: Cascade)
+
+  title   String
+  content String
+
+  postedAt  DateTime  @default(now())
+  expiresAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([schoolId])
+  @@index([classId])
+  @@map("announcements")
+}
+
 model Notification {
   id String @id @default(uuid())
 
@@ -133,7 +583,7 @@ model Notification {
   isRead Boolean   @default(false)
   readAt DateTime?
 
-  // Optional reference to related entity
+  // Optional polymorphic reference to a related entity
   relatedId   String?
   relatedType RelatedEntityType?
 
@@ -144,23 +594,162 @@ model Notification {
   @@map("notifications")
 }
 
+// =============================================================
 // Enums
+// =============================================================
+
 enum UserRole {
+  STUDENT
+  TEACHER
   ADMIN
-  USER
+}
+
+enum JlptLevel {
+  N1
+  N2
+  N3
+  N4
+  N5
+}
+
+enum QuestionSection {
+  VOCABULARY
+  GRAMMAR
+  KANJI
+  READING
+  LISTENING
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  FILL_IN
+  MATCHING
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum QuestionSource {
+  OFFICIAL
+  COMMUNITY
+  AI_GENERATED
+}
+
+enum ConfidenceLevel {
+  VERY_LOW
+  LOW
+  MEDIUM
+  HIGH
+  VERY_HIGH
+}
+
+enum MistakeType {
+  CARELESS
+  MISUNDERSTANDING
+  SKILL_GAP
+  TIME_PRESSURE
+}
+
+enum TrendDirection {
+  IMPROVING
+  STABLE
+  DECLINING
+}
+
+enum SrsContentType {
+  QUESTION
+  VOCABULARY
+  GRAMMAR
+  KANJI
+}
+
+enum SrsStatus {
+  NEW
+  LEARNING
+  REVIEW
+  GRADUATED
+}
+
+enum PlanStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  PARTIAL
+}
+
+enum SessionType {
+  TARGETED
+  MIXED
+  WEAK_AREAS
+  PREVIOUS_MISTAKES
+  MOCK_TEST
+}
+
+enum SessionStatus {
+  IN_PROGRESS
+  COMPLETED
+  ABANDONED
+}
+
+enum LessonDifficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum LessonProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum ClassStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  DROPPED
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
+}
+
+enum SubscriptionPlan {
+  BASIC
+  PRO
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  TRIAL
+  SUSPENDED
+  CANCELLED
 }
 
 enum NotificationType {
-  ANNOUNCEMENT
+  PRACTICE_REMINDER
+  ACHIEVEMENT
+  WEAK_AREA_ALERT
+  CLASS_ANNOUNCEMENT
+  MESSAGE
   SYSTEM
 }
 
 enum RelatedEntityType {
-  BILL
-  PAYMENT
-  RENTAL
-  MAINTENANCE_REQUEST
-  MESSAGE
-  ROOM
-  BUILDING
+  QUESTION
+  LESSON
+  PRACTICE_SESSION
+  CLASS
+  ANNOUNCEMENT
+  SKILL
 }

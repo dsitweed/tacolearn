@@ -12,7 +12,7 @@ describe('AuthController', () => {
   const mockUser = {
     id: '1',
     email: 'test@example.com',
-    role: UserRole.USER,
+    role: UserRole.STUDENT,
     createdAt: new Date(),
     updatedAt: new Date(),
     isActive: true,
@@ -94,7 +94,7 @@ describe('AuthController', () => {
       const registerDto: RegisterAuthDto = {
         email: 'newuser@example.com',
         password: 'Password123',
-        role: UserRole.USER,
+        role: UserRole.STUDENT,
         firstName: 'Jane',
         lastName: 'Smith',
         phone: '+84901234567',

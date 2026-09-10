@@ -19,7 +19,7 @@ describe('AuthService', () => {
   const mockUser = {
     id: '1',
     email: 'test@example.com',
-    role: UserRole.USER,
+    role: UserRole.STUDENT,
     createdAt: new Date(),
     updatedAt: new Date(),
     isActive: true,
@@ -147,7 +147,7 @@ describe('AuthService', () => {
     const registerDto: RegisterAuthDto = {
       email: 'newuser@example.com',
       password: 'Password123',
-      role: UserRole.USER,
+      role: UserRole.STUDENT,
       firstName: 'Jane',
       lastName: 'Smith',
       phone: '+84901234567',
@@ -303,7 +303,7 @@ describe('AuthService', () => {
     const jwtPayload = {
       sub: '1',
       email: 'test@example.com',
-      role: UserRole.USER,
+      role: UserRole.STUDENT,
     };
 
     it('should return user without password if user exists', async () => {

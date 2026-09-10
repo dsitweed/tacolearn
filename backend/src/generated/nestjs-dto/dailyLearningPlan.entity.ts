@@ -1,9 +1,10 @@
 
+import {PlanStatus,Prisma} from '../prisma/client'
 import {ApiProperty} from '@nestjs/swagger'
-import {User} from './user.entity'
+import {StudentProfile} from './studentProfile.entity'
 
 
-export class UserProfile {
+export class DailyLearningPlan {
   @ApiProperty({
   type: 'string',
 })
@@ -11,36 +12,44 @@ id: string ;
 @ApiProperty({
   type: 'string',
 })
-userId: string ;
+studentId: string ;
 @ApiProperty({
-  type: () => User,
+  type: () => StudentProfile,
   required: false,
 })
-user?: User ;
+student?: StudentProfile ;
 @ApiProperty({
   type: 'string',
+  format: 'date-time',
 })
-firstName: string ;
+planDate: Date ;
 @ApiProperty({
-  type: 'string',
+  type: () => Object,
 })
-lastName: string ;
+activities: Prisma.JsonValue ;
 @ApiProperty({
-  type: 'string',
+  type: 'integer',
+  format: 'int32',
   nullable: true,
 })
-phone: string  | null;
+totalTimeMinutes: number  | null;
 @ApiProperty({
-  type: 'string',
-  nullable: true,
+  enum: PlanStatus,
+  enumName: 'PlanStatus',
 })
-avatar: string  | null;
+status: PlanStatus ;
 @ApiProperty({
   type: 'string',
   format: 'date-time',
   nullable: true,
 })
-dateOfBirth: Date  | null;
+startedAt: Date  | null;
+@ApiProperty({
+  type: 'string',
+  format: 'date-time',
+  nullable: true,
+})
+completedAt: Date  | null;
 @ApiProperty({
   type: 'string',
   format: 'date-time',

@@ -13,12 +13,15 @@ async function main() {
   console.log('🌱 Starting seed...');
 
   try {
-    const { adminUsers, regularUsers } = await seedUsers(prisma);
+    const { adminUsers, teacherUsers, studentUsers } = await seedUsers(prisma);
 
     console.log('\n📊 ===== SEEDING SUMMARY =====');
-    console.log(`👥 Users: ${adminUsers.length + regularUsers.length} total`);
+    console.log(
+      `👥 Users: ${adminUsers.length + teacherUsers.length + studentUsers.length} total`,
+    );
     console.log(`   - Admins: ${adminUsers.length}`);
-    console.log(`   - Users: ${regularUsers.length}`);
+    console.log(`   - Teachers: ${teacherUsers.length}`);
+    console.log(`   - Students: ${studentUsers.length}`);
     console.log('=============================\n');
     console.log('✨ Seeding completed successfully!');
   } catch (error) {
