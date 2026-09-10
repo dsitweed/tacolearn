@@ -1,0 +1,820 @@
+openapi: 3.0.3
+info:
+  title: TacoLearn - Adaptive Japanese JLPT Learning Platform API
+  description: |
+    Comprehensive API for TacoLearn - an adaptive Japanese learning platform designed for JLPT preparation.
+
+    ## Key Features
+    - Question Bank Management with metadata (Level, Skill, Difficulty)
+    - Question Attempt Tracking and Analysis
+    - Skill Mastery Calculation
+    - Adaptive Practice Generation based on weaknesses
+    - Spaced Repetition System (SRS) for reinforcement
+    - Student Dashboard with personalized recommendations
+    - Mock Test Management and Analysis
+    - Missed Class Catch-Up System
+
+    ## Response Format
+    All responses follow a standardized format:
+    - **status**: "success" or "error"
+    - **message**: Human-readable message
+    - **data**: Response data (object or array)
+    - **timestamp**: ISO 8601 timestamp
+    - **meta**: (Optional) Pagination and metadata
+
+  version: 2.0.0
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:3001/api/v1
+    description: Development server
+  - url: https://api.tacolearn.com/api/v1
+    description: Production server
+
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from login endpoint
+
+  schemas:
+    # ==================== ENUMS ====================
+    UserRole:
+      type: string
+      enum: [STUDENT, TEACHER, ADMIN]
+      description: User role in the system
+
+    JLPTLevel:
+      type: string
+      enum: [N1, N2, N3, N4, N5]
+      description: JLPT level
+
+    QuestionSection:
+      type: string
+      enum: [VOCABULARY, GRAMMAR, KANJI, READING, LISTENING]
+      description: Question section/category
+
+    QuestionSkill:
+      type: string
+      enum:
+        - VOCABULARY
+        - WORD_CHOICE
+        - GRAMMAR
+        - GRAMMAR_FUNCTION
+        - READING_MAIN_IDEA
+        - READING_DETAIL
+        - READING_INFERENCE
+        - READING_AUTHOR_OPINION
+        - READING_REFERENCE
+        - LISTENING_MAIN_IDEA
+        - LISTENING_DETAIL
+        - LISTENING_SPEAKER_INTENTION
+      description: Granular skill/sub-skill of a question
+
+    QuestionDifficulty:
+      type: string
+      enum: [EASY, MEDIUM, HARD]
+      description: Question difficulty level
+
+    AttemptResult:
+      type: string
+      enum: [CORRECT, INCORRECT, PARTIAL]
+      description: Result of an attempt
+
+    SRSInterval:
+      type: string
+      enum: [NEW, 1_DAY, 3_DAYS, 1_WEEK, 2_WEEKS, 1_MONTH, 3_MONTHS]
+      description: Spaced Repetition interval
+
+    # ==================== STANDARD RESPONSES ====================
+    SuccessResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success]
+          example: success
+        message:
+          type: string
+          example: "Operation successful"
+        data:
+          type: object
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-01-15T10:30:00Z"
+        meta:
+          type: object
+          properties:
+            page:
+              type: integer
+            limit:
+              type: integer
+            total:
+              type: integer
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [error]
+          example: error
+        message:
+          type: string
+          example: "Validation failed"
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 20
+        total:
+          type: integer
+          example: 100
+        totalPages:
+          type: integer
+          example: 5
+        hasNext:
+          type: boolean
+          example: true
+        hasPrev:
+          type: boolean
+          example: false
+
+    # ==================== USER SCHEMAS ====================
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        fullName:
+          type: string
+        avatarUrl:
+          type: string
+          nullable: true
+        role:
+          $ref: "#/components/schemas/UserRole"
+        isActive:
+          type: boolean
+        lastLoginAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    # ==================== STUDENT SCHEMAS ====================
+    Student:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        jlptGoalLevel:
+          $ref: "#/components/schemas/JLPTLevel"
+        jlptGoalDate:
+          type: string
+          format: date
+          nullable: true
+        currentReadinessScore:
+          type: number
+          format: decimal
+          example: 72.5
+        totalPracticeTimeHours:
+          type: number
+          format: decimal
+          example: 25.5
+        createdAt:
+          type: string
+          format: date-time
+
+    StudentDashboard:
+      type: object
+      properties:
+        todaysLearning:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum: [SRS, PRACTICE, LISTENING, GRAMMAR]
+              title:
+                type: string
+              itemCount:
+                type: integer
+              estimatedMinutes:
+                type: integer
+        nextBestAction:
+          type: object
+          properties:
+            skill:
+              $ref: "#/components/schemas/QuestionSkill"
+            accuracy:
+              type: number
+              example: 48.5
+            lastAttemptCount:
+              type: integer
+            recommendedQuestionCount:
+              type: integer
+        jlptReadiness:
+          type: object
+          properties:
+            level:
+              $ref: "#/components/schemas/JLPTLevel"
+            overallScore:
+              type: number
+              example: 72.0
+            skillBreakdown:
+              type: object
+              properties:
+                vocabulary:
+                  type: number
+                grammar:
+                  type: number
+                reading:
+                  type: number
+                listening:
+                  type: number
+
+    # ==================== QUESTION SCHEMAS ====================
+    Question:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        jlptLevel:
+          $ref: "#/components/schemas/JLPTLevel"
+        section:
+          $ref: "#/components/schemas/QuestionSection"
+        skill:
+          $ref: "#/components/schemas/QuestionSkill"
+        difficulty:
+          $ref: "#/components/schemas/QuestionDifficulty"
+        content:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              text:
+                type: string
+        correctAnswerId:
+          type: string
+        explanation:
+          type: string
+        explanationJapanese:
+          type: string
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+        vocabulary:
+          type: array
+          items:
+            type: string
+        grammar:
+          type: array
+          items:
+            type: string
+
+    QuestionAttempt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        studentId:
+          type: string
+          format: uuid
+        questionId:
+          type: string
+          format: uuid
+        selectedAnswerId:
+          type: string
+        result:
+          $ref: "#/components/schemas/AttemptResult"
+        timeSpentSeconds:
+          type: integer
+        attemptedAt:
+          type: string
+          format: date-time
+        confidenceLevel:
+          type: integer
+          minimum: 1
+          maximum: 5
+          nullable: true
+
+    # ==================== SKILL MASTERY SCHEMAS ====================
+    SkillMastery:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        studentId:
+          type: string
+          format: uuid
+        skill:
+          $ref: "#/components/schemas/QuestionSkill"
+        masteryPercentage:
+          type: number
+          example: 72.5
+        attemptCount:
+          type: integer
+        correctCount:
+          type: integer
+        lastAttemptAt:
+          type: string
+          format: date-time
+          nullable: true
+        lastUpdatedAt:
+          type: string
+          format: date-time
+
+    # ==================== PRACTICE SESSION SCHEMAS ====================
+    PracticeSession:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        studentId:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum: [ADAPTIVE, TARGETED, MOCK_TEST]
+        jlptLevel:
+          $ref: "#/components/schemas/JLPTLevel"
+        questionCount:
+          type: integer
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Question"
+        startedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+        score:
+          type: number
+          nullable: true
+        accuracy:
+          type: number
+          nullable: true
+
+    PracticeResult:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        sessionId:
+          type: string
+          format: uuid
+        score:
+          type: integer
+          example: 7
+        totalQuestions:
+          type: integer
+          example: 10
+        accuracy:
+          type: number
+          example: 70.0
+        timeSpentMinutes:
+          type: integer
+        strengthAreas:
+          type: array
+          items:
+            type: object
+            properties:
+              skill:
+                $ref: "#/components/schemas/QuestionSkill"
+              accuracy:
+                type: number
+        weaknessAreas:
+          type: array
+          items:
+            type: object
+            properties:
+              skill:
+                $ref: "#/components/schemas/QuestionSkill"
+              accuracy:
+                type: number
+        nextRecommendation:
+          type: string
+          description: Recommended skill to practice next
+
+    # ==================== SRS SCHEMAS ====================
+    SRSItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        studentId:
+          type: string
+          format: uuid
+        questionId:
+          type: string
+          format: uuid
+        currentInterval:
+          $ref: "#/components/schemas/SRSInterval"
+        nextReviewAt:
+          type: string
+          format: date-time
+        repetitions:
+          type: integer
+        easeFactor:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+        lastReviewedAt:
+          type: string
+          format: date-time
+          nullable: true
+
+    SRSReview:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        srsItemId:
+          type: string
+          format: uuid
+        confidenceLevel:
+          type: integer
+          minimum: 1
+          maximum: 5
+        reviewedAt:
+          type: string
+          format: date-time
+        nextInterval:
+          $ref: "#/components/schemas/SRSInterval"
+
+paths:
+  # ==================== AUTH ENDPOINTS ====================
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password, fullName, role]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+                fullName:
+                  type: string
+                role:
+                  $ref: "#/components/schemas/UserRole"
+      responses:
+        201:
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/User"
+
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        200:
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      accessToken:
+                        type: string
+                      refreshToken:
+                        type: string
+                      user:
+                        $ref: "#/components/schemas/User"
+
+  # ==================== STUDENT ENDPOINTS ====================
+  /students/dashboard:
+    get:
+      tags:
+        - Students
+      summary: Get student dashboard
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Dashboard data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/StudentDashboard"
+
+  /students/{studentId}/skill-mastery:
+    get:
+      tags:
+        - Students
+      summary: Get student skill mastery
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Skill mastery data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SkillMastery"
+
+  # ==================== QUESTION ENDPOINTS ====================
+  /questions:
+    get:
+      tags:
+        - Questions
+      summary: Get questions with filters
+      parameters:
+        - name: jlptLevel
+          in: query
+          schema:
+            $ref: "#/components/schemas/JLPTLevel"
+        - name: section
+          in: query
+          schema:
+            $ref: "#/components/schemas/QuestionSection"
+        - name: difficulty
+          in: query
+          schema:
+            $ref: "#/components/schemas/QuestionDifficulty"
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of questions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Question"
+                  meta:
+                    $ref: "#/components/schemas/Pagination"
+
+  # ==================== PRACTICE ENDPOINTS ====================
+  /practice/adaptive:
+    post:
+      tags:
+        - Practice
+      summary: Generate adaptive practice session
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [questionCount]
+              properties:
+                questionCount:
+                  type: integer
+                  example: 10
+      responses:
+        201:
+          description: Practice session created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/PracticeSession"
+
+  /practice/{sessionId}/submit:
+    post:
+      tags:
+        - Practice
+      summary: Submit practice session
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [answers]
+              properties:
+                answers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      questionId:
+                        type: string
+                      selectedAnswerId:
+                        type: string
+                      timeSpentSeconds:
+                        type: integer
+      responses:
+        200:
+          description: Session submitted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/PracticeResult"
+
+  # ==================== SRS ENDPOINTS ====================
+  /srs/due:
+    get:
+      tags:
+        - Spaced Repetition
+      summary: Get SRS items due today
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: List of SRS items due
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SRSItem"
+
+  /srs/{srsItemId}/review:
+    post:
+      tags:
+        - Spaced Repetition
+      summary: Review SRS item
+      parameters:
+        - name: srsItemId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [confidenceLevel]
+              properties:
+                confidenceLevel:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+      responses:
+        200:
+          description: SRS item reviewed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/SRSReview"
+
+tags:
+  - name: Authentication
+    description: User authentication endpoints
+  - name: Students
+    description: Student-related endpoints
+  - name: Questions
+    description: Question bank endpoints
+  - name: Practice
+    description: Practice session endpoints
+  - name: Spaced Repetition
+    description: SRS system endpoints

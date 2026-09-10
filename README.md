@@ -1,20 +1,20 @@
-# Tacohouse - Hệ Thống Quản Lý Nhà Trọ
+# TacoLearn - Nền Tảng Học Tiếng Nhật Thích Ứng cho JLPT
 
 ## 📚 Mục Lục
 
-- [Tacohouse - Hệ Thống Quản Lý Nhà Trọ](#tacohouse---hệ-thống-quản-lý-nhà-trọ)
+- [TacoLearn - Nền Tảng Học Tiếng Nhật Thích Ứng cho JLPT](#tacolearn---nền-tảng-học-tiếng-nhật-thích-ứng-cho-jlpt)
   - [📚 Mục Lục](#-mục-lục)
   - [1. Tổng Quan Dự Án](#1-tổng-quan-dự-án)
   - [2. Tính Năng Chính](#2-tính-năng-chính)
-    - [2.1. Quản Lý Người Dùng](#21-quản-lý-người-dùng)
-    - [2.2. Quản Lý Tòa Nhà \& Phòng](#22-quản-lý-tòa-nhà--phòng)
-    - [2.3. Hệ Thống Thanh Toán Phức Tạp](#23-hệ-thống-thanh-toán-phức-tạp)
-    - [2.4. Tính Năng Giao Tiếp](#24-tính-năng-giao-tiếp)
-    - [2.5. Báo Cáo \& Lịch Sử](#25-báo-cáo--lịch-sử)
-    - [2.6. Feature Prioritization by ROI](#26-feature-prioritization-by-roi)
+    - [2.1. Hệ Thống Học Thích Ứng](#21-hệ-thống-học-thích-ứng)
+    - [2.2. Luyện Đề JLPT](#22-luyện-đề-jlpt)
+    - [2.3. Spaced Repetition System (SRS)](#23-spaced-repetition-system-srs)
+    - [2.4. Quản Lý Lớp Học](#24-quản-lý-lớp-học)
+    - [2.5. Phân Tích & Báo Cáo](#25-phân-tích--báo-cáo)
+    - [2.6. Feature Prioritization by MVP](#26-feature-prioritization-by-mvp)
   - [3. Tech Stack](#3-tech-stack)
-    - [3.1. Frontend (NextJS 14)](#31-frontend-nextjs-14)
-    - [3.2. Backend (NestJS 10)](#32-backend-nestjs-10)
+    - [3.1. Frontend (Next.js 16)](#31-frontend-nextjs-16)
+    - [3.2. Backend (NestJS 11)](#32-backend-nestjs-11)
     - [3.3. Database \& Infrastructure](#33-database--infrastructure)
     - [3.4. Development Tools](#34-development-tools)
   - [4. Cấu Trúc Dự Án](#4-cấu-trúc-dự-án)
@@ -51,78 +51,83 @@
 
 ## 1. Tổng Quan Dự Án
 
-Tacohouse là hệ thống quản lý nhà trọ cho thuê full-stack hiện đại, được xây dựng với NextJS frontend và NestJS backend. Hệ thống quản lý nhiều tòa nhà, phòng, người thuê, chủ nhà và hóa đơn thanh toán phức tạp hàng tháng.
+TacoLearn là nền tảng học tiếng Nhật thích ứng được xây dựng với Next.js 16 frontend và NestJS 11 backend. Hệ thống cung cấp học tập cá nhân hóa, luyện đề JLPT, spaced repetition, phân tích điểm yếu, và quản lý lớp học tích hợp - tất cả nhằm giúp người học trả lời câu hỏi: **"Hôm nay tôi nên học gì để tiến gần hơn đến mục tiêu JLPT?"**
 
 ## 2. Tính Năng Chính
 
-### 2.1. Quản Lý Người Dùng
-- **3 Role chính**: Admin, Người thuê phòng, Chủ nhà
-- **Authentication**: JWT + Passport
-- **Authorization**: Role-based access control
-- **Profile Management**: Ảnh căn cước, thông tin cá nhân
+### 2.1. Hệ Thống Học Thích Ứng
+- **Adaptive Practice**: Tự động tạo bài luyện đề dựa trên điểm yếu hiện tại
+- **Skill Mastery Tracking**: Theo dõi mức độ thành thạo chi tiết tại cấp độ kỹ năng con
+- **Personalized Recommendations**: Gợi ý chính xác bài tiếp theo cần học
+- **JLPT Readiness Score**: Dự đoán mức độ sẵn sàng cho JLPT dựa trên dữ liệu
+- **Daily Learning Plan**: Kế hoạch học tập hàng ngày được tạo tự động
 
-### 2.2. Quản Lý Tòa Nhà & Phòng
-- **Multi-building management**: Nhiều tòa nhà, mỗi tòa có nhiều phòng
-- **Room status tracking**: Trống, đang thuê, tuyển người mới
-- **Equipment management**: Quản lý thiết bị trong phòng
-- **Advance notice system**: Báo trước 1 tháng khi trả phòng
+### 2.2. Luyện Đề JLPT
+- **Comprehensive Question Bank**: Câu hỏi từ N1 đến N5 với metadata chi tiết
+- **Multiple Sections**: Vocabulary, Grammar, Kanji, Reading, Listening
+- **Detailed Explanations**: Giải thích chi tiết và ngữ pháp cho mỗi câu hỏi
+- **Practice Sessions**: Luyện đề riêng lẻ hoặc mock test đầy đủ
+- **Performance Analysis**: Phân tích kết quả theo từng kỹ năng
+- **Mistake Tracking**: Theo dõi lỗi và gợi ý ôn tập
 
-### 2.3. Hệ Thống Thanh Toán Phức Tạp
-- **2 loại phòng**: Toàn quyền (chỉ tiền phòng) và Bán quyền (nhiều loại phí)
-- **Utility bills**: Điện, nước, gas với giá đơn vị theo tòa nhà
-- **Monthly billing**: Tự động tạo hóa đơn hàng tháng
-- **Payment confirmation**: Xác nhận 2 chiều (người thuê + chủ nhà)
-- **Deposit management**: Quản lý tiền cọc
-- **Payment integration**: Stripe, chuyển khoản, tiền mặt
+### 2.3. Spaced Repetition System (SRS)
+- **Automatic SRS Creation**: Tự động tạo mục ôn tập từ lỗi luyện đề
+- **Optimal Intervals**: Lên lịch ôn tập dựa trên mô hình SM-2
+- **Confidence-based Review**: Điều chỉnh khoảng ôn tập dựa trên mức độ tự tin
+- **Progress Tracking**: Theo dõi tiến bộ ôn tập
+- **Review Reminders**: Nhắc nhở khi đến hạn ôn tập
 
-### 2.4. Tính Năng Giao Tiếp
-- **Real-time chat**: 1vs1 và group chat theo tòa nhà
-- **Notifications**: Email + in-app notifications
-- **Maintenance requests**: Yêu cầu sửa chữa từ người thuê
-- **Announcements**: Thông báo từ chủ nhà
+### 2.4. Quản Lý Lớp Học
+- **Class Management**: Giáo viên tạo và quản lý lớp học
+- **Student Tracking**: Theo dõi tiến bộ của từng học sinh
+- **Attendance System**: Ghi nhận điểm danh và vắng học
+- **Catch-up System**: Tự động tạo kế hoạch bắt kịp cho học sinh vắng
+- **Announcements**: Gửi thông báo cho cả lớp
+- **Performance Analytics**: Phân tích hiệu suất lớp và cá nhân
 
-### 2.5. Báo Cáo & Lịch Sử
-- **Payment history**: Lịch sử thanh toán chi tiết
-- **Utility consumption**: Theo dõi tiêu thụ điện, nước, gas
-- **Billing reports**: Báo cáo thu chi theo tháng/năm
+### 2.5. Phân Tích & Báo Cáo
+- **Student Dashboard**: Bảng điều khiển cá nhân với kế hoạch hôm nay
+- **Strength/Weakness Analysis**: Phân tích điểm mạnh và điểm yếu
+- **Learning Statistics**: Thống kê thời gian học, số câu trả lời, tỷ lệ chính xác
+- **Progress Reports**: Báo cáo tiến bộ chi tiết
+- **Teacher Analytics**: Phân tích hiệu suất lớp cho giáo viên
 
-### 2.6. Feature Prioritization by ROI (Return on Investment)
+### 2.6. Feature Prioritization by MVP
 
-| Feature | Giá trị | Khả năng bán | Khái quát nội dung cần implement | Priority | Rationale |
+| Feature | Giá trị | Khả năng bán | Mô tả | Priority | Rationale |
 | --- | --- | --- | --- | --- | --- |
-| 💰 Tự động tính tiền | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Tự động tính tiền phòng + điện + nước + phí dịch vụ → tạo hóa đơn | **P0 (Critical)** | Core pain point - saves 20+ hours/month per landlord |
-| 🔔 Nhắc tiền thuê | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Tự động nhắc trước hạn, đến hạn và quá hạn thanh toán | **P0 (Critical)** | High value & revenue impact - improves payment rate by 30% |
-| 📱 QR thanh toán | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Hiển thị QR → tenant thanh toán → tự động/cập nhật trạng thái đã thanh toán | **P0 (Critical)** | Essential for digital payments - 85% of users prefer QR |
-| 📊 Dashboard | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Tổng quan phòng thuê/trống, tiền chưa thu, doanh thu, việc cần xử lý | **P1 (High)** | Key feature for landlord decision-making & tenant transparency |
-| 📷 OCR đồng hồ  | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Chụp công tơ điện/nước → OCR đọc chỉ số → tự động nhập vào hệ thống | **P0 (Critical)** | Eliminates manual input errors - 10% of data entry errors removed |
-| 📥 Import Excel | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Import hàng loạt tòa nhà/phòng/tenant/chỉ số điện nước từ Excel để chuyển đổi nhanh | **P1 (High)** | Bulk operations - saves time on initial data migration |
-| 🏠 Vacancy management | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Theo dõi phòng trống, thời gian trống và doanh thu bị mất do vacancy | **P2 (Medium)** | Important for room turnover optimization |
-| 👤 Tenant management | ⭐⭐⭐ | ⭐⭐⭐ | Hồ sơ tenant, hợp đồng, tiền cọc, lịch sử thanh toán, giấy tờ | **P2 (Medium)** | Standard CRM functionality |
-| 🔧 Maintenance | ⭐⭐⭐⭐ | ⭐⭐⭐ | Tenant báo sự cố → chủ nhà xử lý → theo dõi trạng thái và lịch sử sửa chữa | **P2 (Medium)** | Improves service quality but not revenue-driving |
-| 📈 Financial reports | ⭐⭐⭐⭐ | ⭐⭐⭐ | Báo cáo doanh thu, chi phí, tiền đã thu/chưa thu và lợi nhuận theo tháng | **P2 (Medium)** | Compliance & insights - secondary to core billing |
-| 🤖 AI chatbot | ⭐⭐ | ⭐ | Trợ lý AI trả lời câu hỏi/quản lý dữ liệu; chưa ưu tiên trong MVP | **P3 (Low)** | Nice-to-have - low immediate ROI, consider post-MVP |
+| 🎯 Adaptive Practice | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Tự động tạo bài luyện dựa trên điểm yếu | **P0 (Critical)** | Core differentiator - 40% tăng hiệu quả học |
+| 📊 Skill Mastery | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Theo dõi mức độ thành thạo chi tiết | **P0 (Critical)** | Foundation cho recommendations |
+| 🧠 SRS System | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Ôn tập thông minh theo khoảng cách | **P0 (Critical)** | Tăng retention 60% so với ôn tập thường |
+| 📱 Student Dashboard | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Bảng điều khiển cá nhân với kế hoạch | **P1 (High)** | Giao diện chính của ứng dụng |
+| 📝 Question Bank | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Ngân hàng câu hỏi với metadata | **P1 (High)** | Nền tảng cho tất cả tính năng học |
+| 🎓 Mock Test | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Thi thử JLPT đầy đủ | **P1 (High)** | Simulation thực tế cho JLPT |
+| 👨‍🏫 Class Management | ⭐⭐⭐ | ⭐⭐⭐⭐ | Quản lý lớp cho giáo viên | **P2 (Medium)** | Support trường/lớp học |
+| 📊 Analytics | ⭐⭐⭐⭐ | ⭐⭐⭐ | Báo cáo chi tiết cho giáo viên/admin | **P2 (Medium)** | Insights cho quyết định |
+| 🔄 Missed Class Catch-up | ⭐⭐⭐ | ⭐⭐⭐ | Kế hoạch bắt kịp tự động | **P2 (Medium)** | Hỗ trợ quản lý lớp |
+| 🎮 Gamification | ⭐⭐ | ⭐⭐ | Points, badges, leaderboards | **P3 (Low)** | Nice-to-have post-MVP |
 
 **Priority Legend:**
-- **P0 (Critical)**: Must-have for MVP, directly impacts revenue & user retention
-- **P1 (High)**: Important for product success, improves user experience significantly
-- **P2 (Medium)**: Valuable additions, lower immediate ROI, can be phased in
-- **P3 (Low)**: Nice-to-have features, consider for future versions
+- **P0 (Critical)**: Must-have cho MVP, trực tiếp tác động đến giá trị học
+- **P1 (High)**: Quan trọng cho sản phẩm, cải thiện UX đáng kể
+- **P2 (Medium)**: Hỗ trợ quan trọng, ROI thấp hơn, có thể phân chia
+- **P3 (Low)**: Nice-to-have, xem xét sau MVP
 
 ## 3. Tech Stack
 
-### 3.1. Frontend (NextJS 16)
+### 3.1. Frontend (Next.js 16)
 ```json
 {
-  "framework": "NextJS 16 với App Router",
-  "language": "TypeScript",
-  "styling": "Tailwind CSS",
-  "components": "Shadcn/ui",
+  "framework": "Next.js 16 với App Router và i18n",
+  "language": "TypeScript (strict mode)",
+  "styling": "Tailwind CSS v4",
+  "components": "shadcn/ui",
   "forms": "React Hook Form + Zod validation",
-  "state": "Zustand (client) + Tanstack Query (server)",
+  "state": "TanStack Query v5+ (server) + Zustand (client)",
   "realtime": "Socket.io Client",
-  "notifications": "React Hot Toast",
-  "payments": "Stripe React components",
-  "http": "Axios"
+  "http": "Axios",
+  "i18n": "Intlayer",
+  "notifications": "React Hot Toast"
 }
 ```
 
@@ -130,24 +135,25 @@ Tacohouse là hệ thống quản lý nhà trọ cho thuê full-stack hiện đ�
 ```json
 {
   "framework": "NestJS 11 với TypeScript",
-  "database": "PostgreSQL với Prisma ORM",
+  "database": "PostgreSQL 14+ với Prisma 7+ ORM",
   "authentication": "JWT + Passport (Local & JWT strategies)",
+  "api": "REST + Swagger/OpenAPI",
+  "validation": "class-validator + class-transformer",
   "realtime": "Socket.io",
-  "queue": "Bull Queue với Redis",
+  "queue": "Bull Queue với Redis (optional)",
   "email": "Nodemailer",
-  "upload": "Cloudflare R2",
-  "payments": "Stripe",
-  "validation": "Class Validator + Class Transformer"
+  "testing": "Jest (unit tests)"
 }
 ```
 
 ### 3.3. Database & Infrastructure
 ```json
 {
-  "database": "PostgreSQL (main database)",
-  "cache": "Redis (sessions, queue, cache)",
-  "storage": "Cloudflare R2 (images, documents)",
+  "database": "PostgreSQL 14+ (main database)",
+  "cache": "Redis (optional, cho caching/queue)",
   "containerization": "Docker & Docker Compose",
+  "package_manager": "pnpm 8+",
+  "node_version": "18+",
   "monitoring": "Prisma Studio (development)"
 }
 ```
@@ -158,36 +164,58 @@ Tacohouse là hệ thống quản lý nhà trọ cho thuê full-stack hiện đ�
   "formatting": "ESLint + Prettier",
   "git": "Lefthook (pre-commit hooks)",
   "testing": "Jest (unit) + Playwright (e2e)",
-  "development": "Concurrently (run both servers)",
-  "components": "Storybook (UI documentation)",
-  "shared": "Orval (generate API types from OpenAPI spec)"
+  "workspace": "pnpm workspaces",
+  "api_generation": "Orval (từ OpenAPI spec)"
 }
 ```
 
 ## 4. Cấu Trúc Dự Án
 
 ```
-tacohouse/
-├── frontend/                 # NextJS App
+tacolearn/
+├── frontend/                 # Next.js App
 │   ├── src/
-│   │   ├── app/             # App Router pages
-│   │   ├── components/      # Reusable components
-│   │   ├── lib/            # Utilities, API client
-│   │   ├── stores/         # Zustand stores
-│   │   ├── types/          # TypeScript types
-│   │   └── hooks/          # Custom React hooks
-│   ├── public/             # Static assets
+│   │   ├── app/             # App Router pages + i18n [locale]
+│   │   ├── components/      # Reusable UI components
+│   │   ├── features/        # Feature-specific components
+│   │   ├── hooks/           # Custom React hooks (useQuery, useMutation)
+│   │   ├── libs/            # Utilities, API client, queryKeys
+│   │   ├── stores/          # Zustand stores
+│   │   ├── types/           # TypeScript types
+│   │   └── utils/           # Helper functions
+│   ├── public/              # Static assets
 │   └── package.json
 ├── backend/                 # NestJS API
 │   ├── src/
-│   │   ├── modules/        # Feature modules
-│   │   ├── common/         # Shared utilities
-│   │   ├── database/       # Prisma schema & migrations
-│   │   └── config/         # Configuration
-│   ├── prisma/             # Database schema
+│   │   ├── [feature]/       # Feature modules (questions, practice, srs, etc.)
+│   │   │   ├── [feature].controller.ts
+│   │   │   ├── [feature].service.ts
+│   │   │   ├── [feature].module.ts
+│   │   │   └── dto/
+│   │   ├── auth/            # Authentication module
+│   │   ├── common/          # Shared utilities, decorators, pipes
+│   │   ├── config/          # Configuration
+│   │   ├── prisma/          # Prisma service
+│   │   └── main.ts
+│   ├── prisma/
+│   │   ├── schema.prisma    # Database schema
+│   │   ├── migrations/      # Database migrations
+│   │   └── seeds/           # Seed data (questions, vocabulary, etc.)
 │   └── package.json
+├── documents/               # System design documentation
+│   ├── 0.App_description.md
+│   ├── 1.businessRequirementDocument*.md
+│   ├── 2.useCaseDiagram*.md
+│   ├── 3.screenTransactionDiagram.md
+│   ├── 4.systemArchitectureDocument.md
+│   ├── 5.dataTableDesignDocument.md
+│   ├── 6.tacolearn-api-spec.yaml
+│   ├── 6.api-enhancement-summary.md
+│   ├── 7.securityDesignDocument.md
+│   ├── 8.shared-types-guide.md
+│   └── 9.deployment-guide.md
 ├── docker-compose.yml       # Local development services
-├── pnpm-workspace.yaml     # pnpm workspace config
+├── pnpm-workspace.yaml      # pnpm workspace config
 └── README.md
 ```
 
@@ -196,143 +224,157 @@ tacohouse/
 ### 5.1. Prerequisites
 - Node.js 18+
 - PostgreSQL 14+
-- Redis 6+
-- pnpm
+- pnpm 8+
+- Docker & Docker Compose (optional, cho local development)
 
 ### 5.2. Quick Start
 ```bash
 # Clone repository
 git clone <repo-url>
-cd tacohouse
+cd tacolearn
 
-# Install dependencies
-npm install
+# Install dependencies (toàn bộ monorepo)
+pnpm install
 
 # Setup environment variables
-cp backend/.env.example backend/.env
+cp backend/.env.example backend/.env.local
 cp frontend/.env.example frontend/.env.local
 
-# Start PostgreSQL và Redis (with Docker)
-docker-compose up -d
+# Cập nhật backend/.env.local với DATABASE_URL
+# DATABASE_URL=postgresql://user:password@localhost:5432/tacolearn
+
+# Start PostgreSQL (with Docker)
+docker-compose up -d postgres
 
 # Setup database
 cd backend
-npx prisma migrate dev
-npx prisma db seed
+pnpm prisma generate
+pnpm prisma migrate dev
+pnpm prisma db seed
 
-# Start development servers
+# Start development servers (từ root)
 cd ..
-npm run dev
+pnpm dev
 ```
 
+Frontend sẽ chạy ở `http://localhost:3000`  
+Backend sẽ chạy ở `http://localhost:3005`  
+Swagger API docs: `http://localhost:3005/docs`
+
 ### 5.3. Available Scripts
-<!-- TODO: Update latest scripts if needed -->
 ```bash
-npm run dev              # Start both frontend & backend in development
-npm run build            # Build all packages (shared, backend, frontend)
-npm run start            # Start both applications in production
-npm run lint             # Lint both applications
-npm run test             # Run tests for both applications
+# Development
+pnpm dev              # Start both frontend & backend in development
+pnpm dev:frontend     # Frontend only
+pnpm dev:backend      # Backend only
 
-# Prisma commands
-npm run prisma:generate  # Generate Prisma client into shared package
-npm run prisma:migrate   # Run Prisma migrations
+# Build & Production
+pnpm build            # Build all packages
+pnpm start            # Start both applications in production
 
-# Shared package
-npm run shared:build     # Build shared types package
-npm run shared:watch     # Watch mode for shared package
+# Code Quality
+pnpm lint             # Lint both applications
+pnpm test             # Run tests for both applications
+pnpm format           # Format code with Prettier
+
+# Database
+pnpm db:generate      # Generate Prisma client
+pnpm db:migrate       # Run Prisma migrations
+pnpm db:seed          # Seed database with initial data
+pnpm db:studio        # Open Prisma Studio
+
+# Orval (API Type Generation)
+pnpm orval            # Generate TypeScript types từ OpenAPI spec
 ```
 
 ## 6. Database Schema
 
 ### 6.1. Core Entities
-- **Users**: Admin, Tenants, Landlords
-- **Buildings**: Owned by landlords
-- **Rooms**: Belong to buildings
-- **Rentals**: Tenant-Room relationships
-- **Bills**: Monthly billing with complex calculations
-- **Payments**: Payment history and confirmations
-- **Messages**: Chat system
-- **Notifications**: System notifications
+- **Users**: Admin, Students, Teachers
+- **Students**: Student profile với JLPT goals
+- **Teachers**: Teacher profile với class assignments
+- **Questions**: Question bank với metadata (level, section, skill, difficulty)
+- **QuestionAttempts**: Theo dõi từng lần trả lời câu hỏi
+- **SkillMastery**: Mức độ thành thạo từng kỹ năng
+- **PracticeSessions**: Phiên luyện đề
+- **SRSItems**: Spaced Repetition System items
+- **Classes**: Lớp học do giáo viên tạo
+- **Lessons**: Bài học với video, vocabulary, grammar
 
 ### 6.2. Key Relationships
-- One Landlord → Many Buildings
-- One Building → Many Rooms  
-- One Room → Many Tenants (room sharing)
-- Complex billing system with utilities tracking
+- One User → One Student/Teacher Profile
+- One Question → Many QuestionAttempts
+- One Student → Many QuestionAttempts (tracks all practice)
+- One Student → Many SkillMastery (tracks proficiency per skill)
+- One Question → One SRSItem per student (many-to-many via SRS)
+- One Teacher → Many Classes
+- One Class → Many Students (many-to-many)
+- One Class → Many Lessons
+- One Lesson → Many Questions (for homework, assignments)
 
 ## 7. Authentication & Authorization
 
 ### 7.1. JWT Strategy
-- Access tokens (15 minutes)
-- Refresh tokens (7 days)
-- Role-based permissions
+- Access tokens (24 giờ)
+- Refresh tokens (7 ngày)
+- HttpOnly cookies để lưu trữ tokens
+- Role-based permissions (RBAC)
 
 ### 7.2. Role Permissions
-- **Admin**: Full system access
-- **Landlord**: Manage owned buildings, tenants, billing
-- **Tenant**: View personal data, payments, communicate
+- **Admin**: Full system access, user management, content moderation, analytics
+- **Teacher**: Manage classes, view student progress, create assignments, track attendance
+- **Student**: View personal dashboard, practice, access lessons, view skill mastery
 
 ## 8. System design documentations
 
-
 ### 8.0. App desciption
-- [Miêu tả dự án](documents/0.App_description.md)
+- [Mô tả TacoLearn](documents/0.App_description.md) - Product vision, philosophy, core concepts
 
 ### 8.1. Business Requirement Document (BRD)
-- Miêu tả yêu cầu nghiệp vụ của hệ thống
-- [Tài liệu bản tiếng Việt](documents/1.businessRequirementDocumentVi.md)
-- [Tài liệu bản tiếng Anh](documents/1.businessRequirementDocumentEn.md)
+- Tài liệu yêu cầu kinh doanh chi tiết
+- [Tài liệu bản Tiếng Việt](documents/1.businessRequirementDocumentVi.md)
+- [Tài liệu bản Tiếng Anh](documents/1.businessRequirementDocumentEn.md)
 
 ### 8.2. Use case Diagram
-
-- BIểu đồ và mô tả các ca sử dụng
-- [Tài liệu tiếng Việt](documents/2.useCaseDiagramVi.md)
-- [Tài liệu tiếng Anh](documents/2.useCaseDiagramEn.md)
+- Biểu đồ và mô tả chi tiết 100+ use cases
+- [Tài liệu Tiếng Việt](documents/2.useCaseDiagramVi.md)
+- [Tài liệu Tiếng Anh](documents/2.useCaseDiagramEn.md)
 
 ### 8.3. Screen Transition Diagram
-
-- [Tài liệu tiếng Việt](documents/2.useCaseDiagramVi.md)
-- [Tài liệu tiếng Anh](documents/2.useCaseDiagramEn.md)
+- Luồng giao diện chi tiết cho tất cả user journeys
+- [Tài liệu Screen Transition](documents/3.screenTransactionDiagram.md)
 
 ### 8.4. System Architecture Document
-
-- [Tài liệu tiếng Việt](documents/4.systemArchitectureDocument.md)
+- Kiến trúc hệ thống, layers, integrations
+- [Tài liệu Architecture](documents/4.systemArchitectureDocument.md)
 
 ### 8.5. Database Design Document
-
-- [Tài liệu tiếng Việt](documents/5.dataTableDesignDocument.md)
-- Trong tương lai sẽ gộp 2 cái vào thành 1. Và có thể trong tương lai sẽ tham chiếu tới file prisma thiết kế và ER diagram luôn 
+- Schema design, entities, relationships
+- [Tài liệu Database Design](documents/5.dataTableDesignDocument.md)
 
 ### 8.6. API Specification Document
-
-- [Tài liệu tiếng Việt](documents/6.tacohouse-api-spec.yaml)
-- [Tài liệu tổng quát các API](documents/6.api-enhancement-summary.md)
+- OpenAPI 3.0 specification với 50+ endpoints
+- [Tài liệu OpenAPI YAML](documents/6.tacolearn-api-spec.yaml)
+- [Tài liệu API Summary](documents/6.api-enhancement-summary.md)
 - API documentation is available at:
-  - Development: `http://localhost:3001/api/docs`
+  - Development: `http://localhost:3005/api/docs`
   - Swagger UI with interactive endpoints
   - Authentication examples included
 
 ### 8.7. Security Design Document
-- [Tài liệu tiếng Việt](documents/7.securityDesignDocument.md)
-- Thiết kế bảo mật hệ thống. Gồm:
-  - Xác thực / phân quyền (JWT, OAuth2, RBAC/Pundit)
-  - CSRF, XSS, SQL Injection, v.v.
-  - Encryption / Hash / TLS
-  - Log & audit
+- Thiết kế bảo mật hệ thống
+- [Tài liệu Security Design](documents/7.securityDesignDocument.md)
+- Includes: JWT, encryption, HTTPS, GDPR compliance, data privacy
 
 ### 8.8. Shared Types Guide
-- [Tài liệu tiếng Việt](documents/8.shared-types-guide.md)
-- Hướng dẫn sử dụng shared types từ Prisma cho cả BE và FE
-- Setup và workflow phát triển
-- Best practices và examples
+- Hướng dẫn sử dụng shared types từ Prisma cho BE & FE
+- [Tài liệu Shared Types](documents/8.shared-types-guide.md)
+- Setup, workflow, best practices, examples
 
 ### 8.9. Deployment Guide
+- Hướng dẫn deploy chi tiết
 - [Deployment Documentation](documents/9.deployment-guide.md)
-- Docker production setup
-- Cloud deployment strategies (Vercel, Railway, AWS, DigitalOcean)
-- CI/CD pipeline với GitHub Actions
-- Health checks và monitoring
+- Docker setup, cloud providers (Vercel, Railway, GCP), CI/CD pipeline
 
 ## 9. Deployment
 
@@ -340,56 +382,66 @@ npm run shared:watch     # Watch mode for shared package
 
 ```bash
 # 1. Copy environment variables
-cp .env.production.example .env.production
-# Edit .env.production with your values
+cp backend/.env.example backend/.env.production
+cp frontend/.env.example frontend/.env.production
+# Edit environment files with your values
 
 # 2. Deploy all services
-./scripts/deploy.sh all
-
-# 3. Check health
-./scripts/health-check.sh
-```
-
-### 9.2. Production Environment
-
-**Docker Compose (Recommended):**
-```bash
-# Build and start all services
 docker-compose -f docker-compose.prod.yml up -d
 
-# View logs
-docker-compose -f docker-compose.prod.yml logs -f
-
-# Stop services
-docker-compose -f docker-compose.prod.yml down
+# 3. Check health
+curl http://localhost:3005/health
 ```
 
-**Individual Services:**
-```bash
-# Deploy backend only
-./scripts/deploy.sh backend
+### 9.2. Development Deployment
 
-# Deploy frontend only
-./scripts/deploy.sh frontend
+```bash
+# Start development environment
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
 ```
 
 ### 9.3. Cloud Deployment
 
-**Vercel (Frontend):**
-- Root Directory: `frontend`
-- Build Command: `cd .. && pnpm install && pnpm shared:build && cd frontend && pnpm build`
-- Install Command: `cd .. && pnpm install`
+**Frontend (Vercel):**
+- Deploy Next.js app directly from GitHub
+- Environment variables configured in Vercel dashboard
+- Automatic deployment on main branch
+- Preview deployments for PRs
 
-**Railway/Render (Backend):**
-- Build Command: `pnpm install && cd shared && pnpm build && cd ../backend && pnpm prisma generate && pnpm build`
-- Start Command: `cd backend && pnpm prisma migrate deploy && node dist/main.js`
+**Backend (Railway/Render/Fly.io):**
+- Deploy NestJS API server
+- Environment variables for PostgreSQL connection
+- Auto-scaling based on traffic
+- Built-in logging and monitoring
 
-**Full Guide:** See [Deployment Guide](documents/9.deployment-guide.md)
+**Database (Managed PostgreSQL):**
+- Railway PostgreSQL, Render PostgreSQL, or AWS RDS
+- Automatic backups
+- Point-in-time recovery
+
+**Full Guide:** See [Deployment Guide](documents/9.deployment-guide.md) for detailed instructions
 
 ### 9.4. Environment Variables
-- Development: `.env` files trong mỗi package
-- Production: `.env.production` (copy from `.env.production.example`)
-- Required variables: `DATABASE_URL`, `JWT_SECRET`, `NEXT_PUBLIC_API_ORIGIN`
+
+**Backend (.env.production):**
+```
+DATABASE_URL=postgresql://user:password@host:5432/tacolearn
+JWT_SECRET=your-secret-key
+NODE_ENV=production
+PORT=3005
+```
+
+**Frontend (.env.production):**
+```
+NEXT_PUBLIC_API_ORIGIN=https://api.tacolearn.com
+NEXT_PUBLIC_APP_URL=https://tacolearn.com
+```
 
 ## 10. Contributing
 
@@ -399,14 +451,25 @@ docker-compose -f docker-compose.prod.yml down
 4. Push to branch (`git push origin feature/amazing-feature`)
 5. Open Pull Request
 
+**Development Guidelines:**
+- Follow the backend and frontend instructions in `.github/instructions/`
+- Use TypeScript (strict mode) for all new code
+- Write tests for new features
+- Run linting and formatting before submitting PR
+
 ## 11. License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 12. Support
 
-For support, email support@tacohouse.com or join our Slack channel.
+For support, email support@tacolearn.com or open an issue on GitHub.
+
+**Project Links:**
+- Website: https://tacolearn.com
+- API Documentation: https://api.tacolearn.com/docs
+- GitHub: https://github.com/tacolearn
 
 ---
 
-**Tacohouse** - Modernizing rental property management with cutting-edge technology! 🚀
+**TacoLearn** - Empowering students to master Japanese JLPT with adaptive, intelligent learning! 🚀

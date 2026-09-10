@@ -14,23 +14,23 @@ services:
     ports:
       - 3005:3000
     environment:
-      - DATABASE_URL=postgresql://tacohouse:tacohouse123@database:5432/tacohouse
+      - DATABASE_URL=postgresql://tacolearn:tacolearn123@database:5432/tacolearn
 
   # PostgreSQL Database
   database:
     image: postgres:15-alpine
-    container_name: tacohouse_postgres
+    container_name: tacolearn_postgres
     environment:
-      POSTGRES_DB: tacohouse
-      POSTGRES_USER: tacohouse
-      POSTGRES_PASSWORD: tacohouse123
+      POSTGRES_DB: tacolearn
+      POSTGRES_USER: tacolearn
+      POSTGRES_PASSWORD: tacolearn123
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./backend/database/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U tacohouse"]
+      test: ["CMD-SHELL", "pg_isready -U tacolearn"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -38,7 +38,7 @@ services:
   # Redis for caching and sessions
   redis:
     image: redis:7-alpine
-    container_name: tacohouse_redis
+    container_name: tacolearn_redis
     ports:
       - "6379:6379"
     command: redis-server --appendonly yes
@@ -53,13 +53,13 @@ services:
   # # MinIO for local file storage (alternative to Cloudinary in development)
   # minio:
   #   image: minio/minio:latest
-  #   container_name: tacohouse_minio
+  #   container_name: tacolearn_minio
   #   ports:
   #     - "9000:9000"
   #     - "9001:9001"
   #   environment:
-  #     MINIO_ROOT_USER: tacohouse
-  #     MINIO_ROOT_PASSWORD: tacohouse123
+  #     MINIO_ROOT_USER: tacolearn
+  #     MINIO_ROOT_PASSWORD: tacolearn123
   #   command: server /data --console-address ":9001"
   #   volumes:
   #     - minio_data:/data
@@ -72,7 +72,7 @@ services:
   # # MailHog for email testing
   # mailhog:
   #   image: mailhog/mailhog:latest
-  #   container_name: tacohouse_mailhog
+  #   container_name: tacolearn_mailhog
   #   ports:
   #     - "1025:1025" # SMTP server
   #     - "8025:8025" # Web UI
@@ -97,4 +97,4 @@ volumes:
 
 networks:
   default:
-    name: tacohouse_network
+    name: tacolearn_network
