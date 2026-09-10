@@ -51,6 +51,11 @@ const navigationSections: NavSection[] = [
         badgeVariant: 'emerald',
       },
       {
+        title: 'Luyện đề thích ứng',
+        href: '/dashboard/practice',
+        icon: FileCheck2,
+      },
+      {
         title: 'Kho Kanji & Từ vựng',
         href: '/dashboard',
         icon: BookOpen,
