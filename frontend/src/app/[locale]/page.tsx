@@ -1,22 +1,31 @@
-import Link from 'next/link';
-
-import { Button } from '@/components/ui';
+import {
+  CatchUpFeatureSection,
+  CtaBannerSection,
+  ForSchoolsSection,
+  HeroSection,
+  HowItWorksSection,
+  JlptPathsSection,
+  LandingFooter,
+  LandingHeader,
+  SocialProofSection,
+  WhyTacoLearnSection,
+} from '@/features/landing';
 
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-8 text-center">
-      <h1 className="text-4xl font-bold tracking-tight">TacoLearn</h1>
-      <p className="text-muted-foreground max-w-md">
-        Application template. Start building your features from here.
-      </p>
-      <div className="flex gap-3">
-        <Button asChild>
-          <Link href="/login">Login</Link>
-        </Button>
-        <Button asChild variant="outline">
-          <Link href="/dashboard">Dashboard</Link>
-        </Button>
-      </div>
-    </main>
+    <div className="flex min-h-screen flex-col bg-white text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
+      <LandingHeader />
+      <main className="flex-1">
+        <HeroSection />
+        <SocialProofSection />
+        <WhyTacoLearnSection />
+        <HowItWorksSection />
+        <JlptPathsSection />
+        <ForSchoolsSection />
+        <CatchUpFeatureSection />
+        <CtaBannerSection />
+      </main>
+      <LandingFooter />
+    </div>
   );
 }
