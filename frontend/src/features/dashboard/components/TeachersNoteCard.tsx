@@ -47,11 +47,11 @@ export function TeachersNoteCard() {
         <div className="text-on-surface space-y-2 text-xs leading-relaxed dark:text-slate-200">
           <p className="italic">
             Minh làm bài test từ vựng rất tốt! Tuy nhiên ở phần ngữ pháp{' '}
-            <strong className="font-japanese text-primary font-semibold not-italic dark:text-white">
+            <strong className="text-primary font-semibold not-italic dark:text-white">
               〜わけではない
             </strong>{' '}
             và{' '}
-            <strong className="font-japanese text-primary font-semibold not-italic dark:text-white">
+            <strong className="text-primary font-semibold not-italic dark:text-white">
               〜はずがない
             </strong>
             , em còn nhầm lẫn khi gặp câu phủ định kép.

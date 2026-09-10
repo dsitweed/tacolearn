@@ -179,11 +179,11 @@ export function TodaysPrioritiesSection() {
 
               <p className="text-xs text-slate-600 dark:text-slate-300">
                 Phân biệt{' '}
-                <code className="font-japanese bg-surface-container-highest text-primary rounded px-1.5 py-0.5 text-xs font-semibold dark:bg-slate-800 dark:text-indigo-300">
+                <code className="bg-surface-container-highest text-primary rounded px-1.5 py-0.5 text-xs font-semibold dark:bg-slate-800 dark:text-indigo-300">
                   〜わけではない
                 </code>{' '}
                 và{' '}
-                <code className="font-japanese bg-surface-container-highest text-primary rounded px-1.5 py-0.5 text-xs font-semibold dark:bg-slate-800 dark:text-indigo-300">
+                <code className="bg-surface-container-highest text-primary rounded px-1.5 py-0.5 text-xs font-semibold dark:bg-slate-800 dark:text-indigo-300">
                   〜はずがない
                 </code>
                 .

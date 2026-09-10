@@ -65,7 +65,7 @@ export function AiDiagnosticsCard() {
               >
                 {item.type}
               </span>
-              <span className="font-japanese text-primary text-sm font-bold tracking-widest dark:text-white">
+              <span className="text-primary text-sm font-bold tracking-widest dark:text-white">
                 {item.kanjiSample}
               </span>
             </div>

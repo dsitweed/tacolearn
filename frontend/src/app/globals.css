@@ -191,8 +191,8 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-sans), 'Inter', -apple-system, sans-serif;
-  --font-heading: var(--font-heading), 'Plus Jakarta Sans', sans-serif;
+  --font-sans: var(--font-sans), var(--font-japanese), 'Inter', -apple-system, sans-serif;
+  --font-heading: var(--font-heading), var(--font-japanese), 'Plus Jakarta Sans', sans-serif;
   --font-japanese: var(--font-japanese), 'Noto Sans JP', sans-serif;
   --font-mono: var(--font-mono), monospace;
 

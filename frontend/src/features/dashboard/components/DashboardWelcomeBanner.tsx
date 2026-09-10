@@ -35,7 +35,7 @@ export function DashboardWelcomeBanner() {
               1 buổi học trực tiếp
             </strong>{' '}
             lúc 09:30 cùng Tanaka Sensei (
-            <span className="font-japanese text-xs text-slate-500">
+            <span className="text-xs text-slate-500">
               田中先生 • 文法・語彙
             </span>
             ).
