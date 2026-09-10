@@ -42,7 +42,7 @@ export class UsersController {
   }
 
   @Get(':id')
-  @Roles(UserRole.ADMIN, UserRole.LANDLORD)
+  @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: 'Get user profile by ID' })
   @ApiResponse({
     status: 200,

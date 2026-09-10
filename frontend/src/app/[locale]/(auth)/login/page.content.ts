@@ -5,17 +5,17 @@ const loginPageContent = {
   content: {
     hero: {
       title: t({
-        vi: 'Quản lý nhà trọ thông minh hơn với dữ liệu chuyên sâu.',
-        en: 'Smarter rental management with deep insights.',
+        vi: 'Chào mừng đến với TacoLearn.',
+        en: 'Welcome to TacoLearn.',
       }),
       description: t({
-        vi: 'Hơn 2.000 chủ nhà và quản lý chuyên nghiệp đang dùng nền tảng TacoHouse để tối ưu tỷ lệ lấp đầy, tự động hóa bảo trì và gia tăng lợi nhuận.',
-        en: 'Over 2,000 landlords and professional managers use TacoHouse to optimize occupancy rates, automate maintenance, and increase revenue.',
+        vi: 'Đăng nhập để bắt đầu sử dụng nền tảng.',
+        en: 'Sign in to start using the platform.',
       }),
       retentionValue: t({ vi: '98%', en: '98%' }),
       retentionLabel: t({
-        vi: 'Tỷ lệ giữ chân khách thuê',
-        en: 'Tenant Retention Rate',
+        vi: 'Độ hài lòng',
+        en: 'Satisfaction',
       }),
       responseValue: t({ vi: '15 phút', en: '15 min' }),
       responseLabel: t({
@@ -23,8 +23,8 @@ const loginPageContent = {
         en: 'Response Time',
       }),
       quote: t({
-        vi: '"Công cụ trực quan nhất trong bộ công cụ của tôi." — Chị Lan, Quản lý bất động sản',
-        en: '"The most intuitive tool in my toolkit." — Ms. Lan, Property Manager',
+        vi: '"Công cụ trực quan nhất trong bộ công cụ của tôi."',
+        en: '"The most intuitive tool in my toolkit."',
       }),
     },
     title: t({
@@ -32,8 +32,8 @@ const loginPageContent = {
       en: 'Welcome back',
     }),
     subtitle: t({
-      vi: 'Đăng nhập để quản lý tài sản và khách thuê của bạn.',
-      en: 'Sign in to manage your properties and tenants.',
+      vi: 'Đăng nhập để tiếp tục.',
+      en: 'Sign in to continue.',
     }),
     googleButton: t({ vi: 'Google', en: 'Google' }),
     facebookButton: t({ vi: 'Facebook', en: 'Facebook' }),

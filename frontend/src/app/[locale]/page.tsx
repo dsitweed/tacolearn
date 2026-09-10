@@ -1,46 +1,22 @@
-'use client';
+import Link from 'next/link';
 
-import {
-  BenefitsSection,
-  FeaturedLandlordsSection,
-  GuestFooter,
-  GuestHeader,
-  HeroSection,
-  PopularAreasSection,
-  RentalGuidesSection,
-  ReviewsAndFaqSection,
-  RoomDiscoverySection,
-} from '@/features/guest-dashboard';
+import { Button } from '@/components/ui';
 
 export default function HomePage() {
   return (
-    <div>
-      {/* Top Navigation Bar */}
-      <GuestHeader />
-
-      {/* Hero Section */}
-      <HeroSection />
-
-      {/* Guest Value Proposition Highlights */}
-      <BenefitsSection />
-
-      {/* Discovery Feed & Room Cards */}
-      <RoomDiscoverySection />
-
-      {/* SECTION 2: Chủ trọ tiêu biểu & Uy tín (Featured Landlords) */}
-      <FeaturedLandlordsSection />
-
-      {/* SECTION 3: Khu vực phổ biến (Popular Areas - SEO theo khu vực) */}
-      <PopularAreasSection />
-
-      {/* SECTION 4: Cẩm nang & Kinh nghiệm thuê phòng (Rental Guides) */}
-      <RentalGuidesSection />
-
-      {/* SECTION 5: Đánh giá thực tế & FAQ */}
-      <ReviewsAndFaqSection />
-
-      {/* Footer */}
-      <GuestFooter />
-    </div>
+    <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-8 text-center">
+      <h1 className="text-4xl font-bold tracking-tight">TacoLearn</h1>
+      <p className="text-muted-foreground max-w-md">
+        Application template. Start building your features from here.
+      </p>
+      <div className="flex gap-3">
+        <Button asChild>
+          <Link href="/login">Login</Link>
+        </Button>
+        <Button asChild variant="outline">
+          <Link href="/dashboard">Dashboard</Link>
+        </Button>
+      </div>
+    </main>
   );
 }

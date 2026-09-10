@@ -1,21 +1,15 @@
 'use client';
 
-import { Bell, CalendarDays, LogOut, Search } from 'lucide-react';
-import Link from 'next/link';
+import { CalendarDays, LogOut, Search } from 'lucide-react';
 
-import { useLogout, useNotifications } from '@/hooks/api';
+import { useLogout } from '@/hooks/api';
 import { useAuthStore } from '@/stores/authStore';
 
-import { Avatar, AvatarImage, Badge, Button, Separator } from '../ui';
+import { Avatar, AvatarImage, Button, Separator } from '../ui';
 
 export function Header() {
   const { user } = useAuthStore();
   const logoutMutation = useLogout();
-  const { data: notificationsData } = useNotifications({
-    page: 1,
-    limit: 1000,
-  });
-  const notifications = notificationsData?.data ?? [];
 
   const handleLogout = () => {
     logoutMutation.mutate();
@@ -35,7 +29,7 @@ export function Header() {
           <Search className="absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-gray-400" />
           <input
             type="text"
-            placeholder="Tìm kiếm nhà trọ, phòng, người thuê, hóa đơn..."
+            placeholder="Tìm kiếm..."
             className="h-10 w-full rounded-xl border border-gray-200 bg-white pr-4 pl-10 text-sm text-gray-900 shadow-2xs transition-all placeholder:text-gray-400 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 focus:outline-none"
           />
         </div>
@@ -43,21 +37,6 @@ export function Header() {
 
       {/* Right Controls */}
       <div className="flex items-center gap-3">
-        {/* Notifications */}
-        <Link
-          href="/dashboard/notifications"
-          className="relative flex size-9 items-center justify-center rounded-full text-gray-600 transition-colors hover:bg-gray-200/60"
-        >
-          <Bell className="size-5" />
-          <Badge
-            variant="destructive"
-            size="sm"
-            className="absolute top-0 -right-2 bg-red-700 text-white"
-          >
-            {notifications.length > 99 ? '99+' : notifications.length}
-          </Badge>
-        </Link>
-
         {/* TODO: Add dark mode switcher */}
         {/* TODO: Add language switcher */}
 

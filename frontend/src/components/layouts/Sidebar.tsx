@@ -1,20 +1,6 @@
 'use client';
 
-import {
-  BarChart3,
-  Bell,
-  Building2,
-  CreditCard,
-  DoorOpen,
-  FileText,
-  LayoutDashboard,
-  MessageSquare,
-  Receipt,
-  Settings,
-  UserCog,
-  Users,
-  Wrench,
-} from 'lucide-react';
+import { LayoutDashboard, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -25,7 +11,7 @@ import { cn, getPathWithoutLocale } from '@/utils';
 
 import { BrandLogoCombined } from '../BrandKit';
 
-const NAV_GROUP = ['main', 'financial', 'system'] as const;
+const NAV_GROUP = ['main', 'system'] as const;
 type NavGroupType = (typeof NAV_GROUP)[number];
 
 type NavItem = {
@@ -42,78 +28,6 @@ const navItems: NavItem[] = [
     href: '/dashboard',
     icon: LayoutDashboard,
     group: 'main',
-  },
-  {
-    title: 'Tòa nhà',
-    href: '/dashboard/buildings',
-    icon: Building2,
-    roles: [UserRole.ADMIN, UserRole.LANDLORD],
-    group: 'main',
-  },
-  {
-    title: 'Phòng',
-    href: '/dashboard/rooms',
-    icon: DoorOpen,
-    roles: [UserRole.ADMIN, UserRole.LANDLORD],
-    group: 'main',
-  },
-  {
-    title: 'Người thuê',
-    href: '/dashboard/tenants',
-    icon: Users,
-    roles: [UserRole.ADMIN, UserRole.LANDLORD],
-    group: 'main',
-  },
-  {
-    title: 'Hợp đồng',
-    href: '/dashboard/rentals',
-    icon: FileText,
-    roles: [UserRole.ADMIN, UserRole.LANDLORD],
-    group: 'main',
-  },
-  {
-    title: 'Hóa đơn',
-    href: '/dashboard/bills',
-    icon: Receipt,
-    group: 'financial',
-  },
-  {
-    title: 'Thanh toán',
-    href: '/dashboard/payments',
-    icon: CreditCard,
-    group: 'financial',
-  },
-  {
-    title: 'Sửa chữa',
-    href: '/dashboard/maintenance',
-    icon: Wrench,
-    group: 'financial',
-  },
-  {
-    title: 'Báo cáo',
-    href: '/dashboard/reports',
-    icon: BarChart3,
-    roles: [UserRole.ADMIN, UserRole.LANDLORD],
-    group: 'financial',
-  },
-  {
-    title: 'Thông báo',
-    href: '/dashboard/notifications',
-    icon: Bell,
-    group: 'system',
-  },
-  {
-    title: 'Chat',
-    href: '/dashboard/chat',
-    icon: MessageSquare,
-    group: 'system',
-  },
-  {
-    title: 'Quản lý chủ nhà',
-    href: '/dashboard/landlords',
-    icon: UserCog,
-    roles: [UserRole.ADMIN],
-    group: 'system',
   },
   {
     title: 'Cài đặt',
@@ -203,9 +117,7 @@ export default function Sidebar() {
                     : user.email}
                 </p>
                 <p className="truncate text-xs font-medium text-gray-500">
-                  {role === UserRole.ADMIN && 'Quản trị viên'}
-                  {role === UserRole.LANDLORD && 'Chủ nhà / Quản lý'}
-                  {role === UserRole.TENANT && 'Người thuê'}
+                  {role === UserRole.ADMIN ? 'Quản trị viên' : 'Người dùng'}
                 </p>
               </div>
             </div>

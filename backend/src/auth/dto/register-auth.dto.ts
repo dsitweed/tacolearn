@@ -27,44 +27,18 @@ export class UserProfileDto {
 
   @IsString()
   @MaxLength(10)
-  phone: string;
+  @IsOptional()
+  phone?: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(500)
   avatar?: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsDate()
   @Type(() => Date)
-  dateOfBirth: Date;
-
-  @IsNotEmpty()
-  @IsString()
-  @MaxLength(100)
-  @Transform(({ value }) => String(value).trim())
-  occupation: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @MaxLength(100)
-  @Transform(({ value }) => String(value).trim())
-  workplace: string;
-
-  @IsOptional()
-  @IsString()
-  @MaxLength(500)
-  idCardFrontPhoto?: string;
-
-  @IsOptional()
-  @IsString()
-  @MaxLength(500)
-  idCardBackPhoto?: string;
-
-  @IsOptional()
-  @IsString()
-  @MaxLength(500)
-  portraitPhoto?: string;
+  dateOfBirth?: Date;
 }
 
 export class RegisterAuthDto extends UserProfileDto {
@@ -82,7 +56,7 @@ export class RegisterAuthDto extends UserProfileDto {
   })
   password: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(UserRole)
-  role: UserRole;
+  role?: UserRole;
 }

@@ -2,10 +2,6 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
 export enum DialogType {
-  CREATE_BUILDING = 'CREATE_BUILDING',
-  UPDATE_BUILDING = 'UPDATE_BUILDING',
-  CREATE_ROOM = 'CREATE_ROOM',
-  UPDATE_ROOM = 'UPDATE_ROOM',
   DELETE_CONFIRM = 'DELETE_CONFIRM',
   SHOW_IMAGES_GALLERY = 'SHOW_IMAGES_GALLERY',
 }

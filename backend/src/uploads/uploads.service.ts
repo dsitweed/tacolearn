@@ -6,7 +6,6 @@ import {
 import { randomUUID } from 'crypto';
 import { User, UserRole } from 'generated/prisma/client';
 import { extname } from 'path';
-import { PrismaService } from 'prisma/prisma.service';
 import { R2StorageService } from 'storage/r2-storage.service';
 
 import { CreatePresignedUrlsDto } from './dto/create-presigned-urls.dto';
@@ -17,10 +16,7 @@ import { UPLOAD_CONFIG, UploadPurpose } from './upload.config';
 
 @Injectable()
 export class UploadsService {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly storageService: R2StorageService,
-  ) {}
+  constructor(private readonly storageService: R2StorageService) {}
   /**
    * resourceType
       ↓
@@ -45,7 +41,7 @@ export class UploadsService {
     const { files, resourceId, purpose } = createPresignedUrlsDto;
     const config = UPLOAD_CONFIG[purpose];
 
-    const isHavePermission = await this.checkPermission(
+    const isHavePermission = this.checkPermission(
       currentUser,
       purpose,
       resourceId,
@@ -84,11 +80,7 @@ export class UploadsService {
 
   async deleteObject(user: User, deleteObjectDto: DeleteObjectDto) {
     const { purpose, resourceId, key } = deleteObjectDto;
-    const isHavePermission = await this.checkPermission(
-      user,
-      purpose,
-      resourceId,
-    );
+    const isHavePermission = this.checkPermission(user, purpose, resourceId);
 
     if (!isHavePermission) {
       throw new ForbiddenException(
@@ -107,11 +99,7 @@ export class UploadsService {
     deleteObjectByPrefixDto: DeleteObjectsByPrefixDto,
   ) {
     const { purpose, resourceId, prefix } = deleteObjectByPrefixDto;
-    const isHavePermission = await this.checkPermission(
-      user,
-      purpose,
-      resourceId,
-    );
+    const isHavePermission = this.checkPermission(user, purpose, resourceId);
 
     if (!isHavePermission) {
       throw new ForbiddenException(
@@ -125,55 +113,16 @@ export class UploadsService {
     );
   }
 
-  async checkPermission(
+  checkPermission(
     currentUser: User,
     purpose: UploadPurpose,
     resourceId: string,
-  ): Promise<boolean> {
+  ): boolean {
     if (currentUser.role === UserRole.ADMIN) return true;
 
     switch (purpose) {
-      case UploadPurpose.BUILDING_IMAGE: {
-        const building = await this.prisma.building.findUnique({
-          where: { id: resourceId, landlordId: currentUser.id },
-        });
-        return !!building;
-      }
-      case UploadPurpose.ROOM_IMAGE: {
-        const room = await this.prisma.room.findUnique({
-          where: {
-            id: resourceId,
-            building: {
-              landlordId: currentUser.id,
-            },
-          },
-        });
-        return !!room;
-      }
-      case UploadPurpose.USER_AVATAR:
-      case UploadPurpose.USER_ID_CARD_FRONT_PHOTO:
-      case UploadPurpose.USER_ID_CARD_BACK_PHOTO:
-      case UploadPurpose.USER_PORTRAIT_PHOTO: {
+      case UploadPurpose.USER_AVATAR: {
         return currentUser.id === resourceId;
-      }
-      case UploadPurpose.PAYMENT_RECEIPT_IMAGE: {
-        const payment = await this.prisma.payment.findUnique({
-          where: {
-            id: resourceId,
-            bill: {
-              room: {
-                rentals: {
-                  some: {
-                    tenantId: currentUser.id,
-                    status: 'ACTIVE',
-                  },
-                },
-              },
-            },
-          },
-        });
-
-        return !!payment;
       }
 
       default:

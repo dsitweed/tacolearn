@@ -19,7 +19,7 @@ describe('AuthService', () => {
   const mockUser = {
     id: '1',
     email: 'test@example.com',
-    role: UserRole.TENANT,
+    role: UserRole.USER,
     createdAt: new Date(),
     updatedAt: new Date(),
     isActive: true,
@@ -32,13 +32,8 @@ describe('AuthService', () => {
       phone: '+84901234567',
       avatar: 'https://avatar.com/john.jpg',
       dateOfBirth: new Date('1990-01-01'),
-      occupation: 'Developer',
-      workplace: 'Tech Corp',
       createdAt: new Date(),
       updatedAt: new Date(),
-      idCardFrontPhoto: null,
-      idCardBackPhoto: null,
-      portraitPhoto: null,
     },
     accounts: [
       {
@@ -152,14 +147,12 @@ describe('AuthService', () => {
     const registerDto: RegisterAuthDto = {
       email: 'newuser@example.com',
       password: 'Password123',
-      role: UserRole.TENANT,
+      role: UserRole.USER,
       firstName: 'Jane',
       lastName: 'Smith',
       phone: '+84901234567',
       avatar: 'https://avatar.com/jane.jpg',
       dateOfBirth: new Date('1995-05-15'),
-      occupation: 'Designer',
-      workplace: 'Design Studio',
     };
 
     it('should create a new user successfully', async () => {
@@ -186,8 +179,6 @@ describe('AuthService', () => {
               phone: registerDto.phone,
               avatar: registerDto.avatar,
               dateOfBirth: registerDto.dateOfBirth,
-              occupation: registerDto.occupation,
-              workplace: registerDto.workplace,
             },
           },
         },
@@ -312,7 +303,7 @@ describe('AuthService', () => {
     const jwtPayload = {
       sub: '1',
       email: 'test@example.com',
-      role: UserRole.TENANT,
+      role: UserRole.USER,
     };
 
     it('should return user without password if user exists', async () => {

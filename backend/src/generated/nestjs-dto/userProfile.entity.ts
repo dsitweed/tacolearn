@@ -26,8 +26,9 @@ export class UserProfile {
   lastName: string;
   @ApiProperty({
     type: 'string',
+    nullable: true,
   })
-  phone: string;
+  phone: string | null;
   @ApiProperty({
     type: 'string',
     nullable: true,
@@ -36,31 +37,9 @@ export class UserProfile {
   @ApiProperty({
     type: 'string',
     format: 'date-time',
-  })
-  dateOfBirth: Date;
-  @ApiProperty({
-    type: 'string',
-  })
-  occupation: string;
-  @ApiProperty({
-    type: 'string',
-  })
-  workplace: string;
-  @ApiProperty({
-    type: 'string',
     nullable: true,
   })
-  idCardFrontPhoto: string | null;
-  @ApiProperty({
-    type: 'string',
-    nullable: true,
-  })
-  idCardBackPhoto: string | null;
-  @ApiProperty({
-    type: 'string',
-    nullable: true,
-  })
-  portraitPhoto: string | null;
+  dateOfBirth: Date | null;
   @ApiProperty({
     type: 'string',
     format: 'date-time',

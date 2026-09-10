@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import * as argon from 'argon2';
 import { User } from 'generated/prisma/client';
-import { UserWhereUniqueInput } from 'generated/prisma/models';
 import { PrismaService } from 'prisma/prisma.service';
 
 import { UpdatePasswordDto, UpdateUserProfileDto } from './dto';
@@ -22,36 +21,14 @@ export class UsersService {
       );
     }
 
-    let findUserCondition: UserWhereUniqueInput | null = null;
-
-    if (currentUser.role === 'ADMIN') {
-      findUserCondition = { id };
-    }
-
-    if (currentUser.role === 'LANDLORD') {
-      findUserCondition = {
-        id,
-        rentals: {
-          some: {
-            status: 'ACTIVE',
-            room: {
-              building: {
-                landlordId: currentUser.id,
-              },
-            },
-          },
-        },
-      };
-    }
-
-    if (currentUser.role === 'TENANT' || !findUserCondition) {
+    if (currentUser.role !== 'ADMIN') {
       throw new UnauthorizedException(
         'You do not have permission to view this user',
       );
     }
 
     const user = await this.prisma.user.findUnique({
-      where: findUserCondition,
+      where: { id },
       include: { profile: true },
     });
 

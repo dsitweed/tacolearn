@@ -3,12 +3,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   ArrowRight,
-  Building2,
   CalendarIcon,
   ChevronRight,
   Eye,
   EyeOff,
-  User,
+  Sparkles,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -28,12 +27,9 @@ import {
   CardTitle,
   Checkbox,
   Field,
-  FieldContent,
   FieldError,
   FieldGroup,
   FieldLabel,
-  FieldSet,
-  FieldTitle,
   Input,
   InputGroup,
   InputGroupButton,
@@ -41,13 +37,10 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-  RadioGroup,
-  RadioGroupItem,
   Spinner,
 } from '@/components/ui';
-import { RegisterAuthDto, UserRole } from '@/generated/model';
+import { RegisterAuthDto } from '@/generated/model';
 import { useRegister } from '@/hooks/api/useAuth';
-import { cn } from '@/utils';
 import { toApiDateString } from '@/utils';
 
 const registerFormSchema = z
@@ -64,21 +57,13 @@ const registerFormSchema = z
     confirmPassword: z.string().trim().min(1, 'Xác nhận mật khẩu là bắt buộc.'),
     firstName: z.string().trim().min(1, 'Tên là bắt buộc.'),
     lastName: z.string().trim().min(1, 'Họ là bắt buộc.'),
-    phone: z.string().trim().min(1, 'Số điện thoại là bắt buộc.'),
-    role: z.enum(UserRole),
-    dateOfBirth: z.date(),
-    occupation: z.string().trim().min(1, 'Nghề nghiệp là bắt buộc.'),
-    workplace: z.string().trim().min(1, 'Nơi làm việc là bắt buộc.'),
+    phone: z.string().trim().optional(),
+    dateOfBirth: z.date().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Mật khẩu xác nhận không khớp',
     path: ['confirmPassword'],
   });
-
-const ROLES = [
-  { value: UserRole.LANDLORD, label: 'Chủ nhà / Quản lý', icon: Building2 },
-  { value: UserRole.TENANT, label: 'Người thuê', icon: User },
-] as const;
 
 // FIXME: Logged in user is not redirected to dashboard page, but stays on register page
 export default function RegisterPage() {
@@ -93,9 +78,6 @@ export default function RegisterPage() {
       firstName: '',
       lastName: '',
       phone: '',
-      role: UserRole.TENANT,
-      occupation: '',
-      workplace: '',
     },
   });
 
@@ -105,10 +87,10 @@ export default function RegisterPage() {
 
   const onSubmit = (data: z.infer<typeof registerFormSchema>) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { confirmPassword, ...rest } = data;
+    const { confirmPassword, dateOfBirth, ...rest } = data;
     const registerAuthDto = {
       ...rest,
-      dateOfBirth: toApiDateString(rest.dateOfBirth),
+      ...(dateOfBirth ? { dateOfBirth: toApiDateString(dateOfBirth) } : {}),
     } as RegisterAuthDto;
 
     registerMutation.mutate(registerAuthDto, {
@@ -130,16 +112,13 @@ export default function RegisterPage() {
           priority
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0b1c30]/70 to-[#0b1c30]/0" />
+        <div className="absolute inset-0 bg-linear-to-r from-[#0b1c30]/70 to-[#0b1c30]/0" />
         <div className="absolute bottom-12 left-12 flex max-w-xl flex-col gap-4">
           <h1 className="text-4xl leading-tight font-bold tracking-tight text-white">
-            Quản lý nhà trọ chuyên nghiệp
-            <br />
-            với sự hỗ trợ thông minh.
+            Bắt đầu với TacoLearn.
           </h1>
           <p className="text-base text-white/90">
-            Tham gia cùng hàng nghìn chủ nhà và người quản lý đang tối ưu vận
-            hành với nền tảng TacoHouse.
+            Tạo tài khoản để bắt đầu sử dụng nền tảng.
           </p>
         </div>
       </div>
@@ -150,10 +129,10 @@ export default function RegisterPage() {
           {/* TODO: create logo component for web */}
           <Link href="/" className="flex items-center gap-2">
             <div className="flex size-8 items-center justify-center rounded-lg bg-indigo-600">
-              <Building2 className="size-4 text-white" />
+              <Sparkles className="size-4 text-white" />
             </div>
             <span className="text-lg font-semibold text-gray-900">
-              TacoHouse
+              TacoLearn
             </span>
           </Link>
           <Link
@@ -175,64 +154,13 @@ export default function RegisterPage() {
               </CardTitle>
               <CardDescription>
                 <p className="text-sm font-medium text-gray-600">
-                  Điền thông tin để đăng ký không gian quản lý nhà trọ của bạn.
+                  Điền thông tin để đăng ký tài khoản của bạn.
                 </p>
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form id="register-form" onSubmit={form.handleSubmit(onSubmit)}>
                 <FieldGroup>
-                  <Controller
-                    name="role"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <FieldSet>
-                        <RadioGroup
-                          name={field.name}
-                          value={field.value}
-                          onValueChange={field.onChange}
-                          className="grid grid-cols-2"
-                        >
-                          {ROLES.map(({ value, label, icon: Icon }) => (
-                            <FieldLabel
-                              key={value}
-                              htmlFor={`register-form-radiogroup-${value}`}
-                              className="hover:bg-gray-50 has-data-checked:border-indigo-600 has-data-checked:bg-indigo-50"
-                            >
-                              <Field
-                                orientation="horizontal"
-                                data-invalid={fieldState.invalid}
-                              >
-                                <FieldContent className="flex flex-col items-center gap-2">
-                                  <Icon
-                                    className={cn(
-                                      'size-5',
-                                      field.value === value
-                                        ? 'text-indigo-600'
-                                        : 'text-gray-500',
-                                    )}
-                                  />
-                                  <FieldTitle className="text-sm font-medium text-gray-900">
-                                    {label}
-                                  </FieldTitle>
-                                </FieldContent>
-                                <RadioGroupItem
-                                  hidden
-                                  value={value}
-                                  aria-invalid={fieldState.invalid}
-                                  id={`register-form-radiogroup-${value}`}
-                                />
-                              </Field>
-                            </FieldLabel>
-                          ))}
-                        </RadioGroup>
-                        {fieldState.invalid && (
-                          <FieldError errors={[fieldState.error]} />
-                        )}
-                      </FieldSet>
-                    )}
-                  />
-
                   <div className="grid grid-cols-2 gap-3">
                     <Controller
                       name="lastName"
@@ -296,13 +224,60 @@ export default function RegisterPage() {
                     control={form.control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor="phone">Số điện thoại *</FieldLabel>
+                        <FieldLabel htmlFor="phone">Số điện thoại</FieldLabel>
                         <Input
                           {...field}
                           id="phone"
                           aria-invalid={fieldState.invalid}
                           placeholder="0901234567"
                         />
+                        {fieldState.invalid && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
+                      </Field>
+                    )}
+                  />
+
+                  <Controller
+                    name="dateOfBirth"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel htmlFor="dateOfBirth">Ngày sinh</FieldLabel>
+                        <Popover
+                          open={popoverIsOpen}
+                          onOpenChange={setPopoverIsOpen}
+                        >
+                          <PopoverTrigger asChild>
+                            <Button
+                              id="dateOfBirth"
+                              type="button"
+                              variant="outline"
+                              className="w-full justify-start font-normal"
+                            >
+                              <CalendarIcon />
+                              {field.value ? (
+                                field.value.toLocaleDateString()
+                              ) : (
+                                <span className="text-gray-500">
+                                  {'dd/mm/yyyy'}
+                                </span>
+                              )}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent>
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              defaultMonth={field.value}
+                              captionLayout="dropdown"
+                              onSelect={(date) => {
+                                field.onChange(date);
+                                setPopoverIsOpen(false);
+                              }}
+                            />
+                          </PopoverContent>
+                        </Popover>
                         {fieldState.invalid && (
                           <FieldError errors={[fieldState.error]} />
                         )}
@@ -371,108 +346,6 @@ export default function RegisterPage() {
                               )}
                             </InputGroupButton>
                           </InputGroup>
-                          {fieldState.invalid && (
-                            <FieldError errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
-                    />
-                  </div>
-
-                  <div className="flex items-center py-1">
-                    <div className="h-px flex-1 bg-gray-300" />
-                    <span className="px-4 text-xs font-semibold tracking-wide text-gray-500 uppercase">
-                      Thông tin bổ sung
-                    </span>
-                    <div className="h-px flex-1 bg-gray-300" />
-                  </div>
-
-                  <div className="flex flex-col gap-7 rounded-xl border border-gray-300 bg-gray-50 p-4">
-                    <div className="grid grid-cols-2 gap-3">
-                      <Controller
-                        name="dateOfBirth"
-                        control={form.control}
-                        render={({ field, fieldState }) => (
-                          <Field data-invalid={fieldState.invalid}>
-                            <FieldLabel htmlFor="dateOfBirth">
-                              Ngày sinh *
-                            </FieldLabel>
-                            <Popover
-                              open={popoverIsOpen}
-                              onOpenChange={setPopoverIsOpen}
-                            >
-                              <PopoverTrigger asChild>
-                                <Button
-                                  id="dateOfBirth"
-                                  type="button"
-                                  variant="outline"
-                                  className="w-full justify-start font-normal"
-                                >
-                                  <CalendarIcon />
-                                  {field.value ? (
-                                    field.value.toLocaleDateString()
-                                  ) : (
-                                    <span className="text-gray-500">
-                                      {'dd/mm/yyyy'}
-                                    </span>
-                                  )}
-                                </Button>
-                              </PopoverTrigger>
-                              <PopoverContent>
-                                <Calendar
-                                  mode="single"
-                                  selected={field.value}
-                                  defaultMonth={field.value}
-                                  captionLayout="dropdown"
-                                  onSelect={(date) => {
-                                    field.onChange(date);
-                                    setPopoverIsOpen(false);
-                                  }}
-                                />
-                              </PopoverContent>
-                            </Popover>
-                            {fieldState.invalid && (
-                              <FieldError errors={[fieldState.error]} />
-                            )}
-                          </Field>
-                        )}
-                      />
-                      <Controller
-                        name="occupation"
-                        control={form.control}
-                        render={({ field, fieldState }) => (
-                          <Field data-invalid={fieldState.invalid}>
-                            <FieldLabel htmlFor="occupation">
-                              Nghề nghiệp *
-                            </FieldLabel>
-                            <Input
-                              {...field}
-                              id="occupation"
-                              aria-invalid={fieldState.invalid}
-                              placeholder="VD: Kỹ sư phần mềm"
-                            />
-                            {fieldState.invalid && (
-                              <FieldError errors={[fieldState.error]} />
-                            )}
-                          </Field>
-                        )}
-                      />
-                    </div>
-
-                    <Controller
-                      name="workplace"
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                          <FieldLabel htmlFor="workplace">
-                            Nơi làm việc *
-                          </FieldLabel>
-                          <Input
-                            {...field}
-                            id="workplace"
-                            aria-invalid={fieldState.invalid}
-                            placeholder="VD: Công ty TNHH ABC"
-                          />
                           {fieldState.invalid && (
                             <FieldError errors={[fieldState.error]} />
                           )}

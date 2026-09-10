@@ -63,9 +63,9 @@ async function bootstrap() {
 
   // Swagger Configuration
   const config = new DocumentBuilder()
-    .setTitle('TacoHouse API')
+    .setTitle('TacoLearn API')
     .setDescription(
-      'A comprehensive rental room management system API for managing buildings, rooms, tenants, billing, and payments.\n\n' +
+      'Backend API template for the TacoLearn application.\n\n' +
         '## Response Format\n' +
         'All responses follow a standardized format:\n' +
         '- **status**: HTTP status code\n' +
@@ -86,14 +86,6 @@ async function bootstrap() {
     )
     .addTag('Auth', 'Authentication endpoints')
     .addTag('Users', 'User management endpoints')
-    .addTag('Buildings', 'Building management endpoints')
-    .addTag('Rooms', 'Room management endpoints')
-    .addTag('Rentals', 'Rental management endpoints')
-    .addTag('Bills', 'Bill management endpoints')
-    .addTag('Payments', 'Payment management endpoints')
-    .addTag('Maintenance', 'Maintenance request endpoints')
-    .addTag('Chat', 'Chat and messaging endpoints')
-    .addTag('Notifications', 'Notification endpoints')
     .addTag('Uploads', 'File upload endpoints')
     .build();
 
