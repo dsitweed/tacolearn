@@ -2,6 +2,7 @@
 import {JlptLevel,SessionStatus,SessionType} from '../prisma/client'
 import {ApiProperty} from '@nestjs/swagger'
 import {StudentProfile} from './studentProfile.entity'
+import {Exam} from './exam.entity'
 import {QuestionAttempt} from './questionAttempt.entity'
 
 
@@ -24,6 +25,17 @@ student?: StudentProfile ;
   enumName: 'SessionType',
 })
 sessionType: SessionType ;
+@ApiProperty({
+  type: 'string',
+  nullable: true,
+})
+examId: string  | null;
+@ApiProperty({
+  type: () => Exam,
+  required: false,
+  nullable: true,
+})
+exam?: Exam  | null;
 @ApiProperty({
   enum: JlptLevel,
   enumName: 'JlptLevel',

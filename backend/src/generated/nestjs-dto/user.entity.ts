@@ -8,6 +8,7 @@ import {Session} from './session.entity'
 import {Account} from './account.entity'
 import {Notification} from './notification.entity'
 import {School} from './school.entity'
+import {Exam} from './exam.entity'
 import {Question} from './question.entity'
 import {Lesson} from './lesson.entity'
 import {Announcement} from './announcement.entity'
@@ -73,6 +74,12 @@ notifications?: Notification[] ;
   required: false,
 })
 schoolsOwned?: School[] ;
+@ApiProperty({
+  type: () => Exam,
+  isArray: true,
+  required: false,
+})
+examsCreated?: Exam[] ;
 @ApiProperty({
   type: () => Question,
   isArray: true,

@@ -7,6 +7,7 @@ export * from './session.entity';
 export * from './account.entity';
 export * from './verification.entity';
 export * from './question.entity';
+export * from './exam.entity';
 export * from './vocabulary.entity';
 export * from './grammarPoint.entity';
 export * from './lesson.entity';

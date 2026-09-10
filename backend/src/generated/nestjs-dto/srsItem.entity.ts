@@ -1,5 +1,5 @@
 
-import {ConfidenceLevel,Prisma,SrsContentType,SrsStatus} from '../prisma/client'
+import {ConfidenceLevel,Prisma,SrsContentType,SrsItemOrigin,SrsStatus} from '../prisma/client'
 import {ApiProperty} from '@nestjs/swagger'
 import {StudentProfile} from './studentProfile.entity'
 
@@ -27,6 +27,11 @@ contentId: string ;
   enumName: 'SrsContentType',
 })
 contentType: SrsContentType ;
+@ApiProperty({
+  enum: SrsItemOrigin,
+  enumName: 'SrsItemOrigin',
+})
+origin: SrsItemOrigin ;
 @ApiProperty({
   type: 'integer',
   format: 'int32',

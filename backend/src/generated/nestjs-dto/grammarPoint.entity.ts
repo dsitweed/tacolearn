@@ -17,7 +17,12 @@ pattern: string ;
 @ApiProperty({
   type: 'string',
 })
-englishMeaning: string ;
+vietnameseMeaning: string ;
+@ApiProperty({
+  type: 'string',
+  nullable: true,
+})
+englishMeaning: string  | null;
 @ApiProperty({
   type: 'string',
   nullable: true,

@@ -22,7 +22,12 @@ hiragana: string  | null;
 @ApiProperty({
   type: 'string',
 })
-englishMeaning: string ;
+vietnameseMeaning: string ;
+@ApiProperty({
+  type: 'string',
+  nullable: true,
+})
+englishMeaning: string  | null;
 @ApiProperty({
   enum: JlptLevel,
   enumName: 'JlptLevel',

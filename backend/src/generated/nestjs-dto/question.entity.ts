@@ -1,6 +1,7 @@
 
 import {Difficulty,JlptLevel,Prisma,QuestionSection,QuestionSource,QuestionType} from '../prisma/client'
 import {ApiProperty} from '@nestjs/swagger'
+import {Exam} from './exam.entity'
 import {User} from './user.entity'
 import {QuestionAttempt} from './questionAttempt.entity'
 import {Vocabulary} from './vocabulary.entity'
@@ -84,6 +85,28 @@ correctCount: number ;
   enumName: 'QuestionSource',
 })
 source: QuestionSource ;
+@ApiProperty({
+  type: 'string',
+  nullable: true,
+})
+sourceReference: string  | null;
+@ApiProperty({
+  type: 'string',
+  nullable: true,
+})
+examId: string  | null;
+@ApiProperty({
+  type: () => Exam,
+  required: false,
+  nullable: true,
+})
+exam?: Exam  | null;
+@ApiProperty({
+  type: 'integer',
+  format: 'int32',
+  nullable: true,
+})
+orderInExam: number  | null;
 @ApiProperty({
   type: 'string',
   nullable: true,
