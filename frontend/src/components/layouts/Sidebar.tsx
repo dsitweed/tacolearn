@@ -45,9 +45,9 @@ const navigationSections: NavSection[] = [
       },
       {
         title: 'Ôn tập SRS',
-        href: '/dashboard',
+        href: '/dashboard/srs-review',
         icon: RotateCcw,
-        badge: '24',
+        badge: '18',
         badgeVariant: 'emerald',
       },
       {
@@ -113,7 +113,9 @@ export default function Sidebar() {
               {section.items.map((item) => {
                 const Icon = item.icon;
                 const isActive =
-                  pathWithoutLocale === item.href && item.title === 'Tổng quan';
+                  pathWithoutLocale === item.href ||
+                  (item.href !== '/dashboard' &&
+                    pathWithoutLocale.startsWith(item.href));
 
                 return (
                   <Link
