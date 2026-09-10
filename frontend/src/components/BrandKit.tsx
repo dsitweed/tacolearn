@@ -6,7 +6,7 @@ import { cn } from '@/utils';
 function BrandLogoIcon() {
   return (
     <div className="bg-primary text-primary-foreground rounded-lg p-2.5 shadow-xs">
-      <BookOpenCheck className="size-5 text-white" />
+      <BookOpenCheck className="size-5" />
     </div>
   );
 }

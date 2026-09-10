@@ -42,7 +42,7 @@ export function TacoLearnLogo({
     >
       <div
         className={cn(
-          'bg-primary text-primary-foreground shadow-xs transition-transform group-hover:scale-105 dark:bg-indigo-600',
+          'bg-primary text-primary-foreground shadow-xs transition-transform group-hover:scale-105',
           containerSizes[size],
         )}
       >
@@ -55,7 +55,7 @@ export function TacoLearnLogo({
             textSizes[size],
           )}
         >
-          Taco
+          <span>Taco</span>
           <span className="text-secondary dark:text-emerald-400">Learn</span>
         </span>
         <span className="text-muted-foreground mt-0.5 text-[10px] leading-tight font-medium tracking-wider uppercase">
