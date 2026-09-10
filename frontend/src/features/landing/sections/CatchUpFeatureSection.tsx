@@ -65,7 +65,7 @@ export function CatchUpFeatureSection() {
                   asChild
                 >
                   <Link href="/register">
-                    Thử ngay lộ trình 24 phút
+                    <span>Thử ngay lộ trình 24 phút</span>
                     <ArrowRight className="ml-2 size-4" />
                   </Link>
                 </Button>

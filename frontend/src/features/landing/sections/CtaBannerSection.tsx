@@ -5,7 +5,7 @@ import { Badge, Button } from '@/components/ui';
 
 export function CtaBannerSection() {
   const trustBadges = [
-    { label: 'Không cần thẻ tín dụng' },
+    { label: 'Miễn phí sử dụng' },
     { label: 'Kích hoạt tài khoản trong 1 phút' },
     { label: 'Hỗ trợ kỹ thuật 24/7' },
   ];
@@ -26,8 +26,8 @@ export function CtaBannerSection() {
               variant="outline"
               className="rounded-full border-indigo-400/40 bg-indigo-500/20 px-4 py-1 text-xs font-semibold text-indigo-300 backdrop-blur"
             >
-              <Sparkles className="mr-1.5 size-3.5" />
-              BẮT ĐẦU VỚI TACO LEARN SAAS
+              <Sparkles className="mr-1.5 size-3.5 uppercase" />
+              Bắt đầu hành trình của bạn ngay hôm nay
             </Badge>
 
             <h2 className="text-3xl leading-tight font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
@@ -47,15 +47,15 @@ export function CtaBannerSection() {
                 asChild
               >
                 <Link href="/register">
-                  Đăng ký dùng thử 14 ngày
-                  <ArrowRight className="ml-2 size-5" />
+                  <span>Đăng ký</span>
+                  <ArrowRight className="size-5" />
                 </Link>
               </Button>
 
               <Button
                 size="lg"
                 variant="outline"
-                className="h-13 w-full rounded-xl border-slate-700 bg-slate-900/60 px-6 text-base font-semibold text-slate-200 hover:bg-slate-800 sm:w-auto"
+                className="hover:white h-13 w-full rounded-xl border-slate-700 bg-slate-600/60 px-6 text-base font-semibold text-slate-200 sm:w-auto"
                 asChild
               >
                 <Link href="/login">Đặt lịch Demo cho trường</Link>
