@@ -51,14 +51,14 @@ export function WhyTacoLearnSection() {
           <Badge
             variant="outline"
             size="lg"
-            className="rounded-full border-[#C6C6CF] bg-[#F0F3FF] px-3 py-1 text-xs font-semibold text-[#081534] dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200"
+            className="border-outline-variant bg-surface-container-low text-primary rounded-full px-3 py-1 text-xs font-semibold dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200"
           >
             TẠI SAO CHỌN TACO LEARN
           </Badge>
-          <h2 className="text-3xl font-extrabold tracking-tight text-[#081534] sm:text-4xl dark:text-white">
+          <h2 className="text-primary text-3xl font-extrabold tracking-tight sm:text-4xl dark:text-white">
             Ba trụ cột đột phá nâng tầm chất lượng đào tạo Tiếng Nhật
           </h2>
-          <p className="text-base text-[#45464E] dark:text-slate-400">
+          <p className="text-on-surface-variant text-base dark:text-slate-400">
             Kết hợp phương pháp sư phạm chuẩn hóa trên lớp với công nghệ ghi nhớ
             thông minh.
           </p>
@@ -71,15 +71,15 @@ export function WhyTacoLearnSection() {
             const isPillar1 = pillar.id === 'pillar-1';
             const isPillar2 = pillar.id === 'pillar-2';
             const iconBg = isPillar1
-              ? 'bg-[#081534] text-white'
+              ? 'bg-primary text-white'
               : isPillar2
-                ? 'bg-[#006C4A] text-white'
-                : 'bg-[#EE6B09] text-white';
+                ? 'bg-secondary text-white'
+                : 'bg-amber-600 text-white';
             const tagColor = isPillar1
-              ? 'text-[#081534] dark:text-indigo-400'
+              ? 'text-primary dark:text-indigo-400'
               : isPillar2
-                ? 'text-[#006C4A] dark:text-emerald-400'
-                : 'text-[#EE6B09] dark:text-amber-400';
+                ? 'text-secondary dark:text-emerald-400'
+                : 'text-on-tertiary-container dark:text-amber-400';
 
             return (
               <Card
@@ -102,10 +102,10 @@ export function WhyTacoLearnSection() {
                   </div>
 
                   {/* Title & Desc */}
-                  <h3 className="text-xl font-bold text-[#081534] dark:text-white">
+                  <h3 className="text-primary text-xl font-bold dark:text-white">
                     {pillar.title}
                   </h3>
-                  <p className="text-sm leading-relaxed text-[#45464E] dark:text-slate-300">
+                  <p className="text-on-surface-variant text-sm leading-relaxed dark:text-slate-300">
                     {pillar.description}
                   </p>
                 </div>
@@ -114,24 +114,24 @@ export function WhyTacoLearnSection() {
                 <div className="mt-8 border-t border-slate-100 pt-4 dark:border-slate-800">
                   {pillar.progress ? (
                     <div className="space-y-2">
-                      <div className="flex justify-between text-xs text-[#45464E] dark:text-slate-400">
+                      <div className="text-on-surface-variant flex justify-between text-xs dark:text-slate-400">
                         <span>{pillar.progressLabel}</span>
-                        <span className="font-bold text-[#006C4A] dark:text-emerald-400">
+                        <span className="text-secondary font-bold dark:text-emerald-400">
                           {pillar.progress}%
                         </span>
                       </div>
                       <Progress
                         value={pillar.progress}
-                        className="h-2 bg-[#DEE8FF] dark:bg-slate-800 [&>div]:bg-[#006C4A]"
+                        className="bg-surface-container-high [&>div]:bg-secondary h-2 dark:bg-slate-800"
                       />
                     </div>
                   ) : (
-                    <div className="space-y-1 rounded-lg border border-slate-200/80 bg-[#F0F3FF] p-3 text-xs shadow-xs dark:border-slate-800 dark:bg-slate-950">
-                      <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[#006C4A] dark:text-emerald-400">
+                    <div className="bg-surface-container-low space-y-1 rounded-lg border border-slate-200/80 p-3 text-xs shadow-xs dark:border-slate-800 dark:bg-slate-950">
+                      <div className="text-secondary flex items-center gap-1.5 text-[11px] font-semibold dark:text-emerald-400">
                         <Sparkles className="size-3.5" />
                         {pillar.cardSnippet?.badge}
                       </div>
-                      <p className="font-medium text-[#111C2D] dark:text-slate-300">
+                      <p className="text-on-surface font-medium dark:text-slate-300">
                         {pillar.cardSnippet?.text}
                       </p>
                     </div>

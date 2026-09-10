@@ -95,7 +95,7 @@ function HeroSection() {
   return (
     <section
       id="HeroSection"
-      className="relative overflow-hidden bg-gradient-to-b from-indigo-50/60 via-white to-[#F8FAFC] pt-12 pb-20"
+      className="relative overflow-hidden bg-gradient-to-b from-indigo-50/60 via-white to-slate-50 pt-12 pb-20"
     >
       <div className="pointer-events-none absolute -top-24 right-0 h-96 w-96 rounded-full bg-indigo-200/40 blur-3xl" />
       <div className="pointer-events-none absolute top-48 -left-20 h-80 w-80 rounded-full bg-blue-200/40 blur-3xl" />

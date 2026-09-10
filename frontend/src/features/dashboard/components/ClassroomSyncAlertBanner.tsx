@@ -5,7 +5,7 @@ import { Badge, Button } from '@/components/ui';
 
 export function ClassroomSyncAlertBanner() {
   return (
-    <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-[#081534] via-[#1E2A4A] to-[#081534] p-6 text-white shadow-md">
+    <div className="from-primary via-primary-container to-primary relative overflow-hidden rounded-xl bg-gradient-to-r p-6 text-white shadow-md">
       {/* Background Decorative Watermark */}
       <div className="pointer-events-none absolute -right-8 -bottom-8 opacity-10">
         <Sparkles className="size-40 text-white" />
@@ -14,17 +14,17 @@ export function ClassroomSyncAlertBanner() {
       <div className="relative z-10 flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
         {/* Left Content */}
         <div className="flex max-w-3xl items-start gap-4">
-          <div className="hidden size-12 shrink-0 items-center justify-center rounded-xl bg-emerald-600 shadow-xs sm:flex">
+          <div className="bg-secondary hidden size-12 shrink-0 items-center justify-center rounded-xl shadow-xs sm:flex">
             <BookOpen className="size-6 text-white" />
           </div>
 
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2 text-xs">
-              <Badge className="bg-[#85F5C1]/30 text-[10px] font-bold tracking-wider text-[#88F8C4] uppercase hover:bg-[#85F5C1]/30">
+              <Badge className="bg-secondary-container/30 text-secondary-fixed hover:bg-secondary-container/30 text-[10px] font-bold tracking-wider uppercase">
                 ĐỒNG BỘ MỚI TỪ LỚP HỌC
               </Badge>
-              <span className="flex items-center gap-1 text-[#BAC5EE]">
-                <Clock className="size-3 text-[#BAC5EE]" />
+              <span className="text-inverse-primary flex items-center gap-1">
+                <Clock className="text-inverse-primary size-3" />
                 Vừa cập nhật 15 phút trước
               </span>
             </div>
@@ -34,7 +34,7 @@ export function ClassroomSyncAlertBanner() {
               (〜わけではない)
             </h3>
 
-            <p className="text-sm leading-relaxed text-[#DAE2FF]">
+            <p className="text-primary-fixed text-sm leading-relaxed">
               Hệ thống đã tự động trích xuất{' '}
               <strong className="text-white">12 thẻ ngữ pháp tương quan</strong>{' '}
               và{' '}
@@ -57,7 +57,7 @@ export function ClassroomSyncAlertBanner() {
 
           <Button
             size="sm"
-            className="h-9 rounded-lg bg-[#006C4A] px-4 text-xs font-bold text-white shadow-xs hover:bg-[#005137]"
+            className="bg-secondary h-9 rounded-lg px-4 text-xs font-bold text-white shadow-xs hover:opacity-90"
             asChild
           >
             <Link href="/dashboard" className="flex items-center gap-1.5">

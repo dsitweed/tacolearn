@@ -77,15 +77,15 @@ export function HowItWorksSection() {
               >
                 <div>
                   <div className="mb-3 flex items-center justify-between">
-                    <div className="flex size-9 items-center justify-center rounded-lg bg-[#F0F3FF] text-sm font-bold text-[#081534] dark:bg-slate-800 dark:text-white">
+                    <div className="bg-surface-container-low text-primary flex size-9 items-center justify-center rounded-lg text-sm font-bold dark:bg-slate-800 dark:text-white">
                       0{step.number}
                     </div>
                     <Icon className="size-5 text-slate-400" />
                   </div>
-                  <h3 className="mb-2 text-base font-bold text-[#081534] dark:text-white">
+                  <h3 className="text-primary mb-2 text-base font-bold dark:text-white">
                     {step.title}
                   </h3>
-                  <p className="text-xs leading-relaxed text-[#45464E] dark:text-slate-400">
+                  <p className="text-on-surface-variant text-xs leading-relaxed dark:text-slate-400">
                     {step.desc}
                   </p>
                 </div>
@@ -101,15 +101,15 @@ export function HowItWorksSection() {
         </div>
 
         {/* Feature Interactive Walkthrough Strip */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-6 rounded-2xl bg-gradient-to-r from-[#081534] via-[#1E2A4A] to-[#081534] p-6 text-white shadow-xl sm:p-8 md:flex-row">
+        <div className="from-primary via-primary-container to-primary mt-12 flex flex-col items-center justify-between gap-6 rounded-2xl bg-gradient-to-r p-6 text-white shadow-xl sm:p-8 md:flex-row">
           <div className="max-w-xl space-y-2 text-center md:text-left">
-            <span className="text-xs font-semibold tracking-wider text-[#88F8C4] uppercase">
+            <span className="text-secondary-fixed text-xs font-semibold tracking-wider uppercase">
               DỄ DÀNG TÍCH HỢP
             </span>
             <h3 className="text-xl font-bold sm:text-2xl">
               Tích hợp thẳng vào chương trình giảng dạy hiện tại
             </h3>
-            <p className="text-xs leading-relaxed text-[#DAE2FF] sm:text-sm">
+            <p className="text-primary-fixed text-xs leading-relaxed sm:text-sm">
               Không thay đổi giáo trình, không làm gián đoạn tiến trình dạy học.
               Giúp trung tâm tăng tỷ lệ đỗ JLPT lên tới 35%.
             </p>
@@ -117,7 +117,7 @@ export function HowItWorksSection() {
 
           <div className="flex shrink-0 items-center gap-4">
             <div className="min-w-32 rounded-xl border border-white/10 bg-white/10 p-4 text-center backdrop-blur">
-              <span className="block text-2xl font-extrabold text-[#88F8C4]">
+              <span className="text-secondary-fixed block text-2xl font-extrabold">
                 +35%
               </span>
               <span className="text-[11px] text-slate-300">Tỷ lệ đỗ JLPT</span>

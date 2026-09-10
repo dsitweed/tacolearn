@@ -31,7 +31,7 @@ export function LandingHeader() {
             <Link
               key={link.href}
               href={link.href}
-              className="rounded-md px-3 py-2 text-sm font-medium text-[#45464E] transition-colors hover:text-[#081534] dark:text-slate-300 dark:hover:text-white"
+              className="text-on-surface-variant hover:text-primary rounded-md px-3 py-2 text-sm font-medium transition-colors dark:text-slate-300 dark:hover:text-white"
             >
               {link.label}
             </Link>
@@ -58,7 +58,7 @@ export function LandingHeader() {
 
           <Button
             size="sm"
-            className="bg-[#081534] text-white shadow-xs hover:bg-[#162038] dark:bg-indigo-600 dark:hover:bg-indigo-700"
+            className="bg-primary hover:bg-primary-container text-white shadow-xs dark:bg-indigo-600 dark:hover:bg-indigo-700"
             asChild
           >
             <Link href="/register">Dùng thử miễn phí</Link>

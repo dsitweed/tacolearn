@@ -11,7 +11,7 @@ export function WeeklyScheduleCard() {
       dayNumber: '10',
       timeTitle: '09:30 • Ngữ pháp N3',
       tag: 'TRỰC TIẾP',
-      tagBg: 'bg-[#006C4A] text-white',
+      tagBg: 'bg-secondary text-white',
       teacherRoom: 'Tanaka Sensei • Phòng N3-A',
       status: 'Đang chuẩn bị phòng học',
       highlighted: true,
@@ -23,7 +23,7 @@ export function WeeklyScheduleCard() {
       timeTitle: '14:00 • N3 Reading & Kanji',
       tag: 'LÝ THUYẾT',
       tagBg:
-        'bg-[#E7EEFF] text-[#111C2D] dark:bg-slate-800 dark:text-slate-300',
+        'bg-surface-container text-on-surface dark:bg-slate-800 dark:text-slate-300',
       teacherRoom: 'Yamamoto Sensei • Phòng Lab B',
       status: 'Chuẩn bị trước bài đọc số 6',
       highlighted: false,
@@ -35,7 +35,7 @@ export function WeeklyScheduleCard() {
       timeTitle: '08:30 • Mock Test N3',
       tag: 'THI THỬ',
       tagBg:
-        'bg-[#D8E3FB] text-[#081534] dark:bg-indigo-950 dark:text-indigo-300',
+        'bg-surface-container-highest text-primary dark:bg-indigo-950 dark:text-indigo-300',
       teacherRoom: 'Thi thử tính giờ mô phỏng đề JLPT',
       status: 'Bắt buộc tham dự',
       highlighted: false,

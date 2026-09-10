@@ -16,7 +16,7 @@ export function CtaBannerSection() {
       className="bg-gradient-to-b from-white via-indigo-50/40 to-slate-100 py-16 lg:py-24 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-3xl border border-indigo-900/40 bg-gradient-to-r from-[#081534] via-[#1E2A4A] to-[#081534] p-8 text-center text-white shadow-2xl sm:p-14">
+        <div className="from-primary via-primary-container to-primary relative overflow-hidden rounded-3xl border border-indigo-900/40 bg-gradient-to-r p-8 text-center text-white shadow-2xl sm:p-14">
           {/* Background Decorative Glow */}
           <div className="pointer-events-none absolute top-0 right-0 size-96 rounded-full bg-emerald-500/15 blur-3xl" />
           <div className="pointer-events-none absolute bottom-0 left-0 size-80 rounded-full bg-indigo-500/15 blur-3xl" />
@@ -24,7 +24,7 @@ export function CtaBannerSection() {
           <div className="relative mx-auto max-w-3xl space-y-6">
             <Badge
               variant="outline"
-              className="rounded-full border-emerald-400/40 bg-emerald-500/20 px-4 py-1 text-xs font-semibold text-[#88F8C4] backdrop-blur"
+              className="text-secondary-fixed rounded-full border-emerald-400/40 bg-emerald-500/20 px-4 py-1 text-xs font-semibold backdrop-blur"
             >
               <Sparkles className="mr-1.5 size-3.5 uppercase" />
               Bắt đầu hành trình của bạn ngay hôm nay
@@ -34,7 +34,7 @@ export function CtaBannerSection() {
               Sẵn sàng nâng cao hiệu quả học Tiếng Nhật ngay hôm nay?
             </h2>
 
-            <p className="mx-auto max-w-2xl text-base leading-relaxed text-[#DAE2FF] sm:text-lg">
+            <p className="text-primary-fixed mx-auto max-w-2xl text-base leading-relaxed sm:text-lg">
               Tham gia cùng hàng nghìn học viên và hàng chục trường Nhật ngữ
               đang tối ưu hóa lộ trình đỗ JLPT với thuật toán SRS Taco.
             </p>
@@ -43,7 +43,7 @@ export function CtaBannerSection() {
             <div className="flex flex-col items-center justify-center gap-4 pt-4 sm:flex-row">
               <Button
                 size="lg"
-                className="h-13 w-full rounded-xl bg-[#006C4A] px-8 text-base font-semibold text-white shadow-xl hover:bg-[#005137] sm:w-auto"
+                className="bg-secondary h-13 w-full rounded-xl px-8 text-base font-semibold text-white shadow-xl hover:opacity-90 sm:w-auto"
                 asChild
               >
                 <Link href="/register">

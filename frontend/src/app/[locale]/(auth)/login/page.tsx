@@ -91,7 +91,7 @@ export default function LoginPage() {
           priority
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0b1c30]/20 to-[#0b1c30]/70"></div>
+        <div className="from-primary/20 to-primary/80 absolute inset-0 bg-gradient-to-b"></div>
 
         <div className="relative flex w-full flex-col justify-between p-12">
           {/* TODO: create logo component for web */}

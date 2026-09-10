@@ -40,18 +40,18 @@ export function TeachersNoteCard() {
       </div>
 
       {/* Note Content Box */}
-      <div className="relative mt-4 rounded-xl border border-slate-200/60 bg-[#F0F3FF] p-4 dark:border-slate-800 dark:bg-slate-800/40">
+      <div className="bg-surface-container-low relative mt-4 rounded-xl border border-slate-200/60 p-4 dark:border-slate-800 dark:bg-slate-800/40">
         <span className="absolute -top-3 left-4 font-serif text-3xl text-slate-400 select-none dark:text-slate-600">
           “
         </span>
-        <div className="space-y-2 text-xs leading-relaxed text-[#111C2D] dark:text-slate-200">
+        <div className="text-on-surface space-y-2 text-xs leading-relaxed dark:text-slate-200">
           <p className="italic">
             Minh làm bài test từ vựng rất tốt! Tuy nhiên ở phần ngữ pháp{' '}
-            <strong className="font-japanese font-semibold text-[#081534] not-italic dark:text-white">
+            <strong className="font-japanese text-primary font-semibold not-italic dark:text-white">
               〜わけではない
             </strong>{' '}
             và{' '}
-            <strong className="font-japanese font-semibold text-[#081534] not-italic dark:text-white">
+            <strong className="font-japanese text-primary font-semibold not-italic dark:text-white">
               〜はずがない
             </strong>
             , em còn nhầm lẫn khi gặp câu phủ định kép.

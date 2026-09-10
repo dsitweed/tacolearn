@@ -36,13 +36,13 @@ export function LandingFooter() {
   ];
 
   return (
-    <footer className="border-t border-slate-800 bg-[#081534] text-slate-300">
+    <footer className="bg-primary border-t border-slate-800 text-slate-300">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
           {/* Brand Col */}
           <div className="space-y-4 lg:col-span-4">
             <TacoLearnLogo size="lg" className="[&_span]:text-white" />
-            <p className="max-w-sm text-sm leading-relaxed text-[#BAC5EE]">
+            <p className="text-inverse-primary max-w-sm text-sm leading-relaxed">
               Nền tảng học Tiếng Nhật thông minh đồng bộ bài giảng tại trường
               học với thuật toán Lặp lại Ngắt quãng (Spaced Repetition) và chẩn
               đoán điểm yếu.
@@ -65,7 +65,7 @@ export function LandingFooter() {
                     <li key={link.label}>
                       <Link
                         href={link.href}
-                        className="text-sm text-slate-400 transition-colors hover:text-[#88F8C4]"
+                        className="hover:text-secondary-fixed text-sm text-slate-400 transition-colors"
                       >
                         {link.label}
                       </Link>

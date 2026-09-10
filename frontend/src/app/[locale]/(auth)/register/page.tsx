@@ -112,7 +112,7 @@ export default function RegisterPage() {
           priority
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-[#0b1c30]/70 to-[#0b1c30]/0" />
+        <div className="from-primary/70 to-primary/0 absolute inset-0 bg-linear-to-r" />
         <div className="absolute bottom-12 left-12 flex max-w-xl flex-col gap-4">
           <h1 className="text-4xl leading-tight font-bold tracking-tight text-white">
             Bắt đầu với TacoLearn.

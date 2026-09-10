@@ -5,7 +5,7 @@ import Sidebar from './Sidebar';
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen bg-[#F9F9FF] text-[#111C2D] dark:bg-slate-950 dark:text-slate-100">
+    <div className="bg-surface text-on-surface flex h-screen dark:bg-slate-950 dark:text-slate-100">
       <div className="hidden lg:flex">
         <Sidebar />
       </div>

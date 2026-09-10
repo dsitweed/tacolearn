@@ -42,7 +42,7 @@ export function TacoLearnLogo({
     >
       <div
         className={cn(
-          'bg-[#081534] text-white shadow-xs transition-transform group-hover:scale-105 dark:bg-indigo-600',
+          'bg-primary text-primary-foreground shadow-xs transition-transform group-hover:scale-105 dark:bg-indigo-600',
           containerSizes[size],
         )}
       >
@@ -56,7 +56,7 @@ export function TacoLearnLogo({
           )}
         >
           Taco
-          <span className="text-[#006C4A] dark:text-emerald-400">Learn</span>
+          <span className="text-secondary dark:text-emerald-400">Learn</span>
         </span>
         <span className="text-muted-foreground mt-0.5 text-[10px] leading-tight font-medium tracking-wider uppercase">
           学ぶ、覚える、伸ばす

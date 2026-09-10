@@ -96,7 +96,7 @@ export default function Sidebar() {
   const pathWithoutLocale = getPathWithoutLocale(pathname);
 
   return (
-    <aside className="fixed top-0 left-0 z-40 flex h-screen w-64 flex-col border-r border-slate-200/80 bg-[#F0F3FF] shadow-xs dark:border-slate-800 dark:bg-slate-950">
+    <aside className="bg-surface-container-low fixed top-0 left-0 z-40 flex h-screen w-64 flex-col border-r border-slate-200/80 shadow-xs dark:border-slate-800 dark:bg-slate-950">
       {/* Brand Header */}
       <div className="flex h-16 items-center border-b border-slate-200/50 px-4 dark:border-slate-800">
         <BrandLogoCombined className="w-full" />
@@ -122,7 +122,7 @@ export default function Sidebar() {
                     className={cn(
                       'group flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-all duration-150',
                       isActive
-                        ? 'bg-[#DEE8FF] font-semibold text-[#081534] shadow-xs dark:bg-indigo-950 dark:text-white'
+                        ? 'bg-surface-container-high text-primary font-semibold shadow-xs dark:bg-indigo-950 dark:text-white'
                         : 'text-slate-600 hover:bg-white/80 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white',
                     )}
                   >
@@ -139,7 +139,7 @@ export default function Sidebar() {
                     </div>
 
                     {item.badge && (
-                      <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#006C4A] px-1.5 text-[10px] font-bold text-white shadow-2xs">
+                      <span className="bg-secondary flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold text-white shadow-2xs">
                         {item.badge}
                       </span>
                     )}
@@ -179,7 +179,7 @@ export default function Sidebar() {
             </div>
           </div>
 
-          <Badge className="rounded-full bg-[#E7EEFF] px-1.5 py-0.5 text-[10px] font-extrabold text-[#081534] hover:bg-[#E7EEFF] dark:bg-indigo-950 dark:text-indigo-300">
+          <Badge className="bg-surface-container text-primary hover:bg-surface-container rounded-full px-1.5 py-0.5 text-[10px] font-extrabold dark:bg-indigo-950 dark:text-indigo-300">
             N3
           </Badge>
         </div>

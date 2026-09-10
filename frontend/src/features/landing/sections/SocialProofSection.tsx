@@ -32,8 +32,8 @@ export function SocialProofSection() {
                 key={partner.name}
                 className="flex items-center justify-center gap-2 rounded-xl border border-slate-200/60 bg-white p-3.5 shadow-xs transition-all hover:border-slate-300 hover:shadow-sm dark:border-slate-800 dark:bg-slate-900"
               >
-                <Icon className="size-4 text-[#081534] dark:text-emerald-400" />
-                <span className="truncate text-xs font-semibold text-[#111C2D] dark:text-slate-200">
+                <Icon className="text-primary size-4 dark:text-emerald-400" />
+                <span className="text-on-surface truncate text-xs font-semibold dark:text-slate-200">
                   {partner.name}
                 </span>
               </div>
