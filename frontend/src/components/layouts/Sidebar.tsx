@@ -72,14 +72,14 @@ const navigationSections: NavSection[] = [
         badge: '1',
       },
       {
+        title: 'Luyện đề JLPT',
+        href: '/dashboard/exams',
+        icon: FileCheck2,
+      },
+      {
         title: 'Lớp học của tôi',
         href: '/dashboard',
         icon: GraduationCap,
-      },
-      {
-        title: 'Bài thi & Quiz',
-        href: '/dashboard',
-        icon: FileCheck2,
       },
       {
         title: 'Thông báo',
