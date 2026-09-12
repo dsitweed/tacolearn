@@ -16,6 +16,11 @@ module.exports = {
   testEnvironment: 'node',
   roots: ['<rootDir>/src/'],
   moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1',
     '^src/(.*)$': '<rootDir>/src/$1',
+    '^(core|identify|infrastructure|communication|generated|types)/(.*)$':
+      '<rootDir>/src/$1/$2',
+    '^(auth|common|config|generated|prisma|users|types|storage|uploads)/(.*)$':
+      '<rootDir>/src/$1/$2',
   },
 };

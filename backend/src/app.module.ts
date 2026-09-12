@@ -3,14 +3,11 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { AppController } from 'app.controller';
 import { AppService } from 'app.service';
-import { AuthModule } from 'auth/auth.module';
-import { JwtAuthGuard, RolesGuard } from 'common/guards';
-import { validateEnv } from 'config';
-import { UsersModule } from 'users/users.module';
-
-import { PrismaModule } from './prisma/prisma.module';
-import { StorageModule } from './storage/storage.module';
-import { UploadsModule } from './uploads/uploads.module';
+import { JwtAuthGuard, RolesGuard } from 'core/common/guards';
+import { validateEnv } from 'core/config';
+import { CoreModule } from 'core/core.module';
+import { IdentifyModule } from 'identify/identify.module';
+import { InfrastructureModule } from 'infrastructure/infrastructure.module';
 
 @Module({
   imports: [
@@ -18,11 +15,9 @@ import { UploadsModule } from './uploads/uploads.module';
       isGlobal: true,
       validate: validateEnv,
     }),
-    PrismaModule,
-    AuthModule,
-    UsersModule,
-    UploadsModule,
-    StorageModule,
+    CoreModule,
+    IdentifyModule,
+    InfrastructureModule,
   ],
   controllers: [AppController],
   providers: [

@@ -2,15 +2,15 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
+import { PrismaClientExceptionFilter } from 'core/common/filters';
+import {
+  LoggingInterceptor,
+  TransformResponseInterceptor,
+} from 'core/common/interceptors';
 import * as fs from 'fs';
 import * as path from 'path';
 
 import { AppModule } from './app.module';
-import { PrismaClientExceptionFilter } from './common/filters';
-import {
-  LoggingInterceptor,
-  TransformResponseInterceptor,
-} from './common/interceptors';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
