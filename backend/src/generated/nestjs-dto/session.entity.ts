@@ -1,49 +1,48 @@
+import { ApiProperty } from '@nestjs/swagger';
 
-import {ApiProperty} from '@nestjs/swagger'
-import {User} from './user.entity'
-
+import { User } from './user.entity';
 
 export class Session {
   @ApiProperty({
-  type: 'string',
-})
-id: string ;
-@ApiProperty({
-  type: 'string',
-})
-userId: string ;
-@ApiProperty({
-  type: () => User,
-  required: false,
-})
-user?: User ;
-@ApiProperty({
-  type: 'string',
-})
-token: string ;
-@ApiProperty({
-  type: 'string',
-  format: 'date-time',
-})
-expiresAt: Date ;
-@ApiProperty({
-  type: 'string',
-  nullable: true,
-})
-ipAddress: string  | null;
-@ApiProperty({
-  type: 'string',
-  nullable: true,
-})
-userAgent: string  | null;
-@ApiProperty({
-  type: 'string',
-  format: 'date-time',
-})
-createdAt: Date ;
-@ApiProperty({
-  type: 'string',
-  format: 'date-time',
-})
-updatedAt: Date ;
+    type: 'string',
+  })
+  id: string;
+  @ApiProperty({
+    type: 'string',
+  })
+  userId: string;
+  @ApiProperty({
+    type: () => User,
+    required: false,
+  })
+  user?: User;
+  @ApiProperty({
+    type: 'string',
+  })
+  token: string;
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+  })
+  expiresAt: Date;
+  @ApiProperty({
+    type: 'string',
+    nullable: true,
+  })
+  ipAddress: string | null;
+  @ApiProperty({
+    type: 'string',
+    nullable: true,
+  })
+  userAgent: string | null;
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+  })
+  createdAt: Date;
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+  })
+  updatedAt: Date;
 }
