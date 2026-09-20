@@ -43,61 +43,61 @@ const navigationSections: NavSection[] = [
         href: '/dashboard',
         icon: LayoutDashboard,
       },
-      {
-        title: 'Ôn tập SRS',
-        href: '/dashboard/srs-review',
-        icon: RotateCcw,
-        badge: '18',
-        badgeVariant: 'emerald',
-      },
+      // {
+      //   title: 'Ôn tập SRS',
+      //   href: '/dashboard/srs-review',
+      //   icon: RotateCcw,
+      //   badge: '18',
+      //   badgeVariant: 'emerald',
+      // },
       {
         title: 'Luyện đề thích ứng',
         href: '/dashboard/practice',
         icon: FileCheck2,
       },
-      {
-        title: 'Kho Kanji & Từ vựng',
-        href: '/dashboard',
-        icon: BookOpen,
-      },
-      {
-        title: 'Lịch học & Điểm danh',
-        href: '/dashboard',
-        icon: CalendarDays,
-      },
+      // {
+      //   title: 'Kho Kanji & Từ vựng',
+      //   href: '/dashboard',
+      //   icon: BookOpen,
+      // },
+      // {
+      //   title: 'Lịch học & Điểm danh',
+      //   href: '/dashboard',
+      //   icon: CalendarDays,
+      // },
     ],
   },
-  {
-    label: 'QUẢN LÝ TRƯỜNG HỌC',
-    items: [
-      {
-        title: 'Điểm danh & Học bù',
-        href: '/dashboard/catch-up',
-        icon: CalendarDays,
-        badge: '1',
-      },
-      {
-        title: 'Luyện đề JLPT',
-        href: '/dashboard/exams',
-        icon: FileCheck2,
-      },
-      {
-        title: 'Lớp học của tôi',
-        href: '/dashboard',
-        icon: GraduationCap,
-      },
-      {
-        title: 'Thông báo',
-        href: '/dashboard',
-        icon: Bell,
-      },
-      {
-        title: 'Cài đặt & Hồ sơ',
-        href: '/dashboard/settings',
-        icon: Settings,
-      },
-    ],
-  },
+  // {
+  //   label: 'QUẢN LÝ TRƯỜNG HỌC',
+  //   items: [
+  //     {
+  //       title: 'Điểm danh & Học bù',
+  //       href: '/dashboard/catch-up',
+  //       icon: CalendarDays,
+  //       badge: '1',
+  //     },
+  //     {
+  //       title: 'Luyện đề JLPT',
+  //       href: '/dashboard/exams',
+  //       icon: FileCheck2,
+  //     },
+  //     {
+  //       title: 'Lớp học của tôi',
+  //       href: '/dashboard',
+  //       icon: GraduationCap,
+  //     },
+  //     {
+  //       title: 'Thông báo',
+  //       href: '/dashboard',
+  //       icon: Bell,
+  //     },
+  //     {
+  //       title: 'Cài đặt & Hồ sơ',
+  //       href: '/dashboard/settings',
+  //       icon: Settings,
+  //     },
+  //   ],
+  // },
 ];
 
 export default function Sidebar() {
@@ -110,7 +110,7 @@ export default function Sidebar() {
     <aside className="bg-surface-container-low fixed top-0 left-0 z-40 flex h-screen w-64 flex-col border-r border-slate-200/80 shadow-xs dark:border-slate-800 dark:bg-slate-950">
       {/* Brand Header */}
       <div className="flex h-16 items-center border-b border-slate-200/50 px-4 dark:border-slate-800">
-        <BrandLogoCombined className="w-full" />
+        <BrandLogoCombined className="w-full" link="/" />
       </div>
 
       {/* Navigation Sections */}
