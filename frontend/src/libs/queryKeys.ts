@@ -18,4 +18,24 @@ export const queryKeys = {
     deleteObjectsByPrefix: () =>
       [...queryKeys.uploads.all, 'deleteObjectsByPrefix'] as const,
   },
+
+  // Exam queries
+  exams: {
+    all: ['exams'] as const,
+    list: () => [...queryKeys.exams.all, 'list'] as const,
+    detail: (id: string) => [...queryKeys.exams.all, 'detail', id] as const,
+  },
+
+  // Practice/Questions queries
+  questions: {
+    all: ['questions'] as const,
+  },
+
+  // Practice queries
+  practice: {
+    all: ['practice'] as const,
+    session: (id: string) => [...queryKeys.practice.all, id] as const,
+    results: (id: string) =>
+      [...queryKeys.practice.all, id, 'results'] as const,
+  },
 } as const;

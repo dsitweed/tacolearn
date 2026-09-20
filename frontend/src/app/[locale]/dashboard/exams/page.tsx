@@ -12,9 +12,10 @@ import {
   MistakeBankSection,
   SpecializedDrillsSection,
 } from '@/features/exams';
+import { JlptLevel } from '@/types';
 
 export default function ExamsHubPage() {
-  const [selectedLevel, setSelectedLevel] = useState('N2');
+  const [selectedLevel, setSelectedLevel] = useState('N2' as JlptLevel);
   const [selectedSection, setSelectedSection] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [onlyUnattempted, setOnlyUnattempted] = useState(false);
@@ -33,6 +34,10 @@ export default function ExamsHubPage() {
 
   const handlePracticeMistakes = () => {
     toast.success('Bắt đầu phiên phục thù 42 câu hỏi sai từ Mistake Bank!');
+  };
+
+  const handleSelectLevel = (lvl: string) => {
+    setSelectedLevel(lvl as JlptLevel);
   };
 
   return (
@@ -56,7 +61,7 @@ export default function ExamsHubPage() {
       {/* 3. Filter & JLPT Level Selector Bar */}
       <ExamFilterBar
         selectedLevel={selectedLevel}
-        onSelectLevel={setSelectedLevel}
+        onSelectLevel={handleSelectLevel}
         selectedSection={selectedSection}
         onSelectSection={setSelectedSection}
         searchQuery={searchQuery}
@@ -73,7 +78,7 @@ export default function ExamsHubPage() {
       <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-12">
         {/* Left / Main Practice Content (Col 8/12) */}
         <div className="flex flex-col space-y-8 xl:col-span-8">
-          <FullMockExamSection />
+          <FullMockExamSection level={selectedLevel} />
           <SpecializedDrillsSection />
           <MistakeBankSection onPracticeMistakes={handlePracticeMistakes} />
         </div>

@@ -518,6 +518,445 @@
           "Uploads"
         ]
       }
+    },
+    "/api/v1/practice/sessions": {
+      "post": {
+        "operationId": "PracticeController_createSession",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Practice session created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeSession"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a new practice session",
+        "tags": [
+          "Practice"
+        ]
+      }
+    },
+    "/api/v1/practice/sessions/{id}": {
+      "get": {
+        "operationId": "PracticeController_getSession",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeSession"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get practice session by ID",
+        "tags": [
+          "Practice"
+        ]
+      }
+    },
+    "/api/v1/practice/sessions/{id}/answers": {
+      "post": {
+        "operationId": "PracticeController_submitAnswer",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Answer submitted"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Submit an answer for a question",
+        "tags": [
+          "Practice"
+        ]
+      }
+    },
+    "/api/v1/practice/sessions/{id}/complete": {
+      "post": {
+        "operationId": "PracticeController_completeSession",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session completed"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Complete a practice session",
+        "tags": [
+          "Practice"
+        ]
+      }
+    },
+    "/api/v1/practice/sessions/{id}/results": {
+      "get": {
+        "operationId": "PracticeController_getResults",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Results retrieved"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get practice session results",
+        "tags": [
+          "Practice"
+        ]
+      }
+    },
+    "/api/v1/questions": {
+      "get": {
+        "operationId": "QuestionsController_getQuestions",
+        "parameters": [
+          {
+            "name": "level",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "section",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Questions retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Question"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get questions by level and section",
+        "tags": [
+          "Questions"
+        ]
+      }
+    },
+    "/api/v1/questions/random": {
+      "get": {
+        "operationId": "QuestionsController_getRandomQuestions",
+        "parameters": [
+          {
+            "name": "level",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "section",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "count",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Random questions retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Question"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get random questions by level and section",
+        "tags": [
+          "Questions"
+        ]
+      }
+    },
+    "/api/v1/questions/{id}": {
+      "get": {
+        "operationId": "QuestionsController_getQuestion",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Question retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Question"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get question by ID",
+        "tags": [
+          "Questions"
+        ]
+      }
+    },
+    "/api/v1/questions/stats": {
+      "get": {
+        "operationId": "QuestionsController_getStats",
+        "parameters": [
+          {
+            "name": "level",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stats retrieved"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get question statistics",
+        "tags": [
+          "Questions"
+        ]
+      }
+    },
+    "/api/v1/exams": {
+      "get": {
+        "operationId": "ExamsController_getExams",
+        "parameters": [
+          {
+            "name": "level",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exams retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Exam"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "List published exams",
+        "tags": [
+          "Exams"
+        ]
+      }
+    },
+    "/api/v1/exams/{id}": {
+      "get": {
+        "operationId": "ExamsController_getExamById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exam retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Exam"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get exam by ID",
+        "tags": [
+          "Exams"
+        ]
+      }
+    },
+    "/api/v1/exams/{id}/submit": {
+      "post": {
+        "operationId": "ExamsController_submitExam",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitExamDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Exam submitted successfully"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Submit exam answers",
+        "tags": [
+          "Exams"
+        ]
+      }
     }
   },
   "info": {
@@ -2992,6 +3431,43 @@
           "fileUrl",
           "key",
           "fileId"
+        ]
+      },
+      "AnswerDto": {
+        "type": "object",
+        "properties": {
+          "questionId": {
+            "type": "string",
+            "description": "Question ID"
+          },
+          "selectedAnswer": {
+            "type": "string",
+            "description": "Selected answer"
+          }
+        },
+        "required": [
+          "questionId",
+          "selectedAnswer"
+        ]
+      },
+      "SubmitExamDto": {
+        "type": "object",
+        "properties": {
+          "answers": {
+            "description": "Answers for each question",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnswerDto"
+            }
+          },
+          "timeSpent": {
+            "type": "number",
+            "description": "Time spent in seconds"
+          }
+        },
+        "required": [
+          "answers",
+          "timeSpent"
         ]
       }
     }

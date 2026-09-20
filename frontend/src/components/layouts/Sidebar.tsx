@@ -55,6 +55,11 @@ const navigationSections: NavSection[] = [
         href: '/dashboard/practice',
         icon: FileCheck2,
       },
+      {
+        title: 'Đề Thi JLPT',
+        href: '/exams',
+        icon: BookOpen,
+      },
       // {
       //   title: 'Kho Kanji & Từ vựng',
       //   href: '/dashboard',

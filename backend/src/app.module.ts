@@ -8,6 +8,7 @@ import { validateEnv } from 'core/config';
 import { CoreModule } from 'core/core.module';
 import { IdentifyModule } from 'identify/identify.module';
 import { InfrastructureModule } from 'infrastructure/infrastructure.module';
+import { PracticeModule } from 'practice/practice.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { InfrastructureModule } from 'infrastructure/infrastructure.module';
     CoreModule,
     IdentifyModule,
     InfrastructureModule,
+    PracticeModule,
   ],
   controllers: [AppController],
   providers: [
