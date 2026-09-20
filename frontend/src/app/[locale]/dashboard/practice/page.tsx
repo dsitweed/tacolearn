@@ -1,15 +1,20 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
 
+import { PracticeHeader } from '@/features/practice';
+import { PracticeSetupPanel } from '@/features/practice';
+import { QuestionInterface } from '@/features/practice';
+import { RecommendationBanner } from '@/features/practice';
+import type { Question } from '@/features/practice/hooks/useQuestions';
 import {
-  PracticeHeader,
-  PracticeSetupPanel,
-  QuestionInterface,
-  RecommendationBanner,
-} from '@/features/practice';
+  useCompletePracticeSession,
+  useCreatePracticeSession,
+} from '@/features/practice/hooks/useQuestions';
+import { apiClient } from '@/libs/apiClient';
+import { ApiResponse } from '@/types';
 
 export default function PracticeHubPage() {
   const router = useRouter();
@@ -17,75 +22,113 @@ export default function PracticeHubPage() {
   const [section, setSection] = useState('dokkai');
   const [mode, setMode] = useState('weakness');
   const [questionCount, setQuestionCount] = useState(10);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [questions, setQuestions] = useState<Question[]>([]);
 
-  const [currentQuestion, setCurrentQuestion] = useState(4);
-  const totalQuestions = 10;
-  const [selectedOption, setSelectedOption] = useState<string | null>('B');
-  const [showExplanation, setShowExplanation] = useState(true);
+  const createSessionMutation = useCreatePracticeSession();
+  const completeSessionMutation = useCompletePracticeSession();
 
-  const [answersState, setAnswersState] = useState<
-    Record<number, { isCorrect: boolean; selected: string }>
-  >({
-    1: { isCorrect: true, selected: 'A' },
-    2: { isCorrect: true, selected: 'C' },
-    3: { isCorrect: false, selected: 'D' },
-    4: { isCorrect: true, selected: 'B' },
-  });
+  const fetchRandomQuestions = useCallback(async () => {
+    const response = await apiClient.get<ApiResponse<Question[]>>(
+      '/questions/random',
+      {
+        params: { level, section, count: questionCount },
+      },
+    );
+    return response.data as unknown as Question[];
+  }, [level, section, questionCount]);
 
-  const handleSelectOption = (optKey: string) => {
-    setSelectedOption(optKey);
-    const isCorrect = optKey === 'B';
-    setAnswersState((prev) => ({
-      ...prev,
-      [currentQuestion]: { isCorrect, selected: optKey },
-    }));
-    setShowExplanation(true);
-    if (isCorrect) {
-      toast.success('Chính xác! +12 Điểm Thích ứng');
-    } else {
-      toast.error(
-        'Chưa chính xác! Xem giải thích bên dưới để rút kinh nghiệm.',
-      );
+  const handleRefreshQuestions = useCallback(async () => {
+    try {
+      const data = await fetchRandomQuestions();
+      if (data && data.length > 0) {
+        setQuestions(data);
+        setCurrentIndex(0);
+        setSessionId(null);
+        toast.success('Đã tải bộ câu hỏi mới!');
+      } else {
+        toast.info('Không có câu hỏi nào cho cấu hình này');
+      }
+    } catch {
+      toast.error('Không thể tải câu hỏi');
     }
-  };
+  }, [fetchRandomQuestions]);
 
-  const handleNext = () => {
-    if (currentQuestion < totalQuestions) {
-      setCurrentQuestion((prev) => prev + 1);
-      setSelectedOption(null);
-      setShowExplanation(false);
+  const handleStartPractice = useCallback(async () => {
+    if (questions.length === 0) {
+      toast.info('Vui lòng tải câu hỏi trước');
+      return;
+    }
+
+    try {
+      const questionIds = questions.map((q) => q.id);
+      const result = await createSessionMutation.mutateAsync({
+        sessionType: mode === 'weakness' ? 'TARGETED' : 'MIXED',
+        jlptLevel: level,
+        totalQuestions: questions.length,
+        questionIds,
+        studentId: 'user-1',
+      });
+      setSessionId((result as any).id);
+      toast.success('Đã bắt đầu phiên luyện tập!');
+    } catch {
+      toast.error('Không thể tạo phiên luyện tập');
+    }
+  }, [questions, level, mode, createSessionMutation]);
+
+  const handleNextQuestion = useCallback(() => {
+    if (currentIndex < questions.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
     } else {
-      toast.info(
-        'Bạn đã hoàn thành phiên luyện tập! Đang chuyển đến bảng phân tích...',
-      );
+      handleCompletePractice();
+    }
+  }, [currentIndex, questions.length]);
+
+  const handlePrevQuestion = useCallback(() => {
+    if (currentIndex > 0) {
+      setCurrentIndex((prev) => prev - 1);
+    }
+  }, [currentIndex]);
+
+  const handleCompletePractice = useCallback(async () => {
+    if (sessionId) {
+      try {
+        await completeSessionMutation.mutateAsync(sessionId);
+        router.push('/dashboard/practice-result');
+      } catch {
+        toast.error('Không thể hoàn thành phiên luyện');
+      }
+    } else {
       router.push('/dashboard/practice-result');
     }
-  };
+  }, [sessionId, completeSessionMutation, router]);
 
-  const handlePrev = () => {
-    if (currentQuestion > 1) {
-      setCurrentQuestion((prev) => prev - 1);
-      setSelectedOption(answersState[currentQuestion - 1]?.selected ?? null);
-      setShowExplanation(Boolean(answersState[currentQuestion - 1]));
-    }
-  };
+  const handleResetConfig = useCallback(() => {
+    setLevel('N2');
+    setSection('dokkai');
+    setMode('weakness');
+    setQuestionCount(10);
+    setQuestions([]);
+    setCurrentIndex(0);
+    setSessionId(null);
+    toast.info('Đã đặt lại cấu hình mặc định');
+  }, []);
 
   return (
     <div className="flex w-full flex-col pb-16">
-      {/* 1. Breadcrumb & Page Header */}
       <PracticeHeader />
 
-      {/* 2. Top Recommendation Banner */}
       <RecommendationBanner
         onStart15mPractice={() => {
-          toast.success('Bắt đầu phiên luyện tập điểm yếu 15 phút!');
+          setMode('weakness');
+          toast.info('Đã chọn chế độ điểm yếu');
         }}
         onSelectWeakness={(idx) => {
-          toast.info(`Đã chọn luyện phân vùng điểm yếu #${idx}`);
+          toast.info(`Đã chọn phân vùng điểm yếu #${idx}`);
         }}
       />
 
-      {/* 3. Practice Setup Panel */}
       <PracticeSetupPanel
         level={level}
         onLevelChange={setLevel}
@@ -95,28 +138,44 @@ export default function PracticeHubPage() {
         onModeChange={setMode}
         questionCount={questionCount}
         onQuestionCountChange={setQuestionCount}
-        onResetConfig={() => toast.info('Đã tải lại cấu hình mặc định')}
-        onRefreshQuestions={() =>
-          toast.success('Đã làm mới bộ câu hỏi thích ứng!')
-        }
+        onResetConfig={handleResetConfig}
+        onRefreshQuestions={handleRefreshQuestions}
       />
 
-      {/* 4. Active Question Experience Interface */}
-      <QuestionInterface
-        currentQuestion={currentQuestion}
-        totalQuestions={totalQuestions}
-        onSelectQuestion={(num) => {
-          setCurrentQuestion(num);
-          setSelectedOption(answersState[num]?.selected ?? null);
-          setShowExplanation(Boolean(answersState[num]));
-        }}
-        answersState={answersState}
-        selectedOption={selectedOption}
-        onSelectOption={handleSelectOption}
-        showExplanation={showExplanation}
-        onNextQuestion={handleNext}
-        onPrevQuestion={handlePrev}
-      />
+      {questions.length > 0 ? (
+        <>
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-on-surface-variant text-sm">
+              Đang làm: Câu {currentIndex + 1}/{questions.length} · Session:{' '}
+              {sessionId?.slice(0, 8) || 'Chưa tạo'}
+            </p>
+            <button
+              type="button"
+              onClick={handleStartPractice}
+              disabled={!!sessionId}
+              className="bg-primary text-on-primary rounded-lg px-4 py-2 text-xs font-semibold disabled:opacity-50"
+            >
+              {sessionId ? 'Đã bắt đầu' : 'Bắt đầu thực hành'}
+            </button>
+          </div>
+
+          <QuestionInterface
+            questions={questions}
+            currentIndex={currentIndex}
+            onNext={handleNextQuestion}
+            onPrev={handlePrevQuestion}
+            onComplete={handleCompletePractice}
+            sessionId={sessionId}
+          />
+        </>
+      ) : (
+        <div className="text-on-surface-variant flex flex-col items-center justify-center py-20">
+          <p className="text-lg font-semibold dark:text-white">
+            Chọn cấu hình và tải câu hỏi
+          </p>
+          <p className="text-sm">Nhấn "Làm mới bộ câu hỏi" để bắt đầu</p>
+        </div>
+      )}
     </div>
   );
 }

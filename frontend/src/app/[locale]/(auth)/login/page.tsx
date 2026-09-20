@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useIntlayer } from 'next-intlayer';
 
 import { Button } from '@/components/ui/button';
@@ -11,34 +12,36 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { useGoogleLogin } from '@/hooks/api';
 
 export default function LoginPage() {
   const content = useIntlayer('loginPage');
+  const googleLoginMutation = useGoogleLogin();
 
   const handleGoogleLogin = () => {
-    window.location.href = '/api/v1/auth/google';
+    googleLoginMutation.mutate();
   };
 
   return (
-    <div className="flex min-h-screen bg-surface-container-lowest">
+    <div className="bg-surface-container-lowest flex min-h-screen">
       {/* Left: Hero */}
-      <div className="relative hidden flex-1 bg-surface-container-lowest overflow-hidden lg:flex">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5" />
+      <div className="bg-surface-container-lowest relative hidden flex-1 overflow-hidden lg:flex">
+        <div className="from-primary/20 to-primary/5 absolute inset-0 bg-gradient-to-br" />
         <div className="relative flex w-full flex-col justify-between p-16">
           <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-lg bg-primary">
-              <span className="text-xl font-bold text-on-primary">TL</span>
+            <div className="bg-primary flex size-10 items-center justify-center rounded-lg">
+              <span className="text-on-primary text-xl font-bold">TL</span>
             </div>
-            <span className="text-2xl font-heading font-bold text-on-surface dark:text-white">
+            <span className="font-heading text-on-surface text-2xl font-bold dark:text-white">
               TacoLearn
             </span>
           </div>
 
           <div className="flex max-w-md flex-col gap-6">
-            <h1 className="font-heading text-4xl font-bold tracking-tight text-on-surface dark:text-white">
+            <h1 className="font-heading text-on-surface text-4xl font-bold tracking-tight dark:text-white">
               {content.title}
             </h1>
-            <p className="text-base text-on-surface-variant">
+            <p className="text-on-surface-variant text-base">
               {content.subtitle}
             </p>
           </div>
@@ -46,11 +49,11 @@ export default function LoginPage() {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-4">
               <div className="flex -space-x-2">
-                <div className="size-10 rounded-full bg-primary/20 border-2 border-white dark:border-slate-800" />
-                <div className="size-10 rounded-full bg-secondary/20 border-2 border-white dark:border-slate-800" />
-                <div className="size-10 rounded-full bg-tertiary/20 border-2 border-white dark:border-slate-800" />
+                <div className="bg-primary/20 size-10 rounded-full border-2 border-white dark:border-slate-800" />
+                <div className="bg-secondary/20 size-10 rounded-full border-2 border-white dark:border-slate-800" />
+                <div className="bg-tertiary/20 size-10 rounded-full border-2 border-white dark:border-slate-800" />
               </div>
-              <p className="text-xs font-semibold text-on-surface-variant">
+              <p className="text-on-surface-variant text-xs font-semibold">
                 {content.community}
               </p>
             </div>
@@ -60,9 +63,9 @@ export default function LoginPage() {
 
       {/* Right: Login card */}
       <div className="flex flex-1 items-center justify-center bg-white p-6 dark:bg-slate-900">
-        <Card className="w-full max-w-md shrink-0 rounded-2xl border-slate-100 bg-surface-container-lowest shadow-xs dark:border-slate-800 dark:bg-slate-800">
+        <Card className="bg-surface-container-lowest w-full max-w-md shrink-0 rounded-2xl border-slate-100 shadow-xs dark:border-slate-800 dark:bg-slate-800">
           <CardHeader className="space-y-1">
-            <CardTitle className="font-heading text-2xl font-bold text-on-surface dark:text-white">
+            <CardTitle className="font-heading text-on-surface text-2xl font-bold dark:text-white">
               {content.title}
             </CardTitle>
             <CardDescription className="text-on-surface-variant">
@@ -74,6 +77,7 @@ export default function LoginPage() {
               <Button
                 size="lg"
                 onClick={handleGoogleLogin}
+                disabled={googleLoginMutation.isPending}
                 className="bg-primary text-on-primary hover:bg-primary-container flex h-12 w-full items-center justify-center gap-3 rounded-xl px-6 text-sm font-semibold shadow-xs"
               >
                 <svg className="size-5" viewBox="0 0 24 24">
@@ -97,20 +101,20 @@ export default function LoginPage() {
                 {content.googleButton}
               </Button>
 
-              <p className="text-center text-xs text-on-surface-variant">
+              <p className="text-on-surface-variant text-center text-xs">
                 {content.continueWithGoogle}
               </p>
             </div>
           </CardContent>
           <CardFooter className="flex justify-center">
-            <p className="text-sm text-on-surface-variant">
+            <p className="text-on-surface-variant text-sm">
               {content.noAccount}{' '}
-              <a
+              <Link
                 href="/register"
-                className="font-medium text-primary hover:underline dark:text-white"
+                className="text-primary font-medium hover:underline dark:text-white"
               >
                 {content.createAccount}
-              </a>
+              </Link>
             </p>
           </CardFooter>
         </Card>

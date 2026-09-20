@@ -12,12 +12,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { useGoogleLogin } from '@/hooks/api';
 
 export default function RegisterPage() {
   const content = useIntlayer('registerPage');
+  const googleLoginMutation = useGoogleLogin();
 
   const handleGoogleRegister = () => {
-    window.location.href = '/api/v1/auth/google';
+    googleLoginMutation.mutate();
   };
 
   return (
@@ -75,6 +77,7 @@ export default function RegisterPage() {
               <Button
                 size="lg"
                 onClick={handleGoogleRegister}
+                disabled={googleLoginMutation.isPending}
                 className="bg-primary text-on-primary hover:bg-primary-container flex h-12 w-full items-center justify-center gap-3 rounded-xl px-6 text-sm font-semibold shadow-xs"
               >
                 <svg className="size-5" viewBox="0 0 24 24">

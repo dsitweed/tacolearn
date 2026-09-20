@@ -288,6 +288,7 @@ export class AuthService {
         id: userId,
         ...ACTIVE_USER_WHERE,
       },
+      include: { profile: true },
     });
 
     return user;
@@ -323,7 +324,7 @@ export class AuthService {
           accountId: googleId,
         },
       },
-      include: { user: true },
+      include: { user: { include: { profile: true } } },
     });
 
     if (existingAccount?.user) {
@@ -337,6 +338,7 @@ export class AuthService {
 
     const existingUser = await this.prisma.user.findUnique({
       where: { email },
+      include: { profile: true },
     });
 
     if (existingUser) {

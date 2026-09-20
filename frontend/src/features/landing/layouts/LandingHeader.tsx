@@ -1,14 +1,24 @@
 'use client';
 
-import { Globe, Menu, X } from 'lucide-react';
+import { LayoutDashboard, LogOut, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
-import { Button } from '@/components/ui';
+import LocaleSwitcher from '@/components/LocaleSwitcher';
+import { Avatar, AvatarImage, Button } from '@/components/ui';
+import { useLogout } from '@/hooks/api';
+import { useAuthStore } from '@/stores/authStore';
 
 import { TacoLearnLogo } from '../components/TacoLearnLogo';
 
 export function LandingHeader() {
+  const { user } = useAuthStore();
+  const logoutMutation = useLogout();
+
+  const handleLogout = () => {
+    logoutMutation.mutate();
+  };
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
@@ -40,29 +50,58 @@ export function LandingHeader() {
 
         {/* Actions */}
         <div className="hidden items-center gap-3 sm:flex">
-          <Button
-            variant="ghost"
-            size="sm"
-            asChild
-            className="hidden lg:inline-flex"
-          >
-            <span className="flex items-center gap-1.5 text-xs text-slate-500">
-              <Globe className="size-3.5" />
-              VI / JA
-            </span>
-          </Button>
+          <LocaleSwitcher />
 
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/login">Đăng nhập</Link>
-          </Button>
+          {user ? (
+            <>
+              {/* Management dashboard */}
+              {(user.role === 'ADMIN' || user.role === 'LANDLORD') && (
+                <Link href="/dashboard">
+                  <Button variant="outline">
+                    <LayoutDashboard className="size-4" />
+                    <span>Quản lý</span>
+                  </Button>
+                </Link>
+              )}
 
-          <Button
-            size="sm"
-            className="bg-primary hover:bg-primary-container text-white shadow-xs dark:bg-indigo-600 dark:hover:bg-indigo-700"
-            asChild
-          >
-            <Link href="/register">Dùng thử miễn phí</Link>
-          </Button>
+              {/* User Avatar */}
+              <Link href={'/dashboard'}>
+                <Avatar>
+                  <AvatarImage
+                    src={
+                      user?.profile?.avatar ??
+                      `https://api.dicebear.com/10.x/thumbs/svg?seed=${user?.email}`
+                    }
+                    alt="user avatar"
+                  />
+                </Avatar>
+              </Link>
+
+              {/* Logout Button */}
+              <Button
+                variant="ghost"
+                onClick={handleLogout}
+                title="Đăng xuất"
+                className="flex size-9 rounded-full text-gray-500 transition-colors hover:bg-red-50 hover:text-red-600"
+              >
+                <LogOut className="size-4" />
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/login">Đăng nhập</Link>
+              </Button>
+
+              <Button
+                size="sm"
+                className="bg-primary hover:bg-primary-container text-white shadow-xs dark:bg-indigo-600 dark:hover:bg-indigo-700"
+                asChild
+              >
+                <Link href="/register">Dùng thử miễn phí</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Mobile menu toggle */}

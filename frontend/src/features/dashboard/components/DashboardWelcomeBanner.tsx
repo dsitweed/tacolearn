@@ -1,8 +1,17 @@
+'use client';
+
 import { CheckCircle2, Clock } from 'lucide-react';
 
 import { Badge } from '@/components/ui';
+import { useAuthStore } from '@/stores/authStore';
 
 export function DashboardWelcomeBanner() {
+  const user = useAuthStore((state) => state.user);
+  const displayName = user?.profile
+    ? `${user.profile.lastName} ${user.profile.firstName}`.trim()
+    : (user?.email?.split('@')[0] ?? 'Minh');
+  const classLabel = 'Lớp N3 - Khóa K24';
+
   return (
     <div className="relative overflow-hidden rounded-xl border border-slate-100 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
       {/* Decorative Blur Spheres from Figma */}
@@ -14,14 +23,14 @@ export function DashboardWelcomeBanner() {
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-3">
             <h1 className="font-heading text-primary text-2xl font-bold tracking-tight lg:text-3xl dark:text-white">
-              Chào buổi sáng, Minh! 👋
+              Chào buổi sáng, {displayName}! 👋
             </h1>
             <Badge
               variant="secondary"
               className="bg-surface-container-high text-on-surface-variant rounded-full px-2.5 py-0.5 text-xs font-semibold dark:bg-slate-800 dark:text-slate-300"
             >
               <span className="bg-secondary mr-1.5 size-1.5 rounded-full" />
-              Lớp N3 - Khóa K24
+              {classLabel}
             </Badge>
           </div>
 
@@ -45,7 +54,7 @@ export function DashboardWelcomeBanner() {
         {/* Right Session Status Pill */}
         <div className="bg-surface-container-low flex shrink-0 flex-col justify-center rounded-xl border border-slate-200/60 p-3.5 shadow-2xs sm:min-w-[340px] dark:border-slate-800 dark:bg-slate-800/60">
           <div className="text-on-surface flex items-center gap-2 text-xs font-semibold dark:text-slate-200">
-            <span className="bg-secondary size-2 rounded-full" />
+            <span className="bg-secondary size-2 animate-pulse rounded-full" />
             <span>Tiết học tiếp theo</span>
             <span className="text-slate-400">•</span>
             <span className="text-on-surface-variant flex items-center gap-1 font-normal dark:text-slate-400">

@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
-import type { User } from '@/types';
+import { User } from '@/generated/model';
+import { apiClient } from '@/libs/apiClient';
 
 /**
  * Auth Store - Simplified for httpOnly cookie authentication
@@ -22,6 +23,7 @@ interface AuthStore {
   login: (user: User) => void;
   updateUser: (user: Partial<User>) => void;
   setHydrated: () => void;
+  checkAuth: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -50,6 +52,20 @@ export const useAuthStore = create<AuthStore>()(
 
         setHydrated: () => {
           set({ isHydrated: true });
+        },
+
+        checkAuth: async () => {
+          try {
+            const response = await apiClient.get<User>('/users/me');
+            if (response.data) {
+              set({
+                user: response.data,
+                isAuthenticated: true,
+              });
+            }
+          } catch {
+            set({ isAuthenticated: false, user: null });
+          }
         },
       }),
       {

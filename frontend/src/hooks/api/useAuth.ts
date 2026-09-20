@@ -1,17 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { RegisterAuthDto } from '@/generated/model';
+import {
+  LoginAuthDto,
+  RegisterAuthDto,
+  UpdatePasswordDto,
+  UpdateUserProfileDto,
+  User,
+} from '@/generated/model';
 import { apiClient, handleApiError, queryKeys } from '@/libs';
 import { authLogout, useAuthStore } from '@/stores/authStore';
-import type {
-  ChangePasswordRequest,
-  LoginResponse,
-  UpdateUserProfileRequest,
-  User,
-} from '@/types';
 
 // Auth API functions
 const authApi = {
+  login: async (data: LoginAuthDto) => {
+    const response = await apiClient.post<User>('/auth/login', data);
+    return response.data;
+  },
   register: async (data: RegisterAuthDto) => {
     const response = await apiClient.post<User>('/auth/register', data);
     return response.data;
@@ -26,16 +30,21 @@ const authApi = {
     return response.data;
   },
 
-  updateProfile: async (data: UpdateUserProfileRequest) => {
+  updateProfile: async (data: UpdateUserProfileDto) => {
     const response = await apiClient.patch<User>('/users/me', data);
     return response.data;
   },
 
-  changePassword: async (data: ChangePasswordRequest) => {
+  changePassword: async (data: UpdatePasswordDto) => {
     const response = await apiClient.post<User>(
       '/users/me/change-password',
       data,
     );
+    return response.data;
+  },
+
+  googleLogin: async () => {
+    const response = await apiClient.post<null>('/auth/google-login');
     return response.data;
   },
 };
@@ -46,12 +55,10 @@ export function useLogin() {
   const { login } = useAuthStore();
 
   return useMutation({
-    mutationFn: () => {
-      window.location.href = '/api/v1/auth/google';
-      return Promise.resolve();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries();
+    mutationFn: authApi.login,
+    onSuccess: (user) => {
+      login(user);
+      queryClient.setQueryData(queryKeys.auth.profile(), user);
     },
     onError: handleApiError,
   });
@@ -102,5 +109,20 @@ export function useLogout() {
     onSettled: () => {
       authLogout();
     },
+  });
+}
+
+export function useGoogleLogin() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => {
+      window.location.href = `${process.env.NEXT_PUBLIC_API_ORIGIN}/api/v1/auth/google`;
+      return Promise.resolve();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
+    onError: handleApiError,
   });
 }

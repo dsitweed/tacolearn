@@ -5,7 +5,14 @@ import { Bell, ChevronDown, LogOut, Search } from 'lucide-react';
 import { useLogout } from '@/hooks/api';
 import { useAuthStore } from '@/stores/authStore';
 
-import { Avatar, AvatarFallback, AvatarImage, Button, Separator } from '../ui';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
+  Input,
+  Separator,
+} from '../ui';
 
 export function Header() {
   const { user } = useAuthStore();
@@ -21,7 +28,7 @@ export function Header() {
       <div className="flex max-w-xl flex-1 items-center gap-3">
         <div className="relative max-w-xs flex-1 sm:max-w-sm">
           <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-slate-400" />
-          <input
+          <Input
             type="text"
             placeholder="Tìm kiếm Kanji, từ vựng..."
             className="bg-surface-container-low text-on-surface focus:border-secondary focus:ring-secondary/20 h-8.5 w-full rounded-lg border border-slate-200/60 pr-9 pl-8.5 text-xs shadow-2xs transition-all placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-white"
