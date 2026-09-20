@@ -35,45 +35,23 @@ const loginPageContent = {
       vi: 'Đăng nhập để tiếp tục.',
       en: 'Sign in to continue.',
     }),
-    googleButton: t({ vi: 'Google', en: 'Google' }),
-    facebookButton: t({ vi: 'Facebook', en: 'Facebook' }),
-    emailLabel: t({ vi: 'Email', en: 'Email' }),
-    passwordLabel: t({ vi: 'Mật khẩu', en: 'Password' }),
-    submitButton: t({ vi: 'Đăng nhập', en: 'Sign In' }),
-    divider: t({
-      vi: 'Hoặc dùng email',
-      en: 'Or use email',
+    googleButton: t({ vi: 'Continue with Google', en: 'Continue with Google' }),
+    continueWithGoogle: t({
+      vi: 'Bạn sẽ được đăng nhập bằng tài khoản Google của mình.',
+      en: 'You will be signed in with your Google account.',
     }),
-    rememberMe: t({
-      vi: 'Ghi nhớ đăng nhập',
-      en: 'Remember me',
-    }),
-    forgotPassword: t({
-      vi: 'Quên mật khẩu?',
-      en: 'Forgot password?',
+    community: t({
+      vi: '10,000+ học viên',
+      en: '10,000+ learners',
     }),
     noAccount: t({
       vi: 'Chưa có tài khoản? ',
       en: "Don't have an account? ",
     }),
     createAccount: t({
-      vi: 'Tạo tài khoản mới',
-      en: 'Create new account',
+      vi: 'Tạo tài khoản',
+      en: 'Create an account',
     }),
-    comingSoon: t({
-      vi: 'Tính năng sắp ra mắt',
-      en: 'Coming soon',
-    }),
-    validation: {
-      emailInvalid: t({
-        vi: 'Email không hợp lệ.',
-        en: 'Invalid email.',
-      }),
-      passwordMin: t({
-        vi: 'Mật khẩu phải có ít nhất 6 ký tự.',
-        en: 'Password must be at least 6 characters.',
-      }),
-    },
   },
 } satisfies Dictionary;
 
