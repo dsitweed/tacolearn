@@ -8,7 +8,7 @@ import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import * as argon from 'argon2';
 import { EmailService } from 'communication/email/email.service';
 import { PrismaService } from 'core/prisma/prisma.service';
-import { createHash } from 'crypto';
+import { createHash, randomUUID } from 'crypto';
 import { User } from 'generated/prisma/client';
 import { TransactionClient } from 'generated/prisma/internal/prismaNamespace';
 import { ACTIVE_USER_WHERE } from 'identify/users/users.constants';
@@ -84,7 +84,6 @@ export class AuthService {
       },
     });
 
-    // Create a credential account for password authentication
     await this.prisma.account.create({
       data: {
         userId: newUser.id,
@@ -268,10 +267,7 @@ export class AuthService {
     }
 
     if (await argon.verify(user.accounts[0].password, password)) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { accounts, ...userData } = user;
-
-      return { ...userData };
+      return user;
     }
 
     return null;
@@ -314,9 +310,93 @@ export class AuthService {
     return session?.user ? session.user : null;
   }
 
+  async validateOrRegisterGoogleUser(
+    googleId: string,
+    email: string,
+    displayName: string,
+    photoUrl?: string,
+  ): Promise<User | null> {
+    const existingAccount = await this.prisma.account.findUnique({
+      where: {
+        providerId_accountId: {
+          providerId: 'google',
+          accountId: googleId,
+        },
+      },
+      include: { user: true },
+    });
+
+    if (existingAccount?.user) {
+      const user = existingAccount.user;
+      if (!user.isActive || user.deletedAt) {
+        return null;
+      }
+
+      return user;
+    }
+
+    const existingUser = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (existingUser) {
+      await this.prisma.account.create({
+        data: {
+          userId: existingUser.id,
+          providerId: 'google',
+          accountId: googleId,
+        },
+      });
+
+      return existingUser;
+    }
+
+    const firstName = displayName?.split(' ')[0] || '';
+    const lastName = displayName?.split(' ').slice(1).join(' ') || '';
+
+    const newUser = await this.prisma.user.create({
+      data: {
+        email,
+        role: 'STUDENT',
+        profile: {
+          create: {
+            firstName,
+            lastName,
+            phone: null,
+            avatar: photoUrl || null,
+          },
+        },
+      },
+    });
+
+    await this.prisma.account.create({
+      data: {
+        userId: newUser.id,
+        providerId: 'google',
+        accountId: googleId,
+      },
+    });
+
+    return newUser;
+  }
+
+  async googleLogin(user: User) {
+    const payload: JwtPayload = {
+      sub: user.id,
+      email: user.email,
+      role: user.role,
+    };
+
+    const { accessToken, refreshToken, refreshTokenId } =
+      await this.getAuthTokens(payload);
+
+    await this.createSession(user.id, refreshTokenId);
+
+    return { accessToken, refreshToken, user };
+  }
+
   private async createSession(userId: string, refreshTokenId: string) {
     const expiresAt = new Date();
-    // session expires = refresh token expiration (7 days)
     expiresAt.setDate(expiresAt.getDate() + 7);
 
     await this.prisma.session.create({
@@ -338,8 +418,8 @@ export class AuthService {
   }
 
   private async createVerification(identifier: string) {
-    const token = crypto.randomUUID();
-    const expiresAt = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes from now
+    const token = randomUUID();
+    const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
 
     await this.prisma.verification.deleteMany({ where: { identifier } });
     await this.prisma.verification.create({
@@ -375,7 +455,7 @@ export class AuthService {
   }
 
   private async getAuthTokens(payload: JwtPayload) {
-    const refreshTokenId = crypto.randomUUID();
+    const refreshTokenId = randomUUID();
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
         secret: this.config.get('JWT_SECRET'),
@@ -392,7 +472,7 @@ export class AuthService {
             'JWT_REFRESH_EXPIRES_IN',
             '7d',
           ) as JwtSignOptions['expiresIn'],
-          jwtid: refreshTokenId, // JWT ID - unique identifier
+          jwtid: refreshTokenId,
         },
       ),
     ]);

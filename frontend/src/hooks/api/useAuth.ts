@@ -5,7 +5,6 @@ import { apiClient, handleApiError, queryKeys } from '@/libs';
 import { authLogout, useAuthStore } from '@/stores/authStore';
 import type {
   ChangePasswordRequest,
-  LoginRequest,
   LoginResponse,
   UpdateUserProfileRequest,
   User,
@@ -13,11 +12,6 @@ import type {
 
 // Auth API functions
 const authApi = {
-  login: async (data: LoginRequest) => {
-    const response = await apiClient.post<LoginResponse>('/auth/login', data);
-    return response.data;
-  },
-
   register: async (data: RegisterAuthDto) => {
     const response = await apiClient.post<User>('/auth/register', data);
     return response.data;
@@ -52,11 +46,12 @@ export function useLogin() {
   const { login } = useAuthStore();
 
   return useMutation({
-    mutationFn: authApi.login,
-    onSuccess: (data) => {
-      // Only store user info - tokens are in httpOnly cookies
-      login(data.user);
-      queryClient.setQueryData(queryKeys.auth.profile(), data.user);
+    mutationFn: () => {
+      window.location.href = '/api/v1/auth/google';
+      return Promise.resolve();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries();
     },
     onError: handleApiError,
   });

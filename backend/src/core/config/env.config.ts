@@ -4,7 +4,8 @@ const envSchema = z.object({
   NODE_ENV: z
     .enum(['development', 'production', 'test'])
     .default('development'),
-  PORT: z.coerce.number().default(3005),
+  APP_URL: z.string().default('http://localhost:3005'),
+  APP_PORT: z.coerce.number().default(3005),
   FRONTEND_URL: z.string().default('http://localhost:3000'),
   JWT_SECRET: z.string(),
   JWT_EXPIRES_IN: z.string().default('15m'),
@@ -21,6 +22,8 @@ const envSchema = z.object({
     .enum(['true', 'false'])
     .default('false')
     .transform((value) => value === 'true'),
+  GOOGLE_CLIENT_ID: z.string(),
+  GOOGLE_CLIENT_SECRET: z.string(),
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;

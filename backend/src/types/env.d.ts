@@ -1,7 +1,8 @@
 declare namespace NodeJS {
   interface ProcessEnv {
     NODE_ENV: 'development' | 'production' | 'test';
-    PORT: string;
+    APP_URL: string;
+    APP_PORT: string;
     JWT_SECRET: string;
     JWT_EXPIRES_IN: string;
     JWT_REFRESH_SECRET: string;
@@ -14,5 +15,7 @@ declare namespace NodeJS {
     CLOUDFLARE_R2_PUBLIC_BUCKET_NAME: string;
     CLOUDFLARE_R2_PUBLIC_DOMAIN: string;
     AUTH_EXPOSE_DEV_TOKENS: string;
+    GOOGLE_CLIENT_ID: string;
+    GOOGLE_CLIENT_SECRET: string;
   }
 }

@@ -1,12 +1,21 @@
-import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CurrentUser, Public } from 'core/common/decorators';
 import {
+  GoogleAuthGuard,
   JwtAuthGuard,
   JwtRefreshGuard,
   LocalAuthGuard,
 } from 'core/common/guards';
-import type { Response } from 'express';
+import type { Request, Response } from 'express';
 import type { User } from 'generated/prisma/client';
 
 import { AuthService } from './auth.service';
@@ -18,13 +27,46 @@ import {
   VerifyEmailDto,
 } from './dto';
 
-// TODO: Work with redis
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // TODO: Need update logic save and clear token
+  @Public()
+  @Get('google')
+  @UseGuards(GoogleAuthGuard)
+  @ApiOperation({ summary: 'Initiate Google OAuth login' })
+  initiateGoogleLogin() {
+    return;
+  }
+
+  @Public()
+  @Get('google/callback')
+  @UseGuards(GoogleAuthGuard)
+  @ApiOperation({ summary: 'Google OAuth callback' })
+  async googleCallback(@Req() req: Request, @Res() res: Response) {
+    const user = req.user as User;
+
+    const { accessToken, refreshToken } =
+      await this.authService.googleLogin(user);
+
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 15 * 60 * 1000,
+    });
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
+  }
+
   @Public()
   @Post('login')
   @UseGuards(LocalAuthGuard)
@@ -46,7 +88,7 @@ export class AuthController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 15 * 60 * 1000, // TODO: also have JWT_EXPIRES_IN in .env fix 2 defined
+      maxAge: 15 * 60 * 1000,
     });
 
     res.cookie('refreshToken', refreshToken, {

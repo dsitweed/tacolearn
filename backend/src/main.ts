@@ -14,6 +14,8 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const APP_PORT = process.env.APP_PORT || 3005;
+  const APP_URL = process.env.APP_URL || `http://localhost:${APP_PORT}`;
 
   // CORS Configuration
   const allowedOrigins: string[] = process.env.FRONTEND_URL
@@ -74,7 +76,7 @@ async function bootstrap() {
         '- **pagination**: (Optional) Pagination metadata for list endpoints',
     )
     .setVersion('1.0.0')
-    .addServer('http://localhost:3005', 'Development server')
+    .addServer(APP_URL, 'Development server')
     .addBearerAuth(
       {
         type: 'http',
@@ -101,10 +103,9 @@ async function bootstrap() {
   const outputPath = path.resolve(process.cwd(), 'swagger.json');
   fs.writeFileSync(outputPath, JSON.stringify(document, null, 2));
 
-  const port = process.env.PORT || 3000;
-  await app.listen(port);
-  console.log(`🚀 Application is running on: http://localhost:${port}/api/v1`);
-  console.log(`📚 Swagger documentation: http://localhost:${port}/api/docs`);
+  await app.listen(APP_PORT);
+  console.log(`🚀 Application is running on: ${APP_URL}/api/v1`);
+  console.log(`📚 Swagger documentation: ${APP_URL}/api/docs`);
 }
 
 bootstrap().catch((error) => {

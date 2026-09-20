@@ -6,12 +6,18 @@ import { UsersModule } from 'identify/users/users.module';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { JwtStrategy, LocalStrategy } from './strategies';
-import { JwtRefreshStrategy } from './strategies/jwt-refresh.stragety';
+import { GoogleStrategy, JwtStrategy, LocalStrategy } from './strategies';
+import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 
 @Module({
   imports: [UsersModule, EmailModule, PassportModule, JwtModule.register({})],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    GoogleStrategy,
+    JwtRefreshStrategy,
+  ],
 })
 export class AuthModule {}
