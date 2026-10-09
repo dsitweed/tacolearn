@@ -883,6 +883,35 @@
         ]
       }
     },
+    "/api/v1/exams/sessions/{sessionId}": {
+      "get": {
+        "operationId": "ExamsController_getSessionResult",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exam session result retrieved"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get the result of a submitted exam session",
+        "tags": [
+          "Exams"
+        ]
+      }
+    },
     "/api/v1/exams/{id}": {
       "get": {
         "operationId": "ExamsController_getExamById",
@@ -898,14 +927,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Exam retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Exam"
-                }
-              }
-            }
+            "description": "Exam retrieved"
           }
         },
         "security": [
@@ -913,7 +935,7 @@
             "JWT-auth": []
           }
         ],
-        "summary": "Get exam by ID",
+        "summary": "Get an exam with its questions (answers excluded)",
         "tags": [
           "Exams"
         ]
@@ -3442,7 +3464,7 @@
           },
           "selectedAnswer": {
             "type": "string",
-            "description": "Selected answer"
+            "description": "Selected answer code, e.g. \"A\""
           }
         },
         "required": [
@@ -3454,7 +3476,8 @@
         "type": "object",
         "properties": {
           "answers": {
-            "description": "Answers for each question",
+            "maxItems": 500,
+            "description": "Answers for the questions that were answered",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AnswerDto"
@@ -3462,6 +3485,7 @@
           },
           "timeSpent": {
             "type": "number",
+            "minimum": 0,
             "description": "Time spent in seconds"
           }
         },

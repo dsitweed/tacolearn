@@ -22,8 +22,11 @@ export const queryKeys = {
   // Exam queries
   exams: {
     all: ['exams'] as const,
-    list: () => [...queryKeys.exams.all, 'list'] as const,
+    list: (level?: string) =>
+      [...queryKeys.exams.all, 'list', level ?? 'all'] as const,
     detail: (id: string) => [...queryKeys.exams.all, 'detail', id] as const,
+    result: (sessionId: string) =>
+      [...queryKeys.exams.all, 'result', sessionId] as const,
   },
 
   // Practice/Questions queries

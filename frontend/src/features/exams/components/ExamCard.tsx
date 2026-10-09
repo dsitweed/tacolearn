@@ -1,15 +1,15 @@
 import { BookOpen, Clock, FileText, Users } from 'lucide-react';
 import Link from 'next/link';
 
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
-  Badge,
-  Button,
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui';
+} from '@/components/ui/card';
 import { Exam } from '@/generated/model/exam';
 
 interface ExamCardProps {

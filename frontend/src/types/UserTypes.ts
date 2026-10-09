@@ -1,33 +1,11 @@
 import { UserRole } from '@/generated/model';
 
-export enum ExamType {
-  OFFICIAL = 'OFFICIAL',
-  MOCK = 'MOCK',
-}
-
-export enum JlptLevel {
-  N1 = 'N1',
-  N2 = 'N2',
-  N3 = 'N3',
-  N4 = 'N4',
-  N5 = 'N5',
-}
-
-export interface Exam {
-  id: string;
-  title: string;
-  description: string | null;
-  jlptLevel: JlptLevel;
-  type: ExamType;
-  year: number | null;
-  month: number | null;
-  durationMinutes: number | null;
-  totalQuestions: number;
-  isPublished: boolean;
-  createdById: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
+// Exam-related types are generated from the backend OpenAPI schema (see
+// `src/generated/model`). Re-exported here so `@/types` stays the single import
+// surface used across the app.
+export type { Exam } from '@/generated/model/exam';
+export { ExamType } from '@/generated/model/examType';
+export { JlptLevel } from '@/generated/model/jlptLevel';
 
 export interface UserProfile {
   id: string;

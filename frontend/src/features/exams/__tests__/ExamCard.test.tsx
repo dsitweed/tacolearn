@@ -1,9 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+
+import { Exam } from '@/generated/model/exam';
 
 import { ExamCard } from '../components/ExamCard';
 
-const mockExam = {
+const mockExam: Exam = {
   id: '1',
   title: 'JLPT N2 Mock Exam 2023',
   description: 'Practice exam for JLPT N2 level',

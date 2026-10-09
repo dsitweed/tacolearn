@@ -3,27 +3,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { apiClient, handleApiError, queryKeys } from '@/libs';
+import { ExamSubmitResponse } from '@/types';
 
-interface SubmitExamData {
+export interface SubmitExamData {
   answers: Array<{
     questionId: string;
     selectedAnswer: string;
   }>;
   timeSpent: number;
-}
-
-interface SubmitExamResponse {
-  sessionId: string;
-  score: number;
-  correctCount: number;
-  totalQuestions: number;
-  timeSpent: number;
-  results: Array<{
-    questionId: string;
-    selectedAnswer: string;
-    correctAnswer: string;
-    isCorrect: boolean;
-  }>;
 }
 
 export function useSubmitExam() {
@@ -37,19 +24,15 @@ export function useSubmitExam() {
       examId: string;
       data: SubmitExamData;
     }) => {
-      try {
-        const response = await apiClient.post<SubmitExamResponse>(
-          `/exams/${examId}/submit`,
-          data,
-        );
-        return response.data;
-      } catch (error) {
-        throw handleApiError(error);
-      }
+      const response = await apiClient.post<ExamSubmitResponse>(
+        `/exams/${examId}/submit`,
+        data,
+      );
+      return response.data;
     },
-    onSuccess: (data, variables) => {
-      // Invalidate relevant queries
-      queryClient.invalidateQueries({ queryKey: queryKeys.practice.all });
+    onError: handleApiError,
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.exams.all });
       queryClient.invalidateQueries({
         queryKey: queryKeys.exams.detail(variables.examId),
       });

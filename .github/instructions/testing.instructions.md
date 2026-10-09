@@ -9,7 +9,7 @@ applyTo: "**/*.spec.ts", "**/*.test.ts", "**/*.test.tsx"
 Comprehensive testing strategy for TacoHouse project:
 
 - **Backend (NestJS)**: Unit tests for services ✅ (26 spec files)
-- **Frontend (Next.js/React)**: Unit & integration tests ⚠️ (setup needed)
+- **Frontend (Next.js/React)**: Unit & integration tests ✅ (Jest + Testing Library)
 - **Both**: E2E tests optional
 
 ---
@@ -387,38 +387,44 @@ describe("AppController (e2e)", () => {
 
 # FRONTEND TESTING (Next.js/React)
 
-## Setup (Currently Needed)
+## Setup ✅ (đã cấu hình)
 
-### 1. Install Testing Dependencies
+Jest + Testing Library đã được cấu hình sẵn trong frontend.
+
+### 1. Dependencies
 
 ```bash
 cd frontend
-pnpm add -D @testing-library/react @testing-library/jest-dom jest @types/jest jest-environment-jsdom
+pnpm add -D @testing-library/react @testing-library/jest-dom @testing-library/dom jest @types/jest jest-environment-jsdom
 ```
 
-### 2. Create Jest Configuration
+### 2. Jest Configuration
 
-File: `frontend/jest.config.ts`
+File: `frontend/jest.config.js` (CommonJS để không cần thêm `ts-node`)
 
-```typescript
-import type { Config } from "jest";
-import nextJest from "next/jest";
+```javascript
+const nextJest = require("next/jest");
 
-const createJestConfig = nextJest({
-  dir: "./",
-});
+const createJestConfig = nextJest({ dir: "./" });
 
-const config: Config = {
+/** @type {import('jest').Config} */
+const config = {
   coverageProvider: "v8",
   testEnvironment: "jsdom",
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
   },
-  testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+  testMatch: ["**/__tests__/**/*.[jt]s?(x)"],
+  collectCoverageFrom: [
+    "src/**/*.{ts,tsx}",
+    "!src/**/*.d.ts",
+    "!src/generated/**",
+    "!src/app/**/layout.tsx",
+  ],
 };
 
-export default createJestConfig(config);
+module.exports = createJestConfig(config);
 ```
 
 File: `frontend/jest.setup.ts`
@@ -426,26 +432,23 @@ File: `frontend/jest.setup.ts`
 ```typescript
 import "@testing-library/jest-dom";
 
-// Mock Next.js router
-jest.mock("next/router", () => ({
-  useRouter: () => ({
-    push: jest.fn(),
-    pathname: "/",
-    query: {},
-    asPath: "/",
-  }),
-}));
-
-// Mock TanStack Query
-jest.mock("@tanstack/react-query", () => ({
-  ...jest.requireActual("@tanstack/react-query"),
-  useQuery: jest.fn(),
-  useMutation: jest.fn(),
-  useQueryClient: jest.fn(),
+// `intlayer` loads esbuild at import time, which cannot run inside the Jest
+// jsdom environment. Only `Locales` (and a few helpers) are used by the app
+// code that unit tests pull in, so stub the module instead.
+jest.mock("intlayer", () => ({
+  Locales: { ENGLISH: "en", VIETNAMESE: "vi" },
+  getHTMLTextDir: () => "ltr",
+  getLocaleName: (locale: string) => locale,
+  getLocalizedUrl: (url: string) => url,
+  t: (value: unknown) => value,
 }));
 ```
 
-### 3. Add Test Scripts
+> **Lưu ý về import**: không import từ barrel `@/components/ui` trong component được unit test.
+> Barrel kéo theo `react-leaflet` (ESM-only) và các thư viện nặng khác khiến Jest không chạy được.
+> Hãy import trực tiếp, ví dụ `import { Card } from "@/components/ui/card";`.
+
+### 3. Test Scripts
 
 File: `frontend/package.json`
 

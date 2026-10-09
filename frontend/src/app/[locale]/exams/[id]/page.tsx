@@ -1,19 +1,24 @@
 'use client';
 
-import { ArrowLeft, Clock, HelpCircle, Timer } from 'lucide-react';
+import { AlertTriangle, ArrowLeft, Clock, HelpCircle } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   Button,
   Card,
   CardContent,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
   Progress,
   Separator,
 } from '@/components/ui';
 import { ExamQuestion, ExamTimer } from '@/features/exams/components';
 import { useExam, useSubmitExam } from '@/hooks/api';
-import { Exam } from '@/generated/model/exam';
 
 export default function ExamPage() {
   const params = useParams();
@@ -22,90 +27,117 @@ export default function ExamPage() {
 
   const { data: exam, isLoading, error } = useExam(examId);
   const { mutate: submitExam, isPending: isSubmitting } = useSubmitExam();
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [timeRemaining, setTimeRemaining] = useState<number>(0);
-  const [startTime] = useState<number>(Date.now());
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
-  // Initialize timer
+  const startedAtRef = useRef<number | null>(null);
+  const submittedRef = useRef(false);
+  const answersRef = useRef(answers);
+
+  const durationMinutes = exam?.durationMinutes ?? null;
+  const totalTimeSeconds = durationMinutes ? durationMinutes * 60 : null;
+
   useEffect(() => {
-    if (exam?.durationMinutes) {
-      setTimeRemaining(exam.durationMinutes * 60); // Convert to seconds
+    answersRef.current = answers;
+  }, [answers]);
+
+  // Countdown against a wall-clock start so the clock cannot drift.
+  useEffect(() => {
+    if (!durationMinutes) {
+      return;
     }
-  }, [exam]);
 
-  // Timer countdown
-  useEffect(() => {
-    if (timeRemaining <= 0) return;
+    startedAtRef.current = Date.now();
 
     const timer = setInterval(() => {
-      setTimeRemaining((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          handleSubmitExam();
-          return 0;
-        }
-        return prev - 1;
-      });
+      const startedAt = startedAtRef.current;
+      if (startedAt) {
+        setElapsedSeconds(Math.floor((Date.now() - startedAt) / 1000));
+      }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeRemaining]);
+  }, [exam?.id, durationMinutes]);
+
+  const timeRemaining =
+    totalTimeSeconds === null
+      ? null
+      : Math.max(totalTimeSeconds - elapsedSeconds, 0);
+
+  const submit = useCallback(
+    (isAutoSubmit: boolean) => {
+      if (submittedRef.current) {
+        return;
+      }
+
+      submittedRef.current = true;
+
+      const answersArray = Object.entries(answersRef.current).map(
+        ([questionId, selectedAnswer]) => ({ questionId, selectedAnswer }),
+      );
+
+      const startedAt = startedAtRef.current;
+      const elapsed = startedAt
+        ? Math.floor((Date.now() - startedAt) / 1000)
+        : 0;
+      const timeSpent =
+        isAutoSubmit && totalTimeSeconds !== null ? totalTimeSeconds : elapsed;
+
+      submitExam(
+        { examId, data: { answers: answersArray, timeSpent } },
+        {
+          onSuccess: (data) => {
+            router.replace(
+              `/exams/${examId}/results?sessionId=${data.sessionId}`,
+            );
+          },
+          onError: () => {
+            // Allow the student to retry after a failed submission.
+            submittedRef.current = false;
+          },
+        },
+      );
+    },
+    [examId, router, submitExam, totalTimeSeconds],
+  );
+
+  // Auto submit when the clock runs out.
+  useEffect(() => {
+    if (timeRemaining === 0) {
+      submit(true);
+    }
+  }, [timeRemaining, submit]);
+
+  const totalQuestions = exam?.questions?.length ?? 0;
+  const answeredQuestions = Object.keys(answers).length;
+  const unansweredQuestions = Math.max(totalQuestions - answeredQuestions, 0);
+  const progressPercentage =
+    totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0;
+  const currentQuestion = exam?.questions?.[currentQuestionIndex];
 
   const handleAnswerSelect = (questionId: string, answer: string) => {
-    setAnswers((prev) => ({
-      ...prev,
-      [questionId]: answer,
-    }));
+    setAnswers((prev) => ({ ...prev, [questionId]: answer }));
   };
 
   const handleNextQuestion = () => {
-    if (exam?.questions && currentQuestionIndex < exam.questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    if (currentQuestionIndex < totalQuestions - 1) {
+      setCurrentQuestionIndex((prev) => prev + 1);
     }
   };
 
   const handlePrevQuestion = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
+      setCurrentQuestionIndex((prev) => prev - 1);
     }
   };
 
-  const handleSubmitExam = async () => {
-    const timeSpent = Math.floor((Date.now() - startTime) / 1000);
-
-    const answersArray = Object.entries(answers).map(
-      ([questionId, selectedAnswer]) => ({
-        questionId,
-        selectedAnswer,
-      }),
-    );
-
-    submitExam(
-      {
-        examId,
-        data: {
-          answers: answersArray,
-          timeSpent,
-        },
-      },
-      {
-        onSuccess: (data) => {
-          // Navigate to results page with session data
-          router.push(`/exams/${examId}/results?sessionId=${data.sessionId}`);
-        },
-        onError: (error) => {
-          console.error('Error submitting exam:', error);
-        },
-      },
-    );
+  const handleConfirmSubmit = () => {
+    setIsConfirmOpen(false);
+    submit(false);
   };
-
-  const currentQuestion = exam?.questions?.[currentQuestionIndex];
-  const totalQuestions = exam?.questions?.length || 0;
-  const answeredQuestions = Object.keys(answers).length;
-  const progressPercentage =
-    totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0;
 
   if (isLoading) {
     return (
@@ -164,12 +196,18 @@ export default function ExamPage() {
             )}
           </div>
 
-          <div className="flex items-center gap-4">
-            <ExamTimer
-              timeRemaining={timeRemaining}
-              totalTime={exam.durationMinutes ? exam.durationMinutes * 60 : 0}
-            />
-          </div>
+          {totalTimeSeconds === null ? (
+            <p className="text-muted-foreground text-sm">
+              Không giới hạn thời gian
+            </p>
+          ) : (
+            <div className="flex items-center gap-4">
+              <ExamTimer
+                timeRemaining={timeRemaining ?? totalTimeSeconds}
+                totalTime={totalTimeSeconds}
+              />
+            </div>
+          )}
         </div>
       </div>
 
@@ -194,7 +232,7 @@ export default function ExamPage() {
                 <div>
                   <h3 className="mb-3 font-semibold">Danh sách câu hỏi</h3>
                   <div className="grid grid-cols-5 gap-2">
-                    {exam.questions?.map((question, index) => (
+                    {exam.questions.map((question, index) => (
                       <Button
                         key={question.id}
                         variant={
@@ -217,16 +255,18 @@ export default function ExamPage() {
                 {/* Stats */}
                 <Separator />
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Clock className="text-muted-foreground h-4 w-4" />
-                      <span className="text-sm">Thời gian còn lại</span>
+                  {timeRemaining !== null && (
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Clock className="text-muted-foreground h-4 w-4" />
+                        <span className="text-sm">Thời gian còn lại</span>
+                      </div>
+                      <span className="font-semibold">
+                        {Math.floor(timeRemaining / 60)}:
+                        {String(timeRemaining % 60).padStart(2, '0')}
+                      </span>
                     </div>
-                    <span className="font-semibold">
-                      {Math.floor(timeRemaining / 60)}:
-                      {String(timeRemaining % 60).padStart(2, '0')}
-                    </span>
-                  </div>
+                  )}
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -243,8 +283,8 @@ export default function ExamPage() {
                 <div className="space-y-3 pt-4">
                   <Button
                     className="w-full"
-                    onClick={handleSubmitExam}
-                    disabled={isSubmitting}
+                    onClick={() => setIsConfirmOpen(true)}
+                    disabled={isSubmitting || totalQuestions === 0}
                   >
                     {isSubmitting ? 'Đang nộp bài...' : 'Nộp bài'}
                   </Button>
@@ -262,7 +302,7 @@ export default function ExamPage() {
                       variant="outline"
                       className="flex-1"
                       onClick={handleNextQuestion}
-                      disabled={currentQuestionIndex === totalQuestions - 1}
+                      disabled={currentQuestionIndex >= totalQuestions - 1}
                     >
                       Câu sau
                     </Button>
@@ -302,6 +342,31 @@ export default function ExamPage() {
           )}
         </div>
       </div>
+
+      <Dialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Nộp bài thi?</DialogTitle>
+            <DialogDescription>
+              Bạn đã trả lời {answeredQuestions}/{totalQuestions} câu.
+              {unansweredQuestions > 0 && (
+                <span className="text-destructive mt-2 flex items-center gap-2 font-medium">
+                  <AlertTriangle className="h-4 w-4" />
+                  Còn {unansweredQuestions} câu chưa trả lời.
+                </span>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsConfirmOpen(false)}>
+              Tiếp tục làm bài
+            </Button>
+            <Button onClick={handleConfirmSubmit} disabled={isSubmitting}>
+              Nộp bài
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

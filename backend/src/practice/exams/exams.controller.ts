@@ -16,6 +16,7 @@ import {
 import { CurrentUser } from 'core/common/decorators';
 import { JwtAuthGuard } from 'core/common/guards';
 import { Exam } from 'generated/nestjs-dto';
+import type { User } from 'generated/prisma/client';
 
 import { SubmitExamDto } from './dto/submit-exam.dto';
 import { ExamsService } from './exams.service';
@@ -34,23 +35,33 @@ export class ExamsController {
     description: 'Exams retrieved',
     type: [Exam],
   })
-  async getExams(@CurrentUser() user: any, @Query('level') level?: string) {
+  async getExams(@Query('level') level?: string) {
     return this.examsService.findPublishedExams(level);
   }
 
+  @Get('sessions/:sessionId')
+  @ApiOperation({ summary: 'Get the result of a submitted exam session' })
+  @ApiResponse({
+    status: 200,
+    description: 'Exam session result retrieved',
+  })
+  async getSessionResult(
+    @Param('sessionId') sessionId: string,
+    @CurrentUser() user: User,
+  ) {
+    return this.examsService.findSessionResult(sessionId, user);
+  }
+
   @Get(':id')
-  @ApiOperation({ summary: 'Get exam by ID' })
+  @ApiOperation({
+    summary: 'Get an exam with its questions (answers excluded)',
+  })
   @ApiResponse({
     status: 200,
     description: 'Exam retrieved',
-    type: Exam,
   })
   async getExamById(@Param('id') id: string) {
-    const exam = await this.examsService.findExamById(id);
-    if (!exam) {
-      throw { statusCode: 404, message: 'Exam not found' };
-    }
-    return exam;
+    return this.examsService.findExamById(id);
   }
 
   @Post(':id/submit')
@@ -62,7 +73,7 @@ export class ExamsController {
   async submitExam(
     @Param('id') id: string,
     @Body() submitExamDto: SubmitExamDto,
-    @CurrentUser() user: any,
+    @CurrentUser() user: User,
   ) {
     return this.examsService.submitExam(id, submitExamDto, user);
   }

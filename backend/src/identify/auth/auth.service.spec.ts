@@ -350,6 +350,7 @@ describe('AuthService', () => {
           isActive: true,
           deletedAt: null,
         },
+        include: { profile: true },
       });
 
       expect(result).not.toHaveProperty('password');
